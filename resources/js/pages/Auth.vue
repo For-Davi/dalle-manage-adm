@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import FormAuth from '@/components/form/FormAuth.vue';
 
 </script>
