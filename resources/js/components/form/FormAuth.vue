@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,34 +7,23 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 </script>
 
 <template>
   <Tabs default-value="account" class="w-[400px]">
     <TabsList class="grid w-full grid-cols-2">
-      <TabsTrigger value="account">
-        Entrar
-      </TabsTrigger>
-      <TabsTrigger value="password">
-        Recuperar
-      </TabsTrigger>
+      <TabsTrigger value="account"> Entrar </TabsTrigger>
+      <TabsTrigger value="password"> Recuperar </TabsTrigger>
     </TabsList>
     <TabsContent value="account">
       <Card>
         <CardHeader>
           <CardTitle>Dalle Manage</CardTitle>
-          <CardDescription>
-            Painel administrativo
-          </CardDescription>
+          <CardDescription> Painel administrativo </CardDescription>
         </CardHeader>
         <CardContent class="space-y-2">
           <div class="space-y-1">
@@ -55,9 +44,7 @@ import {
       <Card>
         <CardHeader>
           <CardTitle>Redefinir</CardTitle>
-          <CardDescription>
-            Recupere sua senha
-          </CardDescription>
+          <CardDescription> Recupere sua senha </CardDescription>
         </CardHeader>
         <CardContent class="space-y-2">
           <div class="space-y-1">
