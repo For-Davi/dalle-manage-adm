@@ -3,15 +3,15 @@ import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 
 defineOptions({
-   name:'Dashboard'
-})
+  name: 'Dashboard',
+});
 </script>
 
 <template>
   <MainLayout>
-   <div class="p-6">
-    <h1 class="font-bold text-xl">Dashboard</h1>
-    <Separator class="my-4"/>
-   </div>
+    <div class="p-6">
+      <h1 class="text-xl font-bold">Dashboard</h1>
+      <Separator class="my-4" />
+    </div>
   </MainLayout>
 </template>
