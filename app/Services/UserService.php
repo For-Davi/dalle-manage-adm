@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\DTO\User\UserStartDTO;
+use App\DTO\User\UpdateDataProfileDTO;
+use App\DTO\User\UpdatePasswordProfileDTO;
 use App\Helpers\UserHelper;
 use App\Repositories\UserRepository;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
@@ -30,5 +33,33 @@ class UserService
                 'email' => ['Credenciais não constam em nosso registro.'],
             ]);
         }
+    }
+
+    public function updateDataProfile($request)
+    {
+        UserHelper::existsEmail(
+            $request->user(),
+            $request->email,
+        );
+
+        $profileDataDTO = UpdateDataProfileDTO::fromRequest(
+            $request->only(['name', 'email']),
+        );
+
+        return $this->repository->update($request->user()->id, $profileDataDTO->toArray());
+    }
+
+    public function updatePasswordProfile($request)
+    {
+        UserHelper::isPasswordEqual(
+            $request->user(),
+            $request->currentPassword
+        );
+
+        $profilePasswordDTO = UpdatePasswordProfileDTO::fromRequest([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return $this->repository->update($request->user()->id, $profilePasswordDTO->toArray());
     }
 }

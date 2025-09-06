@@ -23,4 +23,16 @@ class UserRepository
     {
         return $this->model->where('email', $email)->first();
     }
+
+    public function update($id, array $data)
+    {
+        $user = $this->findById($id);
+        if ($user) {
+            $user->update($data);
+
+            return $user;
+        }
+
+        return null;
+    }
 }

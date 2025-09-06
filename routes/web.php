@@ -14,9 +14,9 @@ Route::get('/', function () {
 Route::post('/login', [UserController::class, 'login'])->name('user.login');
 Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
 
-// VIEW
-Route::middleware(['auth'])->group(function () {
 
+Route::middleware(['auth'])->group(function () {
+// VIEW
     Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
@@ -29,7 +29,14 @@ Route::middleware(['auth'])->group(function () {
     return Inertia::render('Clients');
 })->name('clients');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
         Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+
+// ACTIONS
+
+    Route::prefix('user')->group(function () {
+        Route::put('/update-data', [UserController::class, 'updateData'])->name('user.update.data');
+        Route::put('/update-password', [UserController::class, 'updatePassword'])->name('user.update.password');
+    });
 });

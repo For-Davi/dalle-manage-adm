@@ -43,4 +43,13 @@ class UserHelper
             }
         }
     }
+
+    public static function isPasswordEqual($user, $currentPassword)
+    {
+        if (! Hash::check($currentPassword, $user->password)) {
+            throw ValidationException::withMessages([
+                'password' => ['A senha atual está incorreta.'],
+            ]);
+        }
+    }
 }

@@ -11,14 +11,22 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator';
-import { User, Building2, ChartNoAxesColumn, LogOut } from 'lucide-vue-next';
+import { User, Building2, ChartNoAxesColumn, LogOut, SquarePen  } from 'lucide-vue-next';
 import { Link, usePage, router } from '@inertiajs/vue3'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
+import FormProfile from '@/components/form/FormProfile.vue';
 
 defineOptions({
   name:'AppSidebar'
 })
 
+const showFormProfile = reactive<{
+  open: boolean;
+  user: IUser | null;
+}>({
+  open: false,
+  user: null
+})
 const items = [
   {
     title:'Dashboard',
@@ -48,6 +56,15 @@ const logout = () => {
     }
   })
 }
+const changeShowFormProfile = (
+  show: boolean,
+  user: IUser | null = null
+): void => {
+  Object.assign(showFormProfile, {
+    open: show,
+    user: user,
+  });
+}
 
 const page = usePage()
 const currentRoute = computed(() => page.url)
@@ -58,7 +75,14 @@ const user = computed(() => page.props.auth.user)
   <Sidebar>
     <SidebarHeader class="p-4">
       <h2 class="text-xl font-bold">Dalle Manage Adm</h2>
-      <p class="text-sm text-muted-foreground">{{ user.name }}</p>
+     <div class="flex">
+       <p class="text-sm text-muted-foreground mr-2">
+        {{ user.name }}   
+    </p>
+         <button @click="changeShowFormProfile(true, user)" class="cursor-pointer rounded-md hover:bg-accent hover:text-accent-foreground">
+        <SquarePen stroke-width="3" class="w-4 h-4"/>
+      </button>
+     </div>
     </SidebarHeader>
     <Separator/>
     <SidebarContent class="flex-1">
@@ -90,7 +114,6 @@ const user = computed(() => page.props.auth.user)
         <SidebarMenuItem>
           <SidebarMenuButton asChild>
             <form @submit.prevent="logout" class="w-full">
-              <input type="hidden" name="_token" :value="page.props.csrf_token">
               <button type="submit" class="flex items-center gap-2 w-full cursor-pointer p-2 text-destructive hover:bg-accent rounded-md">
                 <LogOut class="w-4 h-4"/>
                 <span class="text-base font-bold">Sair</span>
@@ -101,4 +124,7 @@ const user = computed(() => page.props.auth.user)
       </SidebarMenu>
     </SidebarFooter>
   </Sidebar>
+
+  <!-- Modals -->
+    <FormProfile :data="showFormProfile" @update:open="changeShowFormProfile(false)"/>
 </template>
