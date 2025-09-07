@@ -11,10 +11,16 @@ import {
   SidebarFooter,
 } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
-import { Link, usePage, router } from '@inertiajs/vue3'
-import { computed, reactive } from 'vue'
+import { Link, usePage, router } from '@inertiajs/vue3';
+import { computed, reactive } from 'vue';
 import FormProfile from '@/components/form/FormProfile.vue';
-import { User, Building2, ChartNoAxesColumn, LogOut, SquarePen } from 'lucide-vue-next';
+import {
+  User,
+  Building2,
+  ChartNoAxesColumn,
+  LogOut,
+  SquarePen,
+} from 'lucide-vue-next';
 
 defineOptions({
   name: 'AppSidebar',
@@ -25,8 +31,8 @@ const showFormProfile = reactive<{
   user: IUser | null;
 }>({
   open: false,
-  user: null
-})
+  user: null,
+});
 const items = [
   {
     title: 'Dashboard',
@@ -52,10 +58,10 @@ const isActive = (url: string) => {
 const logout = () => {
   router.post(route('user.logout'), {
     onSuccess: () => {
-      router.visit(route('login'))
-    }
-  })
-}
+      router.visit(route('login'));
+    },
+  });
+};
 const changeShowFormProfile = (
   show: boolean,
   user: IUser | null = null
@@ -64,7 +70,7 @@ const changeShowFormProfile = (
     open: show,
     user: user,
   });
-}
+};
 
 const page = usePage();
 const currentRoute = computed(() => page.url);
@@ -75,14 +81,17 @@ const user = computed(() => page.props.auth.user);
   <Sidebar>
     <SidebarHeader class="p-4">
       <h2 class="text-xl font-bold">Dalle Manage Adm</h2>
-     <div class="flex">
-       <p class="text-sm text-muted-foreground mr-2">
-        {{ user.name }}   
-    </p>
-         <button @click="changeShowFormProfile(true, user)" class="cursor-pointer rounded-md hover:bg-accent hover:text-accent-foreground">
-        <SquarePen stroke-width="3" class="w-4 h-4"/>
-      </button>
-     </div>
+      <div class="flex">
+        <p class="text-muted-foreground mr-2 text-sm">
+          {{ user.name }}
+        </p>
+        <button
+          @click="changeShowFormProfile(true, user)"
+          class="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-md"
+        >
+          <SquarePen stroke-width="3" class="h-4 w-4" />
+        </button>
+      </div>
       <p class="text-muted-foreground text-sm">{{ user.name }}</p>
     </SidebarHeader>
     <Separator />
@@ -134,5 +143,8 @@ const user = computed(() => page.props.auth.user);
     </SidebarFooter>
   </Sidebar>
   <!-- Modals -->
-    <FormProfile :data="showFormProfile" @update:open="changeShowFormProfile(false)"/>
+  <FormProfile
+    :data="showFormProfile"
+    @update:open="changeShowFormProfile(false)"
+  />
 </template>
