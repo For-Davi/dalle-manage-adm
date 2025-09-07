@@ -4,10 +4,10 @@ import {
   useEventListener,
   useMediaQuery,
   useVModel,
-} from "@vueuse/core";
-import { TooltipProvider } from "reka-ui";
-import { computed, ref } from "vue";
-import { cn } from "@/lib/utils";
+} from '@vueuse/core';
+import { TooltipProvider } from 'reka-ui';
+import { computed, ref } from 'vue';
+import { cn } from '@/lib/utils';
 import {
   provideSidebarContext,
   SIDEBAR_COOKIE_MAX_AGE,
@@ -15,7 +15,7 @@ import {
   SIDEBAR_KEYBOARD_SHORTCUT,
   SIDEBAR_WIDTH,
   SIDEBAR_WIDTH_ICON,
-} from "./utils";
+} from './utils';
 
 const props = defineProps({
   defaultOpen: {
@@ -27,12 +27,12 @@ const props = defineProps({
   class: { type: null, required: false },
 });
 
-const emits = defineEmits(["update:open"]);
+const emits = defineEmits(['update:open']);
 
-const isMobile = useMediaQuery("(max-width: 768px)");
+const isMobile = useMediaQuery('(max-width: 768px)');
 const openMobile = ref(false);
 
-const open = useVModel(props, "open", emits, {
+const open = useVModel(props, 'open', emits, {
   defaultValue: props.defaultOpen ?? false,
   passive: props.open === undefined,
 });
@@ -55,7 +55,7 @@ function toggleSidebar() {
     : setOpen(!open.value);
 }
 
-useEventListener("keydown", (event) => {
+useEventListener('keydown', (event) => {
   if (
     event.key === SIDEBAR_KEYBOARD_SHORTCUT &&
     (event.metaKey || event.ctrlKey)
@@ -67,7 +67,7 @@ useEventListener("keydown", (event) => {
 
 // We add a state so that we can do data-state="expanded" or "collapsed".
 // This makes it easier to style the sidebar with Tailwind classes.
-const state = computed(() => (open.value ? "expanded" : "collapsed"));
+const state = computed(() => (open.value ? 'expanded' : 'collapsed'));
 
 provideSidebarContext({
   state,
@@ -91,7 +91,7 @@ provideSidebarContext({
       :class="
         cn(
           'group/sidebar-wrapper has-data-[variant=inset]:bg-sidebar flex min-h-svh w-full',
-          props.class,
+          props.class
         )
       "
       v-bind="$attrs"

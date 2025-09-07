@@ -1,6 +1,6 @@
 <script setup>
-import { computed } from "vue";
-import { cn } from "@/lib/utils";
+import { computed } from 'vue';
+import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const props = defineProps({

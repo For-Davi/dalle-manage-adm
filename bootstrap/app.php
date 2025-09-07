@@ -17,7 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleInertiaRequests::class,
         ]);
         $middleware->alias([
-            'admin' => CheckAdmin::class,
+            // 'admin' => CheckAdmin::class,
             'auth' => Authenticate::class,
         ]);
     })
