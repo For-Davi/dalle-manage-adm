@@ -81,18 +81,17 @@ const user = computed(() => page.props.auth.user);
   <Sidebar>
     <SidebarHeader class="p-4">
       <h2 class="text-xl font-bold">Dalle Manage Adm</h2>
-      <div class="flex">
+      <div class="flex items-center">
         <p class="text-muted-foreground mr-2 text-sm">
           {{ user.name }}
         </p>
         <button
           @click="changeShowFormProfile(true, user)"
-          class="hover:bg-accent hover:text-accent-foreground cursor-pointer rounded-md"
+          class="hover:bg-accent cursor-pointer rounded-md"
         >
-          <SquarePen stroke-width="3" class="h-4 w-4" />
+          <SquarePen stroke-width="2" class="h-3 w-3" />
         </button>
       </div>
-      <p class="text-muted-foreground text-sm">{{ user.name }}</p>
     </SidebarHeader>
     <Separator />
     <SidebarContent class="flex-1">
