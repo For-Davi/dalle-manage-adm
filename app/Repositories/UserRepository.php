@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\DTO\User\FilterUserDTO;
 use App\Models\User;
 
 class UserRepository
@@ -22,6 +21,18 @@ class UserRepository
     public function findByEmail($email)
     {
         return $this->model->where('email', $email)->first();
+    }
+
+    public function newPassword($email, array $data)
+    {
+        $user = $this->findByEmail($email);
+        if ($user) {
+            $user->update($data);
+
+            return $user;
+        }
+
+        return null;
     }
 
     public function update($id, array $data)

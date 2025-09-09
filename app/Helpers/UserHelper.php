@@ -20,7 +20,8 @@ class UserHelper
             ]);
         }
     }
-     public static function checkPassword($user, $password)
+
+    public static function checkPassword($user, $password)
     {
         if (! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
@@ -28,6 +29,7 @@ class UserHelper
             ]);
         }
     }
+
     public static function existsEmail($user, $email)
     {
 

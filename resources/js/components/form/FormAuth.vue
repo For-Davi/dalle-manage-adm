@@ -18,6 +18,10 @@ defineOptions({
   name: 'FormAuth',
 });
 
+const emit = defineEmits<{
+  'update:changeRender': [IRenderAuth];
+}>();
+
 const form = useForm({
   email: '',
   password: '',
@@ -44,7 +48,7 @@ const submit = async () => {
         </CardHeader>
         <CardContent class="space-y-2">
           <form @submit.prevent="submit">
-            <div class="space-y-1">
+            <div class="mb-3 space-y-1">
               <Label for="email">Email</Label>
               <Input
                 v-model="form.email"
@@ -61,7 +65,14 @@ const submit = async () => {
                 placeholder="Insira sua senha"
               />
             </div>
-            <div v-if="form.errors.email">
+            <div class="mt-2">
+              <span
+                @click="emit('update:changeRender', 'reset')"
+                class="ml-1 cursor-pointer text-sm underline"
+                >Esqueceu sua senha?</span
+              >
+            </div>
+            <div v-if="form.errors.email" class="mt-2">
               <p class="ml-6 text-sm font-medium text-red-600">
                 {{ form.errors.email }}
               </p>

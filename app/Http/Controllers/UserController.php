@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\User\NewPasswordRequest;
+use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\UpdateDataUserRequest;
 use App\Http\Requests\User\UpdatePasswordUserRequest;
-use App\Repositories\UserRepository;
 use App\Services\UserService;
-use Illuminate\Support\Facades\DB;
 use App\Utils\ErrorLogger;
 use Exception;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class UserController
 {
@@ -23,11 +24,12 @@ class UserController
     public function login(LoginRequest $request)
     {
 
-       $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
         try {
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
+
                 return redirect()->route('dashboard');
             }
         } catch (Exception $e) {
@@ -35,6 +37,7 @@ class UserController
                 'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
             ]);
         }
+
         return back()->withErrors([
             'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
         ])->onlyInput('email');
@@ -71,6 +74,7 @@ class UserController
                 'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
             ]);
         }
+
         return back()->withErrors([
             'email' => 'Erro ao atualizar dados.',
         ])->onlyInput('email');
@@ -94,9 +98,62 @@ class UserController
             ErrorLogger::log('Erro ao atualizar senha', $e, $request);
 
             return back()->withErrors([
-                'password' =>  $e->getMessage(),
+                'password' => $e->getMessage(),
             ]);
         }
+
+        return back()->withErrors([
+            'password' => 'Erro ao atualizar senha.',
+        ])->onlyInput('password');
+    }
+
+    public function reset(ResetPasswordRequest $request)
+    {
+        try {
+            $result = $this->service->reset($request);
+
+            return redirect()->back()->with('message', $result);
+
+        } catch (\Exception $e) {
+            ErrorLogger::log('Erro ao solicitar redefinição de senha', $e, $request);
+
+            return back()->withErrors([
+                'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
+            ]);
+        }
+
+        return back()->withErrors([
+            'email' => 'Erro ao solicitar redefinição de senha.',
+        ])->onlyInput('email');
+    }
+
+    public function showResetForm($token)
+    {
+        return Inertia::render('ResetPassword', [
+            'token' => $token,
+        ]);
+    }
+
+    public function resetPassword(NewPasswordRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->service->newPassword($request);
+
+            if ($user) {
+                DB::commit();
+
+                return redirect()->route('login');
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao redefinir senha', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
         return back()->withErrors([
             'password' => 'Erro ao atualizar senha.',
         ])->onlyInput('password');
