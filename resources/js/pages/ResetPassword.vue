@@ -11,6 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-vue-next';
 import { useForm } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner'
 import { ref } from 'vue';
 
 defineOptions({
@@ -32,8 +33,10 @@ const submit = () => {
     form.setError('password', 'As senhas não coincidem');
   } else {
     form.clearErrors('password');
+    toast.success('Senha redefinida')
     form.put(route('user.reset'));
-    console.log('dados', form.password, form.token);
+    form.reset('password'); 
+    confirmPassword.value = '';
   }
 };
 </script>

@@ -10,8 +10,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
+import { toast } from 'vue-sonner'
 
 defineOptions({
   name: 'Reset',
@@ -21,15 +22,18 @@ const emit = defineEmits<{
   'update:changeRender': [IRenderAuth];
 }>();
 
-const page = usePage();
-
 const form = useForm({
   email: '',
 });
 
 const submit = async () => {
   form.post(route('verify.reset'), {
-    onFinish: () => form.reset('email'),
+    onFinish: () => {
+      form.reset('email')
+    },
+    onSuccess: () => {
+      toast.success('Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha')
+    }
   });
 };
 </script>
@@ -56,11 +60,6 @@ const submit = async () => {
             class="ml-1 cursor-pointer text-sm underline"
             >Entrar na conta</span
           >
-        </div>
-        <div v-if="page.props.message" class="mt-2">
-          <p class="ml-6 text-sm font-medium text-green-600">
-            {{ page.props.message }}
-          </p>
         </div>
         <div v-if="form.errors.email" class="mt-2">
           <p class="ml-6 text-sm font-medium text-red-600">
