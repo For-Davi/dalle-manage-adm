@@ -6,6 +6,22 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Link } from '@inertiajs/vue3';
 import { Toaster } from 'vue-sonner';
 import 'vue-sonner/style.css';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from './components/ui/card/index.js' ;
+import { Input } from './components/ui/input/index.js';
+import { Label } from './components/ui/label/index.js';
+import { Button } from './components/ui/button/index.js';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from './components/ui/dialog/index.js';
 
 createInertiaApp({
   resolve: (name) =>
@@ -18,8 +34,20 @@ createInertiaApp({
 
     app
       .use(plugin)
-      .component('InertiaLink', Link)
-      .component('Toaster', Toaster);
+      .component('Card', Card)
+      .component('CardContent', CardContent)
+      .component('CardHeader', CardHeader)
+      .component('CardTitle', CardTitle)
+      .component('CardFooter', CardFooter)
+      .component('Dialog', Dialog)
+      .component('DialogContent', DialogContent)
+      .component('DialogHeader', DialogHeader)
+      .component('DialogTitle', DialogTitle)
+      .component('Input', Input)
+      .component('Label', Label)
+      .component('Button', Button)
+      .component('Toaster', Toaster)
+      .component('Link', Link);
 
     app.mount(el);
 
