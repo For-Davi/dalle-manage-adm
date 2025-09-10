@@ -12,10 +12,9 @@ const changeRender = (value: IRenderAuth) => {
 </script>
 
 <template>
-    <main class="flex h-screen w-screen items-center justify-center">
+  <main class="flex h-screen w-screen items-center justify-center">
     <FormAuth v-if="type === 'auth'" @update:change-render="changeRender" />
     <Reset v-else @update:change-render="changeRender" />
   </main>
   <Toaster position="bottom-right" />
-
 </template>

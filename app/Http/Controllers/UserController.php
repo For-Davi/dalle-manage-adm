@@ -65,7 +65,7 @@ class UserController
 
                 return inertia()->location(url()->previous());
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             ErrorLogger::log('Erro ao atualizar dados', $e, $request);
@@ -92,7 +92,7 @@ class UserController
 
                 return inertia()->location(url()->previous());
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             ErrorLogger::log('Erro ao atualizar senha', $e, $request);
@@ -113,18 +113,13 @@ class UserController
             $result = $this->service->reset($request);
 
             return redirect()->back()->with('message', $result);
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             ErrorLogger::log('Erro ao solicitar redefinição de senha', $e, $request);
 
             return back()->withErrors([
                 'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
-            ]);
+            ])->withInput();
         }
-
-        return back()->withErrors([
-            'email' => 'Erro ao solicitar redefinição de senha.',
-        ])->onlyInput('email');
     }
 
     public function showResetForm($token)
@@ -146,7 +141,7 @@ class UserController
 
                 return redirect()->route('login');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             ErrorLogger::log('Erro ao redefinir senha', $e, $request);

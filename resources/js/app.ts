@@ -16,9 +16,10 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     const app = createApp({ render: () => h(App, props) });
 
-    app.use(plugin)
-       .component('InertiaLink', Link)
-       .component('Toaster', Toaster); 
+    app
+      .use(plugin)
+      .component('InertiaLink', Link)
+      .component('Toaster', Toaster);
 
     app.mount(el);
 

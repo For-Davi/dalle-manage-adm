@@ -29,8 +29,6 @@ class SendResetPasswordEmail implements ShouldQueue
     {
         $reset = PasswordResetToken::firstOrNew(['email' => $this->user->email]);
 
-        \Log::info(config('app.url'));
-
         Mail::to($this->user->email)->send(new ResetPasswordMail($reset->token, $this->user->name, config('app.url')));
     }
 }

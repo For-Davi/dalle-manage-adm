@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
-import { toast } from 'vue-sonner'
+import { toast } from 'vue-sonner';
 
 defineOptions({
   name: 'Reset',
@@ -29,11 +29,14 @@ const form = useForm({
 const submit = async () => {
   form.post(route('verify.reset'), {
     onFinish: () => {
-      form.reset('email')
+      form.reset('email');
+      emit('update:changeRender','auth')
     },
     onSuccess: () => {
-      toast.success('Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha')
-    }
+      toast.success(
+        'Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha'
+      );
+    },
   });
 };
 </script>
