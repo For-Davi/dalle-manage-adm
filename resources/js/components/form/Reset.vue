@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
+import { toast } from 'vue-sonner';
 
 defineOptions({
-  name: 'FormAuth',
+  name: 'Reset',
 });
 
 const emit = defineEmits<{
@@ -12,12 +24,19 @@ const emit = defineEmits<{
 
 const form = useForm({
   email: '',
-  password: '',
 });
 
 const submit = async () => {
-  form.post(route('user.login'), {
-    onFinish: () => form.reset('password'),
+  form.post(route('verify.reset'), {
+    onFinish: () => {
+      form.reset('email');
+      emit('update:changeRender', 'auth');
+    },
+    onSuccess: () => {
+      toast.success(
+        'Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha'
+      );
+    },
   });
 };
 </script>
@@ -26,7 +45,7 @@ const submit = async () => {
   <Card class="w-100">
     <CardHeader>
       <CardTitle>Dalle Manage Adm</CardTitle>
-      <CardDescription> Faça seu login </CardDescription>
+      <CardDescription> Esqueceu sua senha? </CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <form @submit.prevent="submit">
@@ -39,21 +58,11 @@ const submit = async () => {
             autocomplete="new-email"
           />
         </div>
-        <div class="space-y-1">
-          <Label for="password">Password</Label>
-          <Input
-            v-model="form.password"
-            id="password"
-            type="password"
-            placeholder="Insira sua senha"
-            autocomplete="new-password"
-          />
-        </div>
         <div class="mt-2">
           <span
-            @click="emit('update:changeRender', 'reset')"
+            @click="emit('update:changeRender', 'auth')"
             class="ml-1 cursor-pointer text-sm underline"
-            >Esqueceu sua senha?</span
+            >Entrar na conta</span
           >
         </div>
         <div v-if="form.errors.email" class="mt-2">
@@ -73,7 +82,7 @@ const submit = async () => {
         <div v-if="form.processing">
           <Loader2 class="mr-2 h-4 w-4 animate-spin" />
         </div>
-        <div v-else>Entrar</div>
+        <div v-else>Enviar</div>
       </Button>
     </CardFooter>
   </Card>

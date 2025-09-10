@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { computed, ref } from 'vue';
 import ProfileData from '../profile/ProfileData.vue';
 import ProfilePassword from '../profile/ProfilePassword.vue';
