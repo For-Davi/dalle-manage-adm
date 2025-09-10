@@ -30,7 +30,7 @@ const submit = async () => {
   form.post(route('verify.reset'), {
     onFinish: () => {
       form.reset('email');
-      emit('update:changeRender','auth')
+      emit('update:changeRender', 'auth');
     },
     onSuccess: () => {
       toast.success(
@@ -55,6 +55,7 @@ const submit = async () => {
             v-model="form.email"
             id="email"
             placeholder="Insira seu email"
+            autocomplete="new-email"
           />
         </div>
         <div class="mt-2">
