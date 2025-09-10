@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from './components/ui/card/index.js' ;
+} from './components/ui/card/index.js';
 import { Input } from './components/ui/input/index.js';
 import { Label } from './components/ui/label/index.js';
 import { Button } from './components/ui/button/index.js';
@@ -22,6 +22,29 @@ import {
   DialogHeader,
   DialogTitle,
 } from './components/ui/dialog/index.js';
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarHeader,
+  SidebarFooter,
+} from './components/ui/sidebar/index.js';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableEmpty,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from './components/ui/table/index.js';
+import { Separator } from './components/ui/separator/index.js';
 
 createInertiaApp({
   resolve: (name) =>
@@ -47,7 +70,26 @@ createInertiaApp({
       .component('Label', Label)
       .component('Button', Button)
       .component('Toaster', Toaster)
-      .component('Link', Link);
+      .component('Link', Link)
+      .component('Sidebar', Sidebar)
+      .component('SidebarContent', SidebarContent)
+      .component('SidebarGroup', SidebarGroup)
+      .component('SidebarGroupContent', SidebarGroupContent)
+      .component('SidebarMenu', SidebarMenu)
+      .component('SidebarMenuButton', SidebarMenuButton)
+      .component('SidebarMenuItem', SidebarMenuItem)
+      .component('SidebarHeader', SidebarHeader)
+      .component('SidebarFooter', SidebarFooter)
+      .component('Separator', Separator)
+      .component('Table', Table)
+      .component('TableBody', TableBody)
+      .component('TableCaption', TableCaption)
+      .component('TableCell', TableCell)
+      .component('TableEmpty', TableEmpty)
+      .component('TableFooter', TableFooter)
+      .component('TableHead', TableHead)
+      .component('TableHeader', TableHeader)
+      .component('TableRow', TableRow);
 
     app.mount(el);
 

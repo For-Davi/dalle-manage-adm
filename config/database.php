@@ -61,7 +61,7 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-        
+
         'dalle_manage' => [
             'driver' => 'mysql',
             'host' => env('DM_DB_HOST', '127.0.0.1'),
@@ -75,7 +75,6 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
 
         'mariadb' => [
             'driver' => 'mariadb',

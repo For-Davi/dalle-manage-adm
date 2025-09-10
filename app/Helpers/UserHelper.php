@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\User;
+use App\Models\Adm\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

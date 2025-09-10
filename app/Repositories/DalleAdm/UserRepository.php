@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\DalleAdm;
 
-use App\Models\User;
+use App\Models\DalleAdm\User;
 
 class UserRepository
 {

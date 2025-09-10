@@ -1,17 +1,5 @@
 <script setup lang="ts">
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-} from '@/components/ui/sidebar';
-import { Separator } from '@/components/ui/separator';
-import { Link, usePage, router } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import { computed, reactive } from 'vue';
 import FormProfile from '@/components/form/FormProfile.vue';
 import {
@@ -36,17 +24,17 @@ const showFormProfile = reactive<{
 const items = [
   {
     title: 'Dashboard',
-    url: '/dashboard',
+    url: '/adm/dashboard',
     icon: ChartNoAxesColumn,
   },
   {
     title: 'Empresas',
-    url: '/enterprises',
+    url: '/adm/enterprises',
     icon: Building2,
   },
   {
     title: 'Clientes',
-    url: '/clients',
+    url: '/adm/clients',
     icon: User,
   },
 ];

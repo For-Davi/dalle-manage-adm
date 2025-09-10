@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\ClientController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EnterpriseController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\DalleAdm\ClientController;
+use App\Http\Controllers\DalleAdm\EnterpriseController;
+use App\Http\Controllers\DalleAdm\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,32 +21,29 @@ Route::put('/reset-password', [UserController::class, 'resetPassword'])->name('u
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix('adm')->group(function () {
-            // VIEW
+        // VIEW
 
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard');
-            })->name('dashboard');
+        })->name('dashboard');
 
         Route::get('/enterprises', function () {
             return Inertia::render('Enterprises');
-            })->name('enterprises');
+        })->name('enterprises');
 
         Route::get('/clients', function () {
             return Inertia::render('Clients');
-            })->name('clients');
+        })->name('clients');
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
-    Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+        Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
+        Route::get('/clients', [ClientController::class, 'index'])->name('clients');
 
-            // ACTIONS
+        // ACTIONS
         Route::prefix('user')->group(function () {
-        Route::put('/update-data', [UserController::class, 'updateData'])->name('user.update.data');
-        Route::put('/update-password', [UserController::class, 'updatePassword'])->name('user.update.password');
+            Route::put('/update-data', [UserController::class, 'updateData'])->name('user.update.data');
+            Route::put('/update-password', [UserController::class, 'updatePassword'])->name('user.update.password');
+        });
     });
-    });
 
-
-
-//MANAGE
+    // MANAGE
 });

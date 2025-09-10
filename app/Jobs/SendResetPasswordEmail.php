@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\ResetPasswordMail;
-use App\Models\PasswordResetToken;
+use App\Models\DalleAdm\PasswordResetToken;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

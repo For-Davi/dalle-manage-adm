@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\DalleAdm;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\NewPasswordRequest;
 use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\UpdateDataUserRequest;
 use App\Http\Requests\User\UpdatePasswordUserRequest;
-use App\Services\UserService;
+use App\Services\DalleAdm\UserService;
 use App\Utils\ErrorLogger;
 use Exception;
 use Illuminate\Http\Request;

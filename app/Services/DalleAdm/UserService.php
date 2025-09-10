@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\DalleAdm;
 
 use App\DTO\User\UpdateDataProfileDTO;
 use App\DTO\User\UpdatePasswordProfileDTO;
 use App\Helpers\UserHelper;
 use App\Jobs\SendResetPasswordEmail;
-use App\Models\PasswordResetToken;
-use App\Repositories\UserRepository;
+use App\Models\DalleAdm\PasswordResetToken;
+use App\Repositories\DalleAdm\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
