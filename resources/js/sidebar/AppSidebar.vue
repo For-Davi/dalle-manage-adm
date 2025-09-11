@@ -8,6 +8,7 @@ import {
   ChartNoAxesColumn,
   LogOut,
   SquarePen,
+  HandCoins,
 } from 'lucide-vue-next';
 
 defineOptions({
@@ -36,6 +37,11 @@ const items = [
     title: 'Clientes',
     url: '/adm/clients',
     icon: User,
+  },
+  {
+    title: 'Assinaturas',
+    url: '/adm/subscriptions',
+    icon: HandCoins,
   },
 ];
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DalleAdm\ClientController;
 use App\Http\Controllers\DalleAdm\EnterpriseController;
+use App\Http\Controllers\DalleAdm\SubscriptionsController;
 use App\Http\Controllers\DalleAdm\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
         Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+        Route::get('/subscriptions', [SubscriptionsController::class, 'index'])->name('subscriptions');
 
         // ACTIONS
         Route::prefix('user')->group(function () {

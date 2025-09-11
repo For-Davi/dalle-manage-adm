@@ -9,6 +9,18 @@ import { CircleX } from 'lucide-vue-next';
 const props = defineProps<{
   enterprises: IEnterprises;
 }>();
+
+function subscriptionUsed(value: number) {
+  if (value === 1) {
+    return 'Grátis';
+  }
+  if (value === 2) {
+    return 'Básico';
+  }
+  if (value === 3) {
+    return 'Premium';
+  }
+}
 </script>
 
 <template>
@@ -36,7 +48,7 @@ const props = defineProps<{
         <TableCell>{{ enterprises.name }}</TableCell>
         <TableCell>{{ enterprises.email }}</TableCell>
         <TableCell>
-          {{ enterprises.subscription_id }}
+          {{ subscriptionUsed(enterprises.subscription_id) }}
         </TableCell>
       </TableRow>
     </TableBody>
