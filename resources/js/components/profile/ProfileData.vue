@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/vue3';
-import { Loader2 } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
 
 defineOptions({
   name: 'ProfileData',

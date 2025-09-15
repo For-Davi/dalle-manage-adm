@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\DalleAdm\ClientController;
-use App\Http\Controllers\DalleAdm\EnterpriseController;
-use App\Http\Controllers\DalleAdm\SubscriptionsController;
-use App\Http\Controllers\DalleAdm\UserController;
+use App\Http\Controllers\ClientController;
+use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\SubscriptionsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -44,6 +44,10 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::put('/update-data', [UserController::class, 'updateData'])->name('user.update.data');
             Route::put('/update-password', [UserController::class, 'updatePassword'])->name('user.update.password');
+        });
+
+        Route::prefix('enterprise')->group(function () {
+            Route::post('/create', [EnterpriseController::class, 'create'])->name('enterprise.create');
         });
     });
 

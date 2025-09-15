@@ -2,6 +2,7 @@
 import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import SubscriptionsTable from '@/components/tables/SubscriptionsTable.vue';
+import TitlePage from '@/components/general/TitlePage.vue';
 
 defineOptions({
   name: 'Subscriptions',
@@ -15,7 +16,7 @@ const props = defineProps<{
 <template>
   <MainLayout>
     <div class="p-6">
-      <h1 class="text-xl font-bold">Assinaturas</h1>
+      <TitlePage title="Assinaturas" />
       <Separator class="my-4" />
       <SubscriptionsTable :subscriptions="props.subscriptions" />
     </div>

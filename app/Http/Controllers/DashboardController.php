@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DalleAdm;
+namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 

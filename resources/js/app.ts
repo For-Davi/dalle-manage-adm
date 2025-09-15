@@ -44,6 +44,20 @@ import {
   TableHeader,
   TableRow,
 } from './components/ui/table/index.js';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectItemText,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from './components/ui/select/index.js';
+import { Loader2 } from 'lucide-vue-next';
 import { Separator } from './components/ui/separator/index.js';
 
 createInertiaApp({
@@ -89,7 +103,19 @@ createInertiaApp({
       .component('TableFooter', TableFooter)
       .component('TableHead', TableHead)
       .component('TableHeader', TableHeader)
-      .component('TableRow', TableRow);
+      .component('TableRow', TableRow)
+      .component('Select', Select)
+      .component('SelectContent', SelectContent)
+      .component('SelectGroup', SelectGroup)
+      .component('SelectItem', SelectItem)
+      .component('SelectItemText', SelectItemText)
+      .component('SelectLabel', SelectLabel)
+      .component('SelectScrollDownButton', SelectScrollDownButton)
+      .component('SelectScrollUpButton', SelectScrollUpButton)
+      .component('SelectSeparator', SelectSeparator)
+      .component('SelectTrigger', SelectTrigger)
+      .component('SelectValue', SelectValue)
+      .component('Loader2', Loader2);
 
     app.mount(el);
 
