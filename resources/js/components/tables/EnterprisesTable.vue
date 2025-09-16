@@ -10,7 +10,6 @@ defineOptions({
 const props = defineProps<{
   enterprises: IEnterprise[];
 }>();
-
 </script>
 
 <template>
@@ -24,10 +23,7 @@ const props = defineProps<{
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow
-        v-for="(enterprise, index) in props.enterprises"
-        :key="index"
-      >
+      <TableRow v-for="(enterprise, index) in props.enterprises" :key="index">
         <TableCell>
           <CircleCheckBig
             v-if="isActive(enterprise.active)"

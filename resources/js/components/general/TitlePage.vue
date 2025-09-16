@@ -1,12 +1,11 @@
 <script setup lang="ts">
-
 defineOptions({
   name: 'TitlePage',
 });
 
 const props = defineProps<{
   title: string;
-  icon?: string|null;
+  icon?: string | null;
 }>();
 </script>
 

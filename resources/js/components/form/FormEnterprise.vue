@@ -74,6 +74,16 @@ watch(
   }
 );
 watch(
+  () => type.value,
+  (type) => {
+    if (type === 'cpf') {
+      form.cnpj = '';
+    } else {
+      form.cpf = '';
+    }
+  }
+);
+watch(
   () => form.cep,
   async (cep: string) => {
     form.cep = form.cep.replace(/\D/g, '');
@@ -276,7 +286,7 @@ watch(open, () => {
           </Select>
         </div>
         <div
-          class="mt-2 ml-1 text-sm font-bold font-medium text-red-600"
+          class="mt-2 ml-1 text-sm font-bold text-red-600"
           v-if="
             form.errors.name ||
             form.errors.email ||

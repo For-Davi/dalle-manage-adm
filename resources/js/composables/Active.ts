@@ -1,3 +1,3 @@
 export const isActive = (value: boolean | number): boolean => {
-    return value === true || value === 1
-}
+  return value === true || value === 1;
+};

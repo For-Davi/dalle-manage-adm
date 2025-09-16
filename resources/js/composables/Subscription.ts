@@ -7,4 +7,4 @@ export const getNameSubscription = (value: string) => {
     default:
       return 'Premium';
   }
-}
+};

@@ -9,7 +9,7 @@ defineOptions({
 });
 
 const props = defineProps<{
-  subscriptions: ISubscriptions[];
+  subscriptions: ISubscription[];
 }>();
 </script>
 
@@ -25,7 +25,7 @@ const props = defineProps<{
     </TableHeader>
     <TableBody>
       <TableRow
-        v-for="(subscription , index) in props.subscriptions"
+        v-for="(subscription, index) in props.subscriptions"
         :key="index"
       >
         <TableCell>
