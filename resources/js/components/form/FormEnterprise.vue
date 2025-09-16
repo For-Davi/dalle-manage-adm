@@ -121,7 +121,7 @@ watch(open, () => {
     >
       <DialogHeader>
         <DialogTitle>
-          <TitlePage title="Criação de empresa" icon="Building2" />
+          <TitlePage title="Registro de empresa" icon="Building2" />
         </DialogTitle>
         <Separator class="my-1 bg-gray-500" />
       </DialogHeader>
@@ -325,7 +325,7 @@ watch(open, () => {
             <div v-if="form.processing">
               <Loader2 class="mr-2 h-4 w-4 animate-spin" />
             </div>
-            <div v-else>Criar</div>
+            <div v-else>Salvar</div>
           </Button>
         </div>
       </form>
