@@ -8,8 +8,12 @@ class EnterpriseDMRepository
 {
     public function __construct(public EnterpriseDM $model) {}
 
-    public function getAll()
+    public function getAll(array $relations = [])
     {
+        if (!empty($relations)) {
+            return $this->model->with($relations)->get();
+        }
+        
         return $this->model->all();
     }
 }

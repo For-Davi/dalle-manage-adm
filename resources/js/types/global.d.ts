@@ -1,7 +1,7 @@
 import type { User } from './User.ts';
 import type { RenderAuth } from './Auth.ts';
-import type { Enterprises } from './Enterprises.ts';
-import type { Subscriptions } from './Subscriptions.ts';
+import type { Enterprise } from './Enterprise.ts';
+import type { Subscription } from './Subscription.ts';
 export {};
 
 declare global {
@@ -9,7 +9,7 @@ declare global {
 
   type IRenderAuth = RenderAuth;
 
-  type IEnterprises = Enterprises;
+  type IEnterprise = Enterprise;
 
-  type ISubscriptions = Subscriptions;
+  type ISubscription = Subscription;
 }

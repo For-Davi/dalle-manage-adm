@@ -28,10 +28,6 @@ Route::middleware(['auth'])->group(function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
 
-        Route::get('/enterprises', function () {
-            return Inertia::render('Enterprises');
-        })->name('enterprises');
-
         Route::get('/clients', function () {
             return Inertia::render('Clients');
         })->name('clients');

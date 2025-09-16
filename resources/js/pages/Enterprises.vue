@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
 import { Plus } from 'lucide-vue-next';
-import EnterpriseForm from '@/components/form/EnterpriseForm.vue';
+import FormEnterprise from '@/components/form/FormEnterprise.vue';
 import { ref } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 
@@ -12,7 +12,7 @@ defineOptions({
 });
 
 const props = defineProps<{
-  enterprises: IEnterprises;
+  enterprises: IEnterprise[];
 }>();
 
 const showEnterpriseForm = ref<boolean>(false);
@@ -41,7 +41,7 @@ const changeShowEnterpriseForm = () => {
   </MainLayout>
 
   <!-- Modals -->
-  <EnterpriseForm
+  <FormEnterprise
     :open="showEnterpriseForm"
     @update:open="changeShowEnterpriseForm"
   />

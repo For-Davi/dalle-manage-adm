@@ -6,7 +6,7 @@ import { phoneValidation } from '@/composables/PhoneValidation';
 import { searchCep } from '@/service/cep-service';
 
 defineOptions({
-  name: 'EnterpriseForm',
+  name: 'FormEnterprise',
 });
 
 const emit = defineEmits<{

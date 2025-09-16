@@ -15,7 +15,7 @@ class EnterpriseController
 
     public function index()
     {
-        $enterprises = $this->repository->getAll();
+        $enterprises = $this->repository->getAll(['subscription']);
 
         return Inertia::render('Enterprises', [
             'enterprises' => $enterprises,

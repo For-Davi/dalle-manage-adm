@@ -1,26 +1,16 @@
 <script setup lang="ts">
+import { CircleCheckBig, CircleX } from 'lucide-vue-next';
+import { isActive } from '@/composables/Active';
+import { getNameSubscription } from '@/composables/Subscription';
+
 defineOptions({
   name: 'EnterprisesTable',
 });
 
-import { CircleCheckBig } from 'lucide-vue-next';
-import { CircleX } from 'lucide-vue-next';
-
 const props = defineProps<{
-  enterprises: IEnterprises;
+  enterprises: IEnterprise[];
 }>();
 
-function subscriptionUsed(value: number) {
-  if (value === 1) {
-    return 'Grátis';
-  }
-  if (value === 2) {
-    return 'Básico';
-  }
-  if (value === 3) {
-    return 'Premium';
-  }
-}
 </script>
 
 <template>
@@ -35,20 +25,20 @@ function subscriptionUsed(value: number) {
     </TableHeader>
     <TableBody>
       <TableRow
-        v-for="enterprises in props.enterprises"
-        :key="enterprises.name"
+        v-for="(enterprise, index) in props.enterprises"
+        :key="index"
       >
         <TableCell>
           <CircleCheckBig
-            v-if="enterprises.active === 1"
+            v-if="isActive(enterprise.active)"
             class="h-5 w-5 text-green-600"
           />
           <CircleX v-else class="h-5 w-5 text-red-600" />
         </TableCell>
-        <TableCell>{{ enterprises.name }}</TableCell>
-        <TableCell>{{ enterprises.email }}</TableCell>
+        <TableCell>{{ enterprise.name }}</TableCell>
+        <TableCell>{{ enterprise.email }}</TableCell>
         <TableCell>
-          {{ subscriptionUsed(enterprises.subscription_id) }}
+          {{ getNameSubscription(enterprise.subscription.name) }}
         </TableCell>
       </TableRow>
     </TableBody>

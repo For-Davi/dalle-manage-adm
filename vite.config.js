@@ -3,7 +3,6 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
-import VueTypeImports from 'vite-plugin-vue-type-imports'
 
 export default defineConfig({
     plugins: [
@@ -20,7 +19,6 @@ export default defineConfig({
                 },
             },
         }),
-        VueTypeImports(),
     ],
     resolve: {
         alias: {
