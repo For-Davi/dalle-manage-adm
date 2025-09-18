@@ -35,13 +35,16 @@ class UserController
         if ($users) {
             return Inertia::render('Users', [
                 'users' => $users,
+                'flash' => [
+                    'success' => session('success'),
+                    'error' => session('error'),
+                ],
             ]);
         }
     }
 
     public function create(CreateUserRequest $request)
     {
-        Gate::authorize('create-user');
         try {
 
             DB::beginTransaction();
@@ -51,7 +54,7 @@ class UserController
             if ($user) {
                 DB::commit();
 
-                return inertia()->location(url()->previous());
+                return redirect()->route('users')->with('success', 'Usuário criado com sucesso');
             }
         } catch (Exception $e) {
             DB::rollBack();
@@ -100,7 +103,6 @@ class UserController
 
     public function update(UpdateUserRequest $request)
     {
-        Gate::authorize('update-user', $request->route('id'));
         try {
 
             DB::beginTransaction();
@@ -110,14 +112,17 @@ class UserController
             if ($user) {
                 DB::commit();
 
-                return inertia()->location(url()->previous());
+                return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso');
             }
         } catch (Exception $e) {
             DB::rollBack();
 
             ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
 
-            return response()->json(['message' => $e->getMessage()], 500);
+            return back()->withErrors([
+                'currentPassword' => 'A senha atual está incorreta.',
+            ]);
+
         }
 
         return back()->withErrors([
@@ -133,27 +138,25 @@ class UserController
             $user = $this->repository->findById($request->route('id'));
 
             if ($user) {
-                Gate::authorize('delete-user', $user->role);
+                Gate::authorize('delete-user', $user->created_by);
 
                 $this->repository->delete($user);
 
                 DB::commit();
 
-                return inertia()->location(url()->previous());
+                return redirect()->route('users')->with('success', 'Usuário deletado com sucesso');
             }
         } catch (AuthorizationException $e) {
-            throw $e;
-        } catch (Exception $e) {
             DB::rollBack();
-
+            abort(403, 'VOCÊ NÃO TEM PERMISSÃO PARA FAZER ESTA AÇÃO.');
+        } catch (\Exception $e) {
+            DB::rollBack();
             ErrorLogger::log('Erro ao deletar usuário', $e, $request);
 
-            return response()->json(['message' => $e->getMessage()], 500);
+            return back()->withErrors(['name' => 'Erro ao deletar usuário.'])->onlyInput('name');
         }
 
-        return back()->withErrors([
-            'name' => 'Erro ao deletar usuário.',
-        ])->onlyInput('name');
+        return redirect()->route('users')->with('error', 'Erro ao deletar usuário');
     }
 
     public function updateData(UpdateDataUserRequest $request)

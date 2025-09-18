@@ -3,9 +3,10 @@ import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import UsersTable from '@/components/tables/UsersTable.vue';
-import { reactive, computed } from 'vue';
+import { reactive, computed, watch } from 'vue';
 import UserForm from '@/components/form/UserForm.vue';
 import { usePage } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner';
 
 defineOptions({
   name: 'Users',
@@ -37,8 +38,15 @@ const startEdit = (user: IUser) => {
   }
 };
 
-const userRole = computed(() => page.props.auth.user?.role);
-const userId = computed(() => page.props.auth.user?.id);
+watch(
+  () => page,
+  () => {
+    if (page.props.flash.success) {
+      toast.success(page.props.flash.success);
+    }
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>
@@ -46,10 +54,7 @@ const userId = computed(() => page.props.auth.user?.id);
     <div class="p-6">
       <TitlePage title="Usuários" />
       <Separator class="my-4" />
-      <div
-        class="m-3 flex justify-end"
-        v-if="userRole === 'super_admin' || userRole === 'admin'"
-      >
+      <div class="m-3 flex justify-end">
         <Button
           class="cursor-pointer bg-black"
           @click="changeShowUserForm(true)"

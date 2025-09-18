@@ -13,6 +13,7 @@ defineOptions({
       <AppSidebar />
       <main class="flex-1 overflow-auto">
         <slot />
+        <Toaster />
       </main>
     </div>
   </SidebarProvider>

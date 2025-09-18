@@ -32,7 +32,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
-  SidebarProvider
+  SidebarProvider,
 } from './components/ui/sidebar/index.js';
 import {
   Table,
@@ -77,6 +77,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from './components/ui/dropdown-menu/index.js';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from './components/ui/tabs/index.js';
 
 createInertiaApp({
   resolve: (name) =>
@@ -149,7 +155,11 @@ createInertiaApp({
       .component('DropdownMenuSub', DropdownMenuSub)
       .component('DropdownMenuSubContent', DropdownMenuSubContent)
       .component('DropdownMenuSubTrigger', DropdownMenuSubTrigger)
-      .component('DropdownMenuTrigger', DropdownMenuTrigger);
+      .component('DropdownMenuTrigger', DropdownMenuTrigger)
+      .component('Tabs', Tabs)
+      .component('TabsContent', TabsContent)
+      .component('TabsList', TabsList)
+      .component('TabsTrigger', TabsTrigger);
 
     app.mount(el);
 

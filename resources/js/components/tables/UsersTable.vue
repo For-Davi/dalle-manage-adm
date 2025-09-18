@@ -1,13 +1,7 @@
 <script setup lang="ts">
-import { getRoleName } from '@/composables/Roles';
 import { Ellipsis, Pencil, Trash } from 'lucide-vue-next';
 import { usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
-import {
-  canEditUsers,
-  canDeleteUsers,
-  canSeeActionButton,
-} from '@/composables/Roles';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { router } from '@inertiajs/vue3';
 
@@ -50,7 +44,6 @@ const clear = () => {
   monitoringUserId.value = null;
 };
 
-const userRole = computed(() => page.props.auth.user?.role);
 const userId = computed(() => page.props.auth.user?.id);
 </script>
 
@@ -60,18 +53,14 @@ const userId = computed(() => page.props.auth.user?.id);
       <TableRow>
         <TableHead> Nome </TableHead>
         <TableHead>Email</TableHead>
-        <TableHead>Cargo</TableHead>
-        <TableHead v-if="userRole !== 'common_user'"> Ação </TableHead>
+        <TableHead> Ação </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       <TableRow v-for="(user, index) in props.users" :key="index">
         <TableCell>{{ user.name }}</TableCell>
         <TableCell>{{ user.email }}</TableCell>
-        <TableCell>{{ getRoleName(user.role) }}</TableCell>
-        <TableCell
-          v-if="canSeeActionButton(userRole, user.role, userId, user.id)"
-        >
+        <TableCell>
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" class="cursor-pointer">
@@ -85,7 +74,6 @@ const userId = computed(() => page.props.auth.user?.id);
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem
-                  v-if="canEditUsers(userRole, userId, user.id)"
                   class="cursor-pointer text-xs sm:text-sm"
                   @click="emit('edit:user', user)"
                 >
@@ -93,8 +81,8 @@ const userId = computed(() => page.props.auth.user?.id);
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
-                  v-if="canDeleteUsers(userRole, user.role, userId, user.id)"
                   @click="openConfirmAction(user.id)"
+                  v-if="user.created_by && user.id !== userId"
                 >
                   <Trash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>

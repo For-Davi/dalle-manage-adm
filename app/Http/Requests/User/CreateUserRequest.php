@@ -16,7 +16,6 @@ class CreateUserRequest extends FormRequest
         return [
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
-            'role' => 'required|string|in:admin,common_user',
             'password' => 'required|string|min:8',
         ];
     }
@@ -32,9 +31,6 @@ class CreateUserRequest extends FormRequest
             'email.string' => 'O e-mail deve ser um texto válido',
             'email.email' => 'O e-mail deve ser um endereço válido',
             'email.max' => 'O e-mail não pode ultrapassar 50 caracteres',
-            'role.required' => 'O cargo é obrigatório',
-            'role.string' => 'O cargo deve ser um texto válido',
-            'role.in' => 'O cargo deve ser "Admin" ou "Usuário Comum"',
             'password.required' => 'A senha é obrigatória',
             'password.string' => 'A senha deve ser um texto válido',
             'password.min' => 'A senha deve ter no mínimo 8 caracteres',

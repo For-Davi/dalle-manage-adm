@@ -7,7 +7,6 @@ class CreateOrUpdateUserDTO
     public function __construct(
         public string $name,
         public string $email,
-        public string $role,
         public ?string $password = null
     ) {}
 
@@ -16,18 +15,21 @@ class CreateOrUpdateUserDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            role: $data['role'],
             password: $data['password'] ?? null
         );
     }
 
     public function toArray(): array
     {
-        return [
+        $data = [
             'name' => $this->name,
             'email' => $this->email,
-            'role' => $this->role,
-            'password' => $this->password,
         ];
+
+        if ($this->password !== null) {
+            $data['password'] = $this->password;
+        }
+
+        return $data;
     }
 }

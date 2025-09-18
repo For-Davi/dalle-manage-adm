@@ -15,9 +15,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:users,id',
+            'changePassword' => 'required|in:0,1',
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
-            'role' => 'nullable|string|in:admin,common_user,super_admin',
+            'currentPassword' => 'nullable|string|min:8',
             'password' => 'nullable|string|min:8',
         ];
     }
@@ -25,26 +26,30 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do usuário é obrigatório',
+            'id.required' => 'O ID do usuário é obrigatório.',
             'id.exists' => 'O ID do usuário informado não existe.',
-            'name.required' => 'O nome é obrigatório',
-            'name.string' => 'O nome deve ser um texto válido',
-            'name.min' => 'O nome deve ter pelo menos 3 caracteres',
-            'name.max' => 'O nome não pode ultrapassar 30 caracteres',
-            'email.required' => 'O e-mail é obrigatório',
-            'email.string' => 'O e-mail deve ser um texto válido',
-            'email.email' => 'O e-mail deve ser um endereço válido',
-            'email.max' => 'O e-mail não pode ultrapassar 50 caracteres',
-            'email.unique' => 'Este e-mail já está registrado',
-            'role.string' => 'O cargo deve ser um texto válido',
-            'role.in' => 'O cargo deve ser "Admin" ou "Usuário Comum"',
-            'password.string' => 'A senha deve ser um texto válido',
-            'password.min' => 'A senha deve ter no mínimo 8 caracteres',
+            'changePassword.required' => 'O campo de alteração de senha é obrigatório.',
+            'changePassword.in' => 'O campo de alteração de senha deve ser 0  ou 1.',
+            'name.required' => 'O nome é obrigatório.',
+            'name.string' => 'O nome deve ser um texto válido.',
+            'name.min' => 'O nome deve ter pelo menos 3 caracteres.',
+            'name.max' => 'O nome não pode ultrapassar 30 caracteres.',
+            'email.required' => 'O e-mail é obrigatório.',
+            'email.string' => 'O e-mail deve ser um texto válido.',
+            'email.email' => 'O e-mail deve ser um endereço válido.',
+            'email.max' => 'O e-mail não pode ultrapassar 50 caracteres.',
+            'email.unique' => 'Este e-mail já está registrado.',
+            'currentPassword.string' => 'A senha atual deve ser um texto válido.',
+            'currentPassword.min' => 'A senha atual deve ter no mínimo 8 caracteres.',
+            'password.string' => 'A senha deve ser um texto válido.',
+            'password.min' => 'A nova senha deve ter no mínimo 8 caracteres.',
         ];
     }
 
     public function validationData()
     {
-        return array_merge($this->all(), ['id' => $this->route('id')]);
+        return array_merge($this->all(), [
+            'id' => $this->route('id'),
+        ]);
     }
 }

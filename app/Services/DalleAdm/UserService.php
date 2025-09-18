@@ -24,7 +24,6 @@ class UserService
         $userDTO = CreateOrUpdateUserDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -43,12 +42,18 @@ class UserService
 
     public function update($request)
     {
-        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+        $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
-            'password' => Hash::make($request->password),
-        ]);
+        ];
+
+        if ($request->changePassword) {
+            UserHelper::isPasswordEqual($request->user(), $request->currentPassword);
+
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $userDTO = CreateOrUpdateUserDTO::fromRequest($data);
 
         return $this->repository->update($request->id, $userDTO->toArray());
     }
