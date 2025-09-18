@@ -3,10 +3,11 @@ import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import UsersTable from '@/components/tables/UsersTable.vue';
-import { reactive, computed, watch } from 'vue';
+import { reactive, watch } from 'vue';
 import UserForm from '@/components/form/UserForm.vue';
 import { usePage } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
+import { Plus } from 'lucide-vue-next';
 
 defineOptions({
   name: 'Users',
