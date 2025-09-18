@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import FormAuth from '@/components/form/FormAuth.vue';
+import AuthForm from '@/components/form/AuthForm.vue';
 import Reset from '@/components/form/Reset.vue';
 import { Toaster } from 'vue-sonner';
 import { ref } from 'vue';
@@ -13,7 +13,7 @@ const changeRender = (value: IRenderAuth) => {
 
 <template>
   <main class="flex h-screen w-screen items-center justify-center">
-    <FormAuth v-if="type === 'auth'" @update:change-render="changeRender" />
+    <AuthForm v-if="type === 'auth'" @update:change-render="changeRender" />
     <Reset v-else @update:change-render="changeRender" />
   </main>
   <Toaster position="bottom-right" />

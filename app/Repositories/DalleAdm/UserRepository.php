@@ -23,6 +23,11 @@ class UserRepository
         return $this->model->where('email', $email)->first();
     }
 
+    public function create($data)
+    {
+        return $this->model->create($data);
+    }
+
     public function newPassword($email, array $data)
     {
         $user = $this->findByEmail($email);
@@ -42,6 +47,15 @@ class UserRepository
             $user->update($data);
 
             return $user;
+        }
+
+        return null;
+    }
+
+    public function delete($user)
+    {
+        if ($user) {
+            return $user->delete();
         }
 
         return null;

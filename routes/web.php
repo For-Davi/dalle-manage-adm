@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\UserController;
@@ -28,12 +27,8 @@ Route::middleware(['auth'])->group(function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
 
-        Route::get('/clients', function () {
-            return Inertia::render('Clients');
-        })->name('clients');
-
         Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
-        Route::get('/clients', [ClientController::class, 'index'])->name('clients');
+        Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/subscriptions', [SubscriptionsController::class, 'index'])->name('subscriptions');
 
         // ACTIONS
@@ -44,6 +39,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('enterprise')->group(function () {
             Route::post('/create', [EnterpriseController::class, 'create'])->name('enterprise.create');
+        });
+
+        Route::prefix('users')->group(function () {
+            Route::post('/create', [UserController::class, 'create'])->name('user.create');
+            Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
+            Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
         });
     });
 

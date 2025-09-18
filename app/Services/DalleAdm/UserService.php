@@ -2,6 +2,7 @@
 
 namespace App\Services\DalleAdm;
 
+use App\DTO\User\CreateOrUpdateUserDTO;
 use App\DTO\User\UpdateDataProfileDTO;
 use App\DTO\User\UpdatePasswordProfileDTO;
 use App\Helpers\UserHelper;
@@ -18,6 +19,18 @@ class UserService
         protected UserRepository $repository,
     ) {}
 
+    public function create($request)
+    {
+        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return $this->repository->create($userDTO->toArray());
+    }
+
     public function login($request)
     {
         $user = $this->repository->findByEmail($request->email);
@@ -26,6 +39,18 @@ class UserService
         UserHelper::checkPassword($user, $request->password);
 
         return $user;
+    }
+
+    public function update($request)
+    {
+        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return $this->repository->update($request->id, $userDTO->toArray());
     }
 
     public function reset($request)

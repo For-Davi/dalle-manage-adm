@@ -3,7 +3,7 @@ import { useForm } from '@inertiajs/vue3';
 import { Loader2 } from 'lucide-vue-next';
 
 defineOptions({
-  name: 'FormAuth',
+  name: 'AuthForm',
 });
 
 const emit = defineEmits<{

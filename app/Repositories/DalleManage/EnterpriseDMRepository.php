@@ -10,10 +10,10 @@ class EnterpriseDMRepository
 
     public function getAll(array $relations = [])
     {
-        if (!empty($relations)) {
+        if (! empty($relations)) {
             return $this->model->with($relations)->get();
         }
-        
+
         return $this->model->all();
     }
 }

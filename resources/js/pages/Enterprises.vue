@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
 import { Plus } from 'lucide-vue-next';
-import FormEnterprise from '@/components/form/FormEnterprise.vue';
+import EnterpriseForm from '@/components/form/EnterpriseForm.vue';
 import { ref } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 
@@ -41,7 +41,7 @@ const changeShowEnterpriseForm = () => {
   </MainLayout>
 
   <!-- Modals -->
-  <FormEnterprise
+  <EnterpriseForm
     :open="showEnterpriseForm"
     @update:open="changeShowEnterpriseForm"
   />

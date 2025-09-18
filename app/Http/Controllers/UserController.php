@@ -3,23 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\DeleteUserRequest;
 use App\Http\Requests\User\NewPasswordRequest;
 use App\Http\Requests\User\ResetPasswordRequest;
 use App\Http\Requests\User\UpdateDataUserRequest;
 use App\Http\Requests\User\UpdatePasswordUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
+use App\Repositories\DalleAdm\UserRepository;
 use App\Services\DalleAdm\UserService;
 use App\Utils\ErrorLogger;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class UserController
 {
     public function __construct(
-        protected UserService $service
+        protected UserService $service,
+        protected UserRepository $repository
     ) {}
+
+    public function index()
+    {
+        $users = $this->repository->getAll();
+
+        if ($users) {
+            return Inertia::render('Users', [
+                'users' => $users,
+            ]);
+        }
+    }
+
+    public function create(CreateUserRequest $request)
+    {
+        Gate::authorize('create-user');
+        try {
+
+            DB::beginTransaction();
+
+            $user = $this->service->create($request);
+
+            if ($user) {
+                DB::commit();
+
+                return inertia()->location(url()->previous());
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao criar usuário', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        return back()->withErrors([
+            'name' => 'Erro ao criar usuário.',
+        ])->onlyInput('name');
+    }
 
     public function login(LoginRequest $request)
     {
@@ -51,6 +96,64 @@ class UserController
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    public function update(UpdateUserRequest $request)
+    {
+        Gate::authorize('update-user', $request->route('id'));
+        try {
+
+            DB::beginTransaction();
+
+            $user = $this->service->update($request);
+
+            if ($user) {
+                DB::commit();
+
+                return inertia()->location(url()->previous());
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        return back()->withErrors([
+            'name' => 'Erro ao atualizar usuário.',
+        ])->onlyInput('name');
+    }
+
+    public function delete(DeleteUserRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $user = $this->repository->findById($request->route('id'));
+
+            if ($user) {
+                Gate::authorize('delete-user', $user->role);
+
+                $this->repository->delete($user);
+
+                DB::commit();
+
+                return inertia()->location(url()->previous());
+            }
+        } catch (AuthorizationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            ErrorLogger::log('Erro ao deletar usuário', $e, $request);
+
+            return response()->json(['message' => $e->getMessage()], 500);
+        }
+
+        return back()->withErrors([
+            'name' => 'Erro ao deletar usuário.',
+        ])->onlyInput('name');
     }
 
     public function updateData(UpdateDataUserRequest $request)

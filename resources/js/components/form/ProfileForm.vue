@@ -5,7 +5,7 @@ import ProfilePassword from '../profile/ProfilePassword.vue';
 import { CircleUserRound, Lock } from 'lucide-vue-next';
 
 defineOptions({
-  name: 'FormProfile',
+  name: 'ProfileForm',
 });
 
 const props = defineProps<{

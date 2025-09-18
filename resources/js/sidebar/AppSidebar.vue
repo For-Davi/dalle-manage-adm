@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { usePage, router } from '@inertiajs/vue3';
 import { computed, reactive } from 'vue';
-import FormProfile from '@/components/form/FormProfile.vue';
+import ProfileForm from '@/components/form/ProfileForm.vue';
 import {
   User,
   Building2,
@@ -34,8 +34,8 @@ const items = [
     icon: Building2,
   },
   {
-    title: 'Clientes',
-    url: '/adm/clients',
+    title: 'Usuários',
+    url: '/adm/users',
     icon: User,
   },
   {
@@ -136,7 +136,7 @@ const user = computed(() => page.props.auth.user);
     </SidebarFooter>
   </Sidebar>
   <!-- Modals -->
-  <FormProfile
+  <ProfileForm
     :data="showFormProfile"
     @update:open="changeShowFormProfile(false)"
   />

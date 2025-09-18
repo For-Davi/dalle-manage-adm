@@ -59,6 +59,23 @@ import {
 } from './components/ui/select/index.js';
 import { Loader2 } from 'lucide-vue-next';
 import { Separator } from './components/ui/separator/index.js';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from './components/ui/dropdown-menu/index.js';
 
 createInertiaApp({
   resolve: (name) =>
@@ -115,7 +132,22 @@ createInertiaApp({
       .component('SelectSeparator', SelectSeparator)
       .component('SelectTrigger', SelectTrigger)
       .component('SelectValue', SelectValue)
-      .component('Loader2', Loader2);
+      .component('Loader2', Loader2)
+      .component('DropdownMenu', DropdownMenu)
+      .component('DropdownMenuCheckboxItem', DropdownMenuCheckboxItem)
+      .component('DropdownMenuContent', DropdownMenuContent)
+      .component('DropdownMenuGroup', DropdownMenuGroup)
+      .component('DropdownMenuItem', DropdownMenuItem)
+      .component('DropdownMenuLabel', DropdownMenuLabel)
+      .component('DropdownMenuPortal', DropdownMenuPortal)
+      .component('DropdownMenuRadioGroup', DropdownMenuRadioGroup)
+      .component('DropdownMenuRadioItem', DropdownMenuRadioItem)
+      .component('DropdownMenuSeparator', DropdownMenuSeparator)
+      .component('DropdownMenuShortcut', DropdownMenuShortcut)
+      .component('DropdownMenuSub', DropdownMenuSub)
+      .component('DropdownMenuSubContent', DropdownMenuSubContent)
+      .component('DropdownMenuSubTrigger', DropdownMenuSubTrigger)
+      .component('DropdownMenuTrigger', DropdownMenuTrigger);
 
     app.mount(el);
 
