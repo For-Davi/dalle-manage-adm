@@ -60,13 +60,13 @@ const checkDataEdit = () => {
   }
 };
 const clear = () => {
-  ((form.changePassword = 0),
-    (form.name = ''),
-    (form.email = ''),
-    (form.currentPassword = ''),
-    (form.password = ''),
-    (confirmPassword.value = ''),
-    form.clearErrors());
+  form.changePassword = 0,
+    form.name = '',
+    form.email = '',
+    form.currentPassword = '',
+    form.password = '',
+    confirmPassword.value = '',
+    form.clearErrors();
 };
 
 const open = computed({
