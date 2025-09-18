@@ -122,7 +122,7 @@ watch(
           <Label for="email" class="ml-1 font-bold">Email</Label>
           <Input
             v-model="form.email"
-             autocomplete="new-email"
+            autocomplete="new-email"
             type="email"
             id="email"
             placeholder="Insira o email do usuário"
@@ -148,6 +148,7 @@ watch(
               type="password"
               id="currentPassword"
               placeholder="Insira a senha atual"
+              autocomplete="new-password"
             />
           </div>
           <div
@@ -161,6 +162,7 @@ watch(
               v-model="form.password"
               type="password"
               id="password"
+              autocomplete="new-password"
               :placeholder="
                 props.data.user ? 'Insira a nova senha' : 'Insira a senha'
               "
@@ -177,6 +179,7 @@ watch(
               v-model="confirmPassword"
               type="password"
               id="confirmPassword"
+              autocomplete="new-password"
               :placeholder="
                 props.data.user ? 'Confirme a nova senha' : 'Confirme a senha'
               "
