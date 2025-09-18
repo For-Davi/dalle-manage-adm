@@ -1,15 +1,4 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-vue-next';
 import { useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 import { ref } from 'vue';

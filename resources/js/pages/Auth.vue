@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AuthForm from '@/components/form/AuthForm.vue';
 import Reset from '@/components/form/Reset.vue';
-import { Toaster } from 'vue-sonner';
 import { ref } from 'vue';
 
 const type = ref<IRenderAuth>('auth');

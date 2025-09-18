@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/vue3';
-import { Loader2 } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
 import { ref } from 'vue';
 
 defineOptions({

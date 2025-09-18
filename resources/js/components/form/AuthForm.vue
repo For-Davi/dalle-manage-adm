@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useForm } from '@inertiajs/vue3';
-import { Loader2 } from 'lucide-vue-next';
 
 defineOptions({
   name: 'AuthForm',

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
 import { Plus } from 'lucide-vue-next';

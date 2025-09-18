@@ -32,6 +32,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
+  SidebarProvider
 } from './components/ui/sidebar/index.js';
 import {
   Table,
@@ -111,6 +112,7 @@ createInertiaApp({
       .component('SidebarMenuItem', SidebarMenuItem)
       .component('SidebarHeader', SidebarHeader)
       .component('SidebarFooter', SidebarFooter)
+      .component('SidebarProvider', SidebarProvider)
       .component('Separator', Separator)
       .component('Table', Table)
       .component('TableBody', TableBody)

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppSidebar from '@/sidebar/AppSidebar.vue';
-import { SidebarProvider } from '@/components/ui/sidebar';
 import 'vue-sonner/style.css';
 
 defineOptions({
