@@ -122,6 +122,7 @@ watch(
           <Label for="email" class="ml-1 font-bold">Email</Label>
           <Input
             v-model="form.email"
+             autocomplete="new-email"
             type="email"
             id="email"
             placeholder="Insira o email do usuário"
