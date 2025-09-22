@@ -39,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('enterprise')->group(function () {
             Route::post('/create', [EnterpriseController::class, 'create'])->name('enterprise.create');
+            Route::put('/update/{id}', [EnterpriseController::class, 'update'])->name('enterprise.update');
+            Route::delete('/delete/{id}', [EnterpriseController::class, 'delete'])->name('enterprise.delete');
         });
 
         Route::prefix('users')->group(function () {

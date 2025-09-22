@@ -2,7 +2,7 @@
 
 namespace App\DTO\Enterprise;
 
-class EnterpriseDTO
+class CreateOrUpdateEnterpriseDTO
 {
     public function __construct(
         public string $name,
@@ -16,7 +16,8 @@ class EnterpriseDTO
         public ?string $neighborhood,
         public ?string $address,
         public ?string $complement,
-        public int $subscription_id
+        public int $subscription_id,
+        public int $active
     ) {}
 
     public static function fromRequest(array $data): self
@@ -34,12 +35,13 @@ class EnterpriseDTO
             address: $data['numberAddress'] ?? null,
             complement: $data['complement'] ?? null,
             subscription_id: $data['subscriptionId'],
+            active: array_key_exists('active', $data) ? (int) $data['active'] : 1
         );
     }
 
     public function toArray(): array
     {
-        return [
+        $data = array_filter([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
@@ -52,6 +54,9 @@ class EnterpriseDTO
             'address' => $this->address,
             'complement' => $this->complement,
             'subscription_id' => $this->subscription_id,
-        ];
+        ], fn ($value) => ! is_null($value) && $value !== '');
+        $data['active'] = $this->active;
+
+        return $data;
     }
 }

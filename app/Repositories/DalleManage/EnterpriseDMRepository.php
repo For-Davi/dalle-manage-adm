@@ -8,6 +8,11 @@ class EnterpriseDMRepository
 {
     public function __construct(public EnterpriseDM $model) {}
 
+    public function findById($id)
+    {
+        return $this->model->find($id);
+    }
+
     public function getAll(array $relations = [])
     {
         if (! empty($relations)) {

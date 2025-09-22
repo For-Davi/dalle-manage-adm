@@ -60,13 +60,13 @@ const checkDataEdit = () => {
   }
 };
 const clear = () => {
-  form.changePassword = 0,
-    form.name = '',
-    form.email = '',
-    form.currentPassword = '',
-    form.password = '',
-    confirmPassword.value = '',
-    form.clearErrors();
+  ((form.changePassword = 0),
+    (form.name = ''),
+    (form.email = ''),
+    (form.currentPassword = ''),
+    (form.password = ''),
+    (confirmPassword.value = ''),
+    form.clearErrors());
 };
 
 const open = computed({
@@ -206,11 +206,15 @@ watch(
             form.errors.error
           }}
         </div>
-        <div v-if="props.data.user" class="mt-4 w-full">
-          <Button class="w-full cursor-pointer"> Salvar </Button>
-        </div>
-        <div v-else class="mt-4 w-full">
-          <Button class="w-full cursor-pointer"> Criar </Button>
+        <div class="mt-4 w-full">
+          <Button class="w-full cursor-pointer">
+            <div v-if="form.processing">
+              <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+            </div>
+            <div v-else>
+              {{ props.data.user ? 'Salvar' : 'Criar' }}
+            </div>
+          </Button>
         </div>
       </form>
     </DialogContent>

@@ -14,7 +14,10 @@ const emit = defineEmits<{
 }>();
 
 const props = defineProps<{
-  open: boolean;
+  data: {
+    open: boolean;
+    enterprise: IEnterprise;
+  };
 }>();
 
 const loading = ref<boolean>(false);
@@ -34,10 +37,16 @@ const form = useForm({
   numberAddress: '',
   complement: '',
   subscriptionId: '',
+  active: 1,
 });
 
-const submit = () => {
+const create = () => {
   form.post(route('enterprise.create'), {
+    onSuccess: () => emit('update:open'),
+  });
+};
+const update = () => {
+  form.put(route('enterprise.update', props.data.enterprise?.id), {
     onSuccess: () => emit('update:open'),
   });
 };
@@ -55,21 +64,45 @@ const clear = () => {
   form.numberAddress = '';
   form.complement = '';
   form.subscriptionId = '';
+  form.clearErrors();
+};
+const checkDataEdit = () => {
+  if (props.data.enterprise) {
+    Object.assign(form, {
+      name: props.data.enterprise.name,
+      email: props.data.enterprise.email,
+      phone: props.data.enterprise.phone,
+      cpf: props.data.enterprise.cpf,
+      cnpj: props.data.enterprise.cnpj,
+      cep: props.data.enterprise.cep,
+      state: props.data.enterprise.state,
+      city: props.data.enterprise.city,
+      neighborhood: props.data.enterprise.neighborhood,
+      address: props.data.enterprise.address,
+      numberAddress: props.data.enterprise.number_address,
+      complement: props.data.enterprise.complement,
+      subscriptionId: props.data.enterprise.subscription_id,
+      active: props.data.enterprise.active,
+    });
+  }
+  type.value = props.data.enterprise?.cpf ? 'cpf' : 'cnpj';
 };
 
 const open = computed({
-  get: () => props.open,
+  get: () => props.data.open,
   set: () => emit('update:open'),
 });
 
 watch(
   () => form.phone,
   (value: string) => {
-    const errorMessage = phoneValidation(value);
-    if (errorMessage) {
-      form.errors.phone = errorMessage;
-    } else {
-      delete form.errors.phone;
+    if (value !== null) {
+      const errorMessage = phoneValidation(value);
+      if (errorMessage) {
+        form.errors.phone = errorMessage;
+      } else {
+        delete form.errors.phone;
+      }
     }
   }
 );
@@ -86,31 +119,34 @@ watch(
 watch(
   () => form.cep,
   async (cep: string) => {
-    form.cep = form.cep.replace(/\D/g, '');
-    if (allowSearchCep.value) {
-      if (cep.trim().length === 8) {
-        loading.value = true;
-        const response = await searchCep(cep);
-        if (response.status === 200) {
-          form.neighborhood = response.data.bairro;
-          form.state = response.data.estado;
-          form.city = response.data.localidade;
-          form.address = response.data.logradouro;
+    if (cep !== null) {
+      form.cep = form.cep.replace(/\D/g, '');
+      if (allowSearchCep.value) {
+        if (cep.trim().length === 8) {
+          loading.value = true;
+          const response = await searchCep(cep);
+          if (response.status === 200) {
+            form.neighborhood = response.data.bairro;
+            form.state = response.data.estado;
+            form.city = response.data.localidade;
+            form.address = response.data.logradouro;
+          }
+        } else {
+          form.neighborhood = '';
+          form.state = '';
+          form.city = '';
+          form.address = '';
         }
       } else {
-        form.neighborhood = '';
-        form.state = '';
-        form.city = '';
-        form.address = '';
+        allowSearchCep.value = true;
       }
-    } else {
-      allowSearchCep.value = true;
+      loading.value = false;
     }
-    loading.value = false;
   }
 );
 watch(open, () => {
   clear();
+  checkDataEdit();
 });
 </script>
 
@@ -125,7 +161,7 @@ watch(open, () => {
         </DialogTitle>
         <Separator class="my-1 bg-gray-500" />
       </DialogHeader>
-      <form @submit.prevent="submit">
+      <form @submit.prevent="props.data.enterprise ? update() : create()">
         <div class="mb-2 space-y-2">
           <Label for="name" class="ml-1 font-bold">Nome da empresa</Label>
           <Input
@@ -285,6 +321,26 @@ watch(open, () => {
             </SelectContent>
           </Select>
         </div>
+        <div class="mt-2 w-full space-y-2" v-if="props.data.enterprise">
+          <Label for="active" class="ml-1 font-bold"
+            >Escolha o status da empresa</Label
+          >
+          <Select id="active" v-model="form.active">
+            <SelectTrigger class="w-full cursor-pointer">
+              <SelectValue placeholder="Selecione o status da empresa" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem class="cursor-pointer" :value="1">
+                  Ativo
+                </SelectItem>
+                <SelectItem class="cursor-pointer" :value="0">
+                  Inativo
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <div
           class="mt-2 ml-1 text-sm font-bold text-red-600"
           v-if="
@@ -325,7 +381,7 @@ watch(open, () => {
             <div v-if="form.processing">
               <Loader2 class="mr-2 h-4 w-4 animate-spin" />
             </div>
-            <div v-else>Salvar</div>
+            <div v-else>{{ props.data.enterprise ? 'Salvar' : 'Criar' }}</div>
           </Button>
         </div>
       </form>
