@@ -145,10 +145,10 @@ watch(
   }
 );
 watch(open, () => {
-  if(open){
-    clear();
-  checkDataEdit();
-  }
+    if(open.value){
+        clear();
+        checkDataEdit();
+    }
 });
 </script>
 
