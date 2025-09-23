@@ -23,10 +23,12 @@ class EnterpriseService
             'city' => $request->city,
             'cep' => $request->cep,
             'neighborhood' => $request->neighborhood,
+            'address' => $request->address,
             'numberAddress' => $request->numberAddress,
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
         ]);
+
         $enterprise = $this->repository->create($enterpriseDTO->toArray());
 
         return $enterprise;
@@ -44,11 +46,13 @@ class EnterpriseService
             'city' => $request->city,
             'cep' => $request->cep,
             'neighborhood' => $request->neighborhood,
+            'address' => $request->address,
             'numberAddress' => $request->numberAddress,
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
             'active' => $request->active,
         ]);
+
         $enterprise = $this->repository->update($request->id, $enterpriseDTO->toArray());
 
         return $enterprise;

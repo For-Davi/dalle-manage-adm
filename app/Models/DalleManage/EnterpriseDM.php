@@ -21,6 +21,7 @@ class EnterpriseDM extends Model
         'city',
         'neighborhood',
         'address',
+        'number_address',
         'complement',
         'subscription_id',
         'active',

@@ -145,8 +145,10 @@ watch(
   }
 );
 watch(open, () => {
-  clear();
+  if(open){
+    clear();
   checkDataEdit();
+  }
 });
 </script>
 
@@ -157,7 +159,7 @@ watch(open, () => {
     >
       <DialogHeader>
         <DialogTitle>
-          <TitlePage title="Registro de empresa" icon="Building2" />
+          <TitlePage :title="props.data.enterprise ? 'Edição de empresa' : 'Registro de empresa'" icon="Building2" />
         </DialogTitle>
         <Separator class="my-1 bg-gray-500" />
       </DialogHeader>
@@ -189,11 +191,11 @@ watch(open, () => {
             placeholder="(99) 99999-9999"
           />
         </div>
-        <div class="mb-1 flex justify-between space-y-1">
-          <div class="mb-2 space-y-2">
+        <div class="mb-1 flex justify-between gap-2 space-y-1">
+          <div class="mb-2 w-full space-y-2">
             <Label for="choice" class="ml-1 font-bold">Escolha um tipo</Label>
             <Select id="choice" v-model="type">
-              <SelectTrigger class="w-[180px] cursor-pointer">
+              <SelectTrigger class="w-full cursor-pointer">
                 <SelectValue placeholder="Selecione um tipo" />
               </SelectTrigger>
               <SelectContent>
@@ -208,8 +210,8 @@ watch(open, () => {
               </SelectContent>
             </Select>
           </div>
-          <div class="mb-1 justify-end space-y-2">
-            <Label
+          <div class="mb-2 w-full space-y-2">
+              <Label
               :for="type === 'cnpj' ? 'cnpj' : 'cpf'"
               class="ml-1 font-bold"
               >{{ type === 'cnpj' ? 'CNPJ' : 'CPF' }}</Label
@@ -229,7 +231,7 @@ watch(open, () => {
               placeholder="CPF"
               maxlength="11"
             />
-          </div>
+            </div>
         </div>
         <div class="mb-2 space-y-2">
           <Label for="cep" class="ml-1 font-bold">CEP</Label>
