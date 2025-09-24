@@ -145,10 +145,10 @@ watch(
   }
 );
 watch(open, () => {
-    if(open.value){
-        clear();
-        checkDataEdit();
-    }
+  if (open.value) {
+    clear();
+    checkDataEdit();
+  }
 });
 </script>
 
@@ -159,7 +159,14 @@ watch(open, () => {
     >
       <DialogHeader>
         <DialogTitle>
-          <TitlePage :title="props.data.enterprise ? 'Edição de empresa' : 'Registro de empresa'" icon="Building2" />
+          <TitlePage
+            :title="
+              props.data.enterprise
+                ? 'Edição de empresa'
+                : 'Registro de empresa'
+            "
+            icon="Building2"
+          />
         </DialogTitle>
         <Separator class="my-1 bg-gray-500" />
       </DialogHeader>
@@ -211,7 +218,7 @@ watch(open, () => {
             </Select>
           </div>
           <div class="mb-2 w-full space-y-2">
-              <Label
+            <Label
               :for="type === 'cnpj' ? 'cnpj' : 'cpf'"
               class="ml-1 font-bold"
               >{{ type === 'cnpj' ? 'CNPJ' : 'CPF' }}</Label
@@ -231,7 +238,7 @@ watch(open, () => {
               placeholder="CPF"
               maxlength="11"
             />
-            </div>
+          </div>
         </div>
         <div class="mb-2 space-y-2">
           <Label for="cep" class="ml-1 font-bold">CEP</Label>

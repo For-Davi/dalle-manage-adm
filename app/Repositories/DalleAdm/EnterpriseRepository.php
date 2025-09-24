@@ -32,8 +32,10 @@ class EnterpriseRepository
         return null;
     }
 
-    public function delete($enterprise)
+    public function delete($id)
     {
+        $enterprise = $this->findById($id);
+
         if ($enterprise) {
             $enterpriseId = $enterprise->id;
 

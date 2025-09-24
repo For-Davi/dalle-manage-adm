@@ -78,10 +78,9 @@ class EnterpriseController
         try {
             DB::beginTransaction();
 
-            $enterprise = $this->admRepository->findById($request->route('id'));
+            $enterprise = $this->admRepository->delete($request->route('id'));
 
             if ($enterprise) {
-                $this->admRepository->delete($enterprise);
 
                 DB::commit();
 
