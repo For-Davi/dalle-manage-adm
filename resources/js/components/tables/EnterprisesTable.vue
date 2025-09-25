@@ -102,7 +102,7 @@ const exclude = (id: number) => {
   <!-- Modals -->
   <ConfirmAction
     :open="showConfirmAction"
-    title="Exclusão de usuário"
+    title="Exclusão de empresa"
     message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá a empresa permanentemente."
     @update:open="closeConfirmAction()"
     @okConfirmAction="okConfirmAction()"
