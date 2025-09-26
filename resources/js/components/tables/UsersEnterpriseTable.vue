@@ -1,79 +1,95 @@
 <script setup lang="ts">
-import { isActive } from '@/composables/Active';
-import { getNameSubscription } from '@/composables/Subscription';
-import {
-  Ellipsis,
-  Pencil,
-  Trash,
-  Users,
-  CircleCheckBig,
-  CircleX,
-} from 'lucide-vue-next';
+import { onMounted, reactive, ref } from 'vue';
+import { Ellipsis, Pencil, Trash } from 'lucide-vue-next';
+import Empty from '../info/Empty.vue';
+import axios from 'axios';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
-import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
 
 defineOptions({
-  name: 'EnterprisesTable',
+  name: 'UsersEnterpriseTable',
 });
 
-const emit = defineEmits<{
-  'edit:enterprise': [enterprise: IEnterprise];
-  'open:manage': [IEnterprise];
-}>();
 const props = defineProps<{
-  enterprises: IEnterprise[];
+  enterpriseID: number | null;
+}>();
+const emit = defineEmits<{
+  'edit:user': [IUser];
 }>();
 
+const listUsers = reactive<{ users: any[] }>({
+  users: [],
+});
 const showConfirmAction = ref<boolean>(false);
-const monirotingEnterpriseId = ref<number | null>(null);
+const monitoringUserId = ref<number | null>(null);
 
 const openConfirmAction = (id: number) => {
-  ((showConfirmAction.value = true), (monirotingEnterpriseId.value = id));
+  ((showConfirmAction.value = true), (monitoringUserId.value = id));
 };
 const closeConfirmAction = () => {
   ((showConfirmAction.value = false), clear());
 };
 const okConfirmAction = async () => {
-  await exclude(monirotingEnterpriseId.value ?? 0);
+  await exclude(monitoringUserId.value ?? 0);
   clear();
 };
 const clear = () => {
-  monirotingEnterpriseId.value = null;
+  monitoringUserId.value = null;
 };
 const exclude = (id: number) => {
   if (id !== null) {
     ((showConfirmAction.value = false),
-      router.delete(route('enterprise.delete', id)));
+      router.delete(route('delete.user.enterprise', id), {
+        preserveScroll: true,
+        onSuccess: () => {
+          listUsers.users = listUsers.users.filter((user) => user.id !== id);
+        },
+      }));
   }
 };
+const fetchUsers = async () => {
+  if (props.enterpriseID) {
+    const response = await axios.get(
+      `/adm/enterprise/users/${props.enterpriseID}`
+    );
+    listUsers.users = response.data.users || [];
+  }
+};
+
+onMounted(async () => {
+  if (props.enterpriseID) {
+    await fetchUsers();
+  }
+});
 </script>
 
 <template>
-  <Table>
+  <Table v-if="listUsers.users.length > 0">
     <TableHeader>
       <TableRow>
-        <TableHead> Status </TableHead>
         <TableHead>Nome</TableHead>
         <TableHead>Email</TableHead>
-        <TableHead> Assinatura </TableHead>
-        <TableHead> Ações </TableHead>
+        <TableHead>Ações</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-for="(enterprise, index) in props.enterprises" :key="index">
-        <TableCell>
-          <CircleCheckBig
-            v-if="isActive(enterprise.active)"
-            class="h-5 w-5 text-green-600"
-          />
-          <CircleX v-else class="h-5 w-5 text-red-600" />
-        </TableCell>
-        <TableCell>{{ enterprise.name }}</TableCell>
-        <TableCell>{{ enterprise.email }}</TableCell>
-        <TableCell>
-          {{ getNameSubscription(enterprise.subscription.name) }}
-        </TableCell>
+      <TableRow v-for="user in listUsers.users" :key="user.id">
+        <TableCell
+          style="
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+          "
+          >{{ user.name }}</TableCell
+        >
+        <TableCell
+          style="
+            white-space: normal;
+            word-break: break-word;
+            overflow-wrap: break-word;
+          "
+          >{{ user.email }}</TableCell
+        >
         <TableCell>
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
@@ -86,22 +102,16 @@ const exclude = (id: number) => {
                 >Opções</DropdownMenuLabel
               >
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                class="cursor-pointer text-xs sm:text-sm"
-                @click="emit('open:manage', enterprise)"
-              >
-                <Users /> <span>Usuários</span>
-              </DropdownMenuItem>
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs sm:text-sm"
-                  @click="emit('edit:enterprise', enterprise)"
+                  @click="emit('edit:user', user)"
                 >
                   <Pencil /> <span>Editar</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
-                  @click="openConfirmAction(enterprise.id)"
+                  @click="openConfirmAction(user.id)"
                 >
                   <Trash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>
@@ -112,11 +122,15 @@ const exclude = (id: number) => {
       </TableRow>
     </TableBody>
   </Table>
+  <div v-else class="m-5 flex justify-center">
+    <Empty message="Esta empresa não possui usuários" icon="UserRoundX" />
+  </div>
+
   <!-- Modals -->
   <ConfirmAction
     :open="showConfirmAction"
     title="Exclusão de empresa"
-    message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá a empresa permanentemente."
+    message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá o usuário permanentemente."
     @update:open="closeConfirmAction()"
     @okConfirmAction="okConfirmAction()"
   />

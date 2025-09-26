@@ -3,13 +3,41 @@
 namespace App\Services\DalleAdm;
 
 use App\DTO\Enterprise\CreateOrUpdateEnterpriseDTO;
+use App\DTO\User\CreateOrUpdateUserDTO;
+use App\Helpers\UserEnterpriseHelper;
 use App\Repositories\DalleAdm\EnterpriseRepository;
+use App\Repositories\DalleManage\UserDMRepository;
+use Illuminate\Support\Facades\Hash;
 
 class EnterpriseService
 {
     public function __construct(
         protected EnterpriseRepository $repository,
+        protected UserDMRepository $userDMrepository,
     ) {}
+
+    public function createUser($request)
+    {
+        UserEnterpriseHelper::existsEmail($request->user(), $request->email);
+
+        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return $this->userDMrepository->createUserWithEnterpriseId($request->enterpriseID, $userDTO->toArray());
+    }
+
+    public function updateUser($request)
+    {
+        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return $this->userDMrepository->update($request->userID, $userDTO->toArray());
+    }
 
     public function create($request)
     {

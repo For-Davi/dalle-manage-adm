@@ -41,6 +41,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/create', [EnterpriseController::class, 'create'])->name('enterprise.create');
             Route::put('/update/{id}', [EnterpriseController::class, 'update'])->name('enterprise.update');
             Route::delete('/delete/{id}', [EnterpriseController::class, 'delete'])->name('enterprise.delete');
+            Route::get('/users/{enterpriseID}', [EnterpriseController::class, 'indexUsers'])->name('show.users');
+            Route::post('/users/{enterpriseID}', [EnterpriseController::class, 'createUser'])->name('create.user.enterprise');
+            Route::put('/users/{userID}', [EnterpriseController::class, 'updateUser'])->name('update.user.enterprise');
+            Route::delete('/users/{userID}', [EnterpriseController::class, 'deleteUser'])->name('delete.user.enterprise');
         });
 
         Route::prefix('users')->group(function () {

@@ -21,6 +21,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogOverlay,
 } from './components/ui/dialog/index.js';
 import {
   Sidebar,
@@ -104,6 +106,8 @@ createInertiaApp({
       .component('DialogContent', DialogContent)
       .component('DialogHeader', DialogHeader)
       .component('DialogTitle', DialogTitle)
+      .component('DialogDescription', DialogDescription)
+      .component('DialogOverlay', DialogOverlay)
       .component('Input', Input)
       .component('Label', Label)
       .component('Button', Button)

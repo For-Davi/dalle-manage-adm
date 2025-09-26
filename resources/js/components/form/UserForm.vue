@@ -14,6 +14,7 @@ const props = defineProps<{
   data: {
     open: boolean;
     user: IUser | null;
+    enterprise: IEnterprise | null;
   };
 }>();
 const emit = defineEmits<{
@@ -41,8 +42,15 @@ const create = () => {
   }
 };
 const update = () => {
+  form.put(route('user.update', props.data.user?.id), {
+    onSuccess: () => {
+      emit('update:open');
+    },
+  });
+};
+const createUserEnterprise = () => {
   if (form.password === confirmPassword.value) {
-    form.put(route('user.update', props.data.user?.id), {
+    form.post(route('create.user.enterprise', props.data.enterprise?.id), {
       onSuccess: () => {
         emit('update:open');
       },
@@ -50,6 +58,13 @@ const update = () => {
   } else {
     form.errors.password = 'As senhas não coincidem';
   }
+};
+const updateUserEnterprise = () => {
+  form.put(route('update.user.enterprise', props.data.user?.id), {
+    onSuccess: () => {
+      emit('update:open');
+    },
+  });
 };
 const checkDataEdit = () => {
   if (props.data.user) {
@@ -66,6 +81,7 @@ const clear = () => {
     (form.currentPassword = ''),
     (form.password = ''),
     (confirmPassword.value = ''),
+    (form.enterpriseID = null),
     form.clearErrors());
 };
 
@@ -107,7 +123,17 @@ watch(
         </DialogTitle>
         <Separator class="my-1 bg-gray-500" />
       </DialogHeader>
-      <form @submit.prevent="props.data.user ? update() : create()">
+      <form
+        @submit.prevent="
+          props.data.enterprise && props.data.user
+            ? updateUserEnterprise()
+            : props.data.enterprise
+              ? createUserEnterprise()
+              : props.data.user
+                ? update()
+                : create()
+        "
+      >
         <div class="mb-2 space-y-2">
           <Label for="name" class="ml-1 font-bold">Nome</Label>
           <Input
