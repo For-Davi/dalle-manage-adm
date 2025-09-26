@@ -36,15 +36,11 @@ const okConfirmAction = async () => {
 const clear = () => {
   monitoringUserId.value = null;
 };
-const exclude = (id: number) => {
+const exclude = async (id: number) => {
   if (id !== null) {
     ((showConfirmAction.value = false),
-      router.delete(route('delete.user.enterprise', id), {
-        preserveScroll: true,
-        onSuccess: () => {
-          listUsers.users = listUsers.users.filter((user) => user.id !== id);
-        },
-      }));
+      router.delete(route('delete.user.enterprise', id)));
+      await fetchUsers()
   }
 };
 const fetchUsers = async () => {
