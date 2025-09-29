@@ -7,7 +7,7 @@ class CreateUserDTO
     public function __construct(
         public string $name,
         public string $email,
-        public string $password ,
+        public string $password,
         public int $role_id,
     ) {}
 
@@ -27,7 +27,7 @@ class CreateUserDTO
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
-            'role_id' => $this->role_id
+            'role_id' => $this->role_id,
         ];
 
         return $data;

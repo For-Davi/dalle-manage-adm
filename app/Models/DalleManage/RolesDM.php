@@ -13,6 +13,7 @@ class RolesDM extends Model
     protected $fillable = [
         'name',
         'enterprise_id',
+        'permissions',
     ];
 
     public function enterprise()

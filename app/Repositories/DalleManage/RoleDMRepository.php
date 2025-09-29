@@ -12,4 +12,9 @@ class RoleDMRepository
     {
         return $this->model->where(['enterprise_id' => $enterpriseID, 'name' => $name])->first();
     }
+
+    public function start($data)
+    {
+        return $this->model->create($data);
+    }
 }

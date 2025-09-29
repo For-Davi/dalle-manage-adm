@@ -5,6 +5,7 @@ import Empty from '../info/Empty.vue';
 import axios from 'axios';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { router } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner';
 
 defineOptions({
   name: 'UsersEnterpriseTable',
@@ -39,8 +40,12 @@ const clear = () => {
 const exclude = async (id: number) => {
   if (id !== null) {
     ((showConfirmAction.value = false),
-      router.delete(route('delete.user.enterprise', id)));
-      await fetchUsers()
+      router.delete(route('delete.user.enterprise', id), {
+        onSuccess: () => {
+          toast.success('Usuário deletado com sucesso');
+        },
+      }));
+    await fetchUsers();
   }
 };
 const fetchUsers = async () => {
@@ -125,7 +130,7 @@ onMounted(async () => {
   <!-- Modals -->
   <ConfirmAction
     :open="showConfirmAction"
-    title="Exclusão de empresa"
+    title="Exclusão de usuário"
     message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá o usuário permanentemente."
     @update:open="closeConfirmAction()"
     @okConfirmAction="okConfirmAction()"

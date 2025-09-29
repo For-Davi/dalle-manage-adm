@@ -15,7 +15,7 @@ class UsersDM extends Model
         'email',
         'password',
         'enterprise_id',
-        'role_id'
+        'role_id',
     ];
 
     public function enterprise()

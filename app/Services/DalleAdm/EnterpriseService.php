@@ -3,16 +3,17 @@
 namespace App\Services\DalleAdm;
 
 use App\DTO\Enterprise\CreateOrUpdateEnterpriseDTO;
+use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
 use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateUserDTO;
 use App\Helpers\UserEnterpriseHelper;
 use App\Repositories\DalleAdm\EnterpriseRepository;
+use App\Repositories\DalleManage\RoleDMRepository;
 use App\Repositories\DalleManage\SettingAppearanceDMRepository;
 use App\Repositories\DalleManage\SettingSystemDMRepository;
 use App\Repositories\DalleManage\UserDMRepository;
-use App\Repositories\DalleManage\RoleDMRepository;
 use Illuminate\Support\Facades\Hash;
 
 class EnterpriseService
@@ -40,6 +41,13 @@ class EnterpriseService
         $settingSystemDTO = CreateSettingSystemDTO::fromRequest(['enterpriseID' => $enterpriseID]);
 
         $this->settingSystemRepository->create($settingSystemDTO->toArray());
+    }
+
+    private function startRole($enterpriseID)
+    {
+        $roleDTO = RoleStartDTO::fromRequest(['enterpriseID' => $enterpriseID]);
+
+        $this->roleDMRepository->start($roleDTO->toArray());
     }
 
     /** ==============================
@@ -94,6 +102,7 @@ class EnterpriseService
 
         $enterprise = $this->repository->create($enterpriseDTO->toArray());
 
+        $this->startRole($enterprise->id);
         $this->createSettingAppearance($enterprise->id);
         $this->createSettingSystem($enterprise->id);
 

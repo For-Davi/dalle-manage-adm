@@ -23,6 +23,7 @@ class UpdateUserDTO
             'name' => $this->name,
             'email' => $this->email,
         ];
+
         return $data;
     }
 }
