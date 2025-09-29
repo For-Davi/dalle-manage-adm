@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
         Route::get('/users', [UserController::class, 'index'])->name('users');
         Route::get('/subscriptions', [SubscriptionsController::class, 'index'])->name('subscriptions');
+        Route::get('/sellers', [SellerController::class, 'index'])->name('sellers');
 
         // ACTIONS
         Route::prefix('user')->group(function () {
@@ -47,6 +49,12 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/create', [UserController::class, 'create'])->name('user.create');
             Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
             Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+        });
+
+        Route::prefix('sellers')->group(function () {
+            Route::post('/create', [SellerController::class, 'create'])->name('seller.create');
+            Route::put('/update/{id}', [SellerController::class, 'update'])->name('seller.update');
+            Route::delete('/delete/{id}', [SellerController::class, 'delete'])->name('seller.delete');
         });
     });
 
