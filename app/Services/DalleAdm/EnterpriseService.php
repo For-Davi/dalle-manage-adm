@@ -3,13 +3,33 @@
 namespace App\Services\DalleAdm;
 
 use App\DTO\Enterprise\CreateOrUpdateEnterpriseDTO;
+use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
+use App\DTO\Setting\System\CreateSettingSystemDTO;
 use App\Repositories\DalleAdm\EnterpriseRepository;
+use App\Repositories\DalleManage\SettingAppearanceDMRepository;
+use App\Repositories\DalleManage\SettingSystemDMRepository;
 
 class EnterpriseService
 {
     public function __construct(
         protected EnterpriseRepository $repository,
+        protected SettingAppearanceDMRepository $settingAppearanceRepository,
+        protected SettingSystemDMRepository $settingSystemRepository,
     ) {}
+
+    private function createSettingAppearance($enterpriseID)
+    {
+        $settingAppearanceDTO = CreateSettingAppearanceDTO::fromRequest(['enterpriseID' => $enterpriseID]);
+
+        $this->settingAppearanceRepository->create($settingAppearanceDTO->toArray());
+    }
+
+    private function createSettingSystem($enterpriseID)
+    {
+        $settingSystemDTO = CreateSettingSystemDTO::fromRequest(['enterpriseID' => $enterpriseID]);
+
+        $this->settingSystemRepository->create($settingSystemDTO->toArray());
+    }
 
     public function create($request)
     {
@@ -30,6 +50,9 @@ class EnterpriseService
         ]);
 
         $enterprise = $this->repository->create($enterpriseDTO->toArray());
+
+        $this->createSettingAppearance($enterprise->id);
+        $this->createSettingSystem($enterprise->id);
 
         return $enterprise;
     }
