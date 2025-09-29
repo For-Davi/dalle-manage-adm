@@ -2,12 +2,13 @@
 
 namespace App\DTO\User;
 
-class CreateOrUpdateUserDTO
+class CreateUserDTO
 {
     public function __construct(
         public string $name,
         public string $email,
-        public ?string $password = null
+        public string $password ,
+        public int $role_id,
     ) {}
 
     public static function fromRequest($data): self
@@ -15,7 +16,8 @@ class CreateOrUpdateUserDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            password: $data['password'] ?? null
+            password: $data['password'],
+            role_id: $data['roleID']
         );
     }
 
@@ -24,11 +26,9 @@ class CreateOrUpdateUserDTO
         $data = [
             'name' => $this->name,
             'email' => $this->email,
+            'password' => $this->password,
+            'role_id' => $this->role_id
         ];
-
-        if ($this->password !== null) {
-            $data['password'] = $this->password;
-        }
 
         return $data;
     }
