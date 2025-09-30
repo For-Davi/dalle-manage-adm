@@ -111,7 +111,7 @@ watch(
             :title="
               props.data.seller
                 ? 'Atualização de vendedor'
-                : 'Criação de vendedor'
+                : 'Cadastro de vendedor'
             "
           />
         </DialogTitle>

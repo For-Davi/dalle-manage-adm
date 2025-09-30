@@ -117,7 +117,7 @@ watch(
         <DialogTitle>
           <TitlePage
             :title="
-              props.data.user ? 'Edição de usuário' : 'Criação de usuário'
+              props.data.user ? 'Atualização de usuário' : 'Cadastro de usuário'
             "
           />
         </DialogTitle>
