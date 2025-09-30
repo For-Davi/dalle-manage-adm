@@ -66,7 +66,7 @@ watch(
   () => form.code,
   (value: string) => {
     if (value !== null) {
-      form.code = value.toUpperCase();
+      form.code = value.toUpperCase().replace(/\s/g, '');
     }
   }
 );

@@ -20,7 +20,7 @@ class SellerService
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'code' => $request->code,
+            'code' => str_replace(' ', '', $request->code),
         ]);
 
         $seller = $this->repository->create($sellerDTO->toArray());
