@@ -42,6 +42,7 @@ const create = () => {
   }
 };
 const update = () => {
+  console.log('dados', form);
   form.put(route('user.update', props.data.user?.id), {
     onSuccess: () => {
       emit('update:open');

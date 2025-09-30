@@ -2,9 +2,10 @@
 
 namespace App\Services\DalleAdm;
 
-use App\DTO\User\CreateOrUpdateUserDTO;
+use App\DTO\User\CreateUserDTO;
 use App\DTO\User\UpdateDataProfileDTO;
 use App\DTO\User\UpdatePasswordProfileDTO;
+use App\DTO\User\UpdateUserDTO;
 use App\Helpers\UserHelper;
 use App\Jobs\SendResetPasswordEmail;
 use App\Models\DalleAdm\PasswordResetToken;
@@ -21,7 +22,9 @@ class UserService
 
     public function create($request)
     {
-        $userDTO = CreateOrUpdateUserDTO::fromRequest([
+        UserHelper::existsEmail($request->email, 'create');
+
+        $userDTO = CreateUserDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -42,18 +45,20 @@ class UserService
 
     public function update($request)
     {
+        UserHelper::existsEmail($request->email, 'update', $request->id);
+
         $data = [
             'name' => $request->name,
             'email' => $request->email,
         ];
 
-        if ($request->changePassword) {
+        if ($request->changePassword === 1) {
             UserHelper::isPasswordEqual($request->user(), $request->currentPassword);
 
             $data['password'] = Hash::make($request->password);
         }
 
-        $userDTO = CreateOrUpdateUserDTO::fromRequest($data);
+        $userDTO = UpdateUserDTO::fromRequest($data);
 
         return $this->repository->update($request->id, $userDTO->toArray());
     }

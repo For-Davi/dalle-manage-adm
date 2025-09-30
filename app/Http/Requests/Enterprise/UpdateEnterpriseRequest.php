@@ -29,6 +29,7 @@ class UpdateEnterpriseRequest extends FormRequest
             'complement' => 'nullable|string|max:100',
             'subscriptionId' => 'required|exists:dalle_manage.subscriptions,id',
             'active' => 'required|in:0,1',
+            'sellerCode' => 'nullable|string|min:8|max:20',
         ];
     }
 
@@ -76,6 +77,10 @@ class UpdateEnterpriseRequest extends FormRequest
 
             'active.required' => 'Deve ser requerido o status da empresa',
             'active.in' => 'O status da empresa informado é inválido',
+
+            'sellerCode.string' => 'O código do vendedor deve ser um texto.',
+            'sellerCode.min' => 'O código do vendedor deve ter no mínimo 8 caracteres.',
+            'sellerCode.max' => 'O código do vendedor não pode exceder 20 caracteres.',
         ];
     }
 

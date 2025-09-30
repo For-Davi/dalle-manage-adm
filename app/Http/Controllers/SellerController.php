@@ -9,6 +9,7 @@ use App\Repositories\DalleAdm\SellerRepository;
 use App\Services\DalleAdm\SellerService;
 use App\Utils\ErrorLogger;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class SellerController
@@ -43,7 +44,11 @@ class SellerController
 
                 return redirect()->route('sellers');
             }
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
+        } catch (ValidationException  $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar vendedor', $e, $request);
 
@@ -63,7 +68,11 @@ class SellerController
 
                 return redirect()->route('sellers')->with('success', 'Vendedor atualizado com sucesso');
             }
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
+        } catch (ValidationException  $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao atualizar vendedor', $e, $request);
 

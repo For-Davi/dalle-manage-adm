@@ -37,6 +37,7 @@ const form = useForm({
   numberAddress: '',
   complement: '',
   subscriptionId: '',
+  sellerCode: '',
   active: 1,
 });
 
@@ -64,6 +65,7 @@ const clear = () => {
   form.numberAddress = '';
   form.complement = '';
   form.subscriptionId = '';
+  form.sellerCode = '';
   form.clearErrors();
 };
 const checkDataEdit = () => {
@@ -82,6 +84,7 @@ const checkDataEdit = () => {
       numberAddress: props.data.enterprise.number_address,
       complement: props.data.enterprise.complement,
       subscriptionId: props.data.enterprise.subscription_id,
+      sellerCode: props.data.enterprise.seller_id,
       active: props.data.enterprise.active,
     });
   }
@@ -150,6 +153,14 @@ watch(open, () => {
     checkDataEdit();
   }
 });
+watch(
+  () => form.sellerCode,
+  (value: string) => {
+    if (value !== null) {
+      form.sellerCode = value.toUpperCase();
+    }
+  }
+);
 </script>
 
 <template>
@@ -330,6 +341,15 @@ watch(open, () => {
             </SelectContent>
           </Select>
         </div>
+        <div class="mb-2 space-y-2">
+          <Label for="code" class="ml-1 font-bold">Código do vendedor</Label>
+          <Input
+            v-model="form.sellerCode"
+            type="name"
+            id="code"
+            placeholder="Insira o código do vendedor"
+          />
+        </div>
         <div class="mt-2 w-full space-y-2" v-if="props.data.enterprise">
           <Label for="active" class="ml-1 font-bold"
             >Escolha o status da empresa</Label
@@ -365,7 +385,8 @@ watch(open, () => {
             form.errors.address ||
             form.errors.numberAddress ||
             form.errors.complement ||
-            form.errors.subscriptionId
+            form.errors.subscriptionId ||
+            form.errors.sellerCode
           "
         >
           {{
@@ -382,6 +403,7 @@ watch(open, () => {
             form.errors.numberAddress ||
             form.errors.complement ||
             form.errors.subscriptionId ||
+            form.errors.sellerCode ||
             form.errors
           }}
         </div>

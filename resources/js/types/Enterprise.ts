@@ -13,6 +13,7 @@ export interface Enterprise {
   complement: string | null;
   number_address: string | null;
   active: number;
+  seller_id: string | null;
   subscription_id: number;
   subscription: ISubscription;
 }

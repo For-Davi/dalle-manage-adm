@@ -38,7 +38,6 @@ class UpdateUserRequest extends FormRequest
             'email.string' => 'O e-mail deve ser um texto válido.',
             'email.email' => 'O e-mail deve ser um endereço válido.',
             'email.max' => 'O e-mail não pode ultrapassar 50 caracteres.',
-            'email.unique' => 'Este e-mail já está registrado.',
             'currentPassword.string' => 'A senha atual deve ser um texto válido.',
             'currentPassword.min' => 'A senha atual deve ter no mínimo 8 caracteres.',
             'password.string' => 'A senha deve ser um texto válido.',
@@ -48,8 +47,6 @@ class UpdateUserRequest extends FormRequest
 
     public function validationData()
     {
-        return array_merge($this->all(), [
-            'id' => $this->route('id'),
-        ]);
+        return array_merge($this->all(), $this->route()->parameters());
     }
 }

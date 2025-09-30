@@ -14,7 +14,8 @@ class SellerService
 
     public function create($request)
     {
-        SellerHelper::existsCode($request->code);
+        SellerHelper::existsEmail($request->email, 'create');
+        SellerHelper::existsCode($request->code, 'create');
 
         $sellerDTO = CreateOrUpdateSellerDTO::fromRequest([
             'name' => $request->name,
@@ -30,6 +31,10 @@ class SellerService
 
     public function update($request)
     {
+
+        SellerHelper::existsEmail($request->email, 'update', $request->id);
+        SellerHelper::existsCode($request->code, 'update', $request->id);
+
         $sellerDTO = CreateOrUpdateSellerDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,

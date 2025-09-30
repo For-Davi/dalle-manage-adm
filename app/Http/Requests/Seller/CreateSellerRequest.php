@@ -15,9 +15,9 @@ class CreateSellerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:30',
-            'email' => 'required|string|email|max:50|unique:sellers',
+            'email' => 'required|string|email|max:50',
             'phone' => 'required|string|max:20',
-            'code' => 'required|string|unique:sellers|min:8|max:20',
+            'code' => 'required|string|min:8|max:20',
         ];
     }
 
@@ -32,12 +32,12 @@ class CreateSellerRequest extends FormRequest
             'email.string' => 'O e-mail deve ser um texto válido',
             'email.email' => 'O e-mail deve ser um endereço válido',
             'email.max' => 'O e-mail não pode ultrapassar 50 caracteres',
+            'email.unique' => 'Este e-mail ja está sendo utilizado',
             'phone.required' => 'O telefone é obrigatório',
             'phone.string' => 'O telefone deve ser um texto válido',
             'phone.max' => 'O telefone não pode ultrapassar 20 caracteres',
             'code.required' => 'O código é obrigatório',
             'code.string' => 'O código deve ser um texto válido',
-            'code.unique' => 'Este código já está cadastrado para outro vendedor',
             'code.min' => 'O código deve ter pelo menos 8 caracteres',
             'code.max' => 'O código não pode ultrapassar 20 caracteres',
         ];

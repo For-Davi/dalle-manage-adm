@@ -18,7 +18,8 @@ class CreateOrUpdateEnterpriseDTO
         public ?string $number_address,
         public ?string $complement,
         public int $subscription_id,
-        public int $active
+        public int $active,
+        public ?string $seller_id,
     ) {}
 
     public static function fromRequest(array $data): self
@@ -37,13 +38,14 @@ class CreateOrUpdateEnterpriseDTO
             complement: $data['complement'] ?? null,
             number_address: $data['numberAddress'] ?? null,
             subscription_id: $data['subscriptionId'],
-            active: array_key_exists('active', $data) ? (int) $data['active'] : 1
+            active: array_key_exists('active', $data) ? (int) $data['active'] : 1,
+            seller_id: $data['sellerCode'] ?? null,
         );
     }
 
     public function toArray(): array
     {
-        $data = array_filter([
+        return [
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
@@ -57,9 +59,8 @@ class CreateOrUpdateEnterpriseDTO
             'number_address' => $this->number_address,
             'complement' => $this->complement,
             'subscription_id' => $this->subscription_id,
-        ], fn ($value) => ! is_null($value) && $value !== '');
-        $data['active'] = $this->active;
-
-        return $data;
+            'active' => $this->active,
+            'seller_id' => $this->seller_id,
+        ];
     }
 }

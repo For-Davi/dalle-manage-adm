@@ -15,6 +15,7 @@ use App\Repositories\DalleManage\UserDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
 use App\Utils\ErrorLogger;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class EnterpriseController
@@ -59,8 +60,12 @@ class EnterpriseController
             if ($enterprise) {
                 DB::commit();
 
-                return redirect()->route('enterprises');
+                return redirect()->route('enterprises')->with('success', 'Empresa criada com sucesso');
             }
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar empresa', $e, $request);
@@ -102,6 +107,10 @@ class EnterpriseController
 
                 return redirect()->route('enterprises')->with('success', 'Empresa atualizada com sucesso');
             }
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao atualizar empresa', $e, $request);

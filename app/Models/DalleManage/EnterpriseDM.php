@@ -25,7 +25,13 @@ class EnterpriseDM extends Model
         'complement',
         'subscription_id',
         'active',
+        'seller_id',
     ];
+
+    public function setSellerCodeAttribute($value)
+    {
+        $this->attributes['seller_id'] = strtoupper($value);
+    }
 
     public function subscription()
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTO\Enterprise;
 
-class CreateUserDTO
+class UpdateEnterpriseUserDTO
 {
     public function __construct(
         public string $name,

@@ -3,11 +3,11 @@
 namespace App\Services\DalleAdm;
 
 use App\DTO\Enterprise\CreateOrUpdateEnterpriseDTO;
+use App\DTO\Enterprise\UpdateEnterpriseUserDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
-use App\DTO\User\CreateUserDTO;
-use App\DTO\User\UpdateUserDTO;
+use App\Helpers\SellerHelper;
 use App\Helpers\UserEnterpriseHelper;
 use App\Repositories\DalleAdm\EnterpriseRepository;
 use App\Repositories\DalleManage\RoleDMRepository;
@@ -59,7 +59,7 @@ class EnterpriseService
 
         $role = $this->roleDMRepository->findByName($request->enterpriseID, 'Master');
 
-        $userDTO = CreateUserDTO::fromRequest([
+        $userDTO = CreateEnterpriseUserDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -71,7 +71,7 @@ class EnterpriseService
 
     public function updateUser($request)
     {
-        $userDTO = UpdateUserDTO::fromRequest([
+        $userDTO = UpdateEnterpriseUserDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
         ]);
@@ -84,6 +84,10 @@ class EnterpriseService
      *  ============================== */
     public function create($request)
     {
+        if ($request->sellerCode) {
+            SellerHelper::existsCodeEnterpriseForm($request->sellerCode);
+        }
+
         $enterpriseDTO = CreateOrUpdateEnterpriseDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
@@ -98,6 +102,7 @@ class EnterpriseService
             'numberAddress' => $request->numberAddress,
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
+            'sellerCode' => $request->sellerCode,
         ]);
 
         $enterprise = $this->repository->create($enterpriseDTO->toArray());
@@ -111,6 +116,10 @@ class EnterpriseService
 
     public function update($request)
     {
+        if ($request->sellerCode) {
+            SellerHelper::existsCodeEnterpriseForm($request->sellerCode);
+        }
+
         $enterpriseDTO = CreateOrUpdateEnterpriseDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
@@ -126,6 +135,7 @@ class EnterpriseService
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
             'active' => $request->active,
+            'sellerCode' => $request->sellerCode,
         ]);
 
         return $this->repository->update($request->id, $enterpriseDTO->toArray());

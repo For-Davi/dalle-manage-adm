@@ -6,6 +6,7 @@ use App\Models\Adm\User;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class UserHelper
@@ -30,17 +31,32 @@ class UserHelper
         }
     }
 
-    public static function existsEmail($user, $email)
+    public static function existsEmail($email, $mode, $userID = null)
     {
 
         $existEmail = DB::table('users')
             ->where('email', $email)
             ->first();
 
-        if ($existEmail) {
-            if ($user->email !== $existEmail->email) {
+        if ($mode === 'create') {
+            if ($existEmail) {
+                if ($email === $existEmail->email) {
+                    throw ValidationException::withMessages([
+                        'email' => ['Este e-mail ja está sendo usado por outro usuário.'],
+                    ]);
+                }
+            }
+        } else {
+            $userID = (int) $userID;
+
+            Log::info('Verificando email', [
+                'userID' => $userID,
+                'existsEmail' => $existEmail,
+            ]);
+
+            if ($existEmail && $existEmail->id !== $userID) {
                 throw ValidationException::withMessages([
-                    'email' => ['Este email ja está em uso.'],
+                    'email' => ['Este e-mail ja está sendo usado por outro usuário.'],
                 ]);
             }
         }

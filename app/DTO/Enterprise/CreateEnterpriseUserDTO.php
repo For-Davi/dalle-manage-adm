@@ -1,13 +1,14 @@
 <?php
 
-namespace App\DTO\User;
+namespace App\DTO\Enterprise;
 
-class CreateUserDTO
+class CreateEnterpriseUserDTO
 {
     public function __construct(
         public string $name,
         public string $email,
         public string $password,
+        public int $role_id,
     ) {}
 
     public static function fromRequest($data): self
@@ -16,6 +17,7 @@ class CreateUserDTO
             name: $data['name'],
             email: $data['email'],
             password: $data['password'],
+            role_id: $data['roleID']
         );
     }
 
@@ -25,6 +27,7 @@ class CreateUserDTO
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,
+            'role_id' => $this->role_id,
         ];
 
         return $data;

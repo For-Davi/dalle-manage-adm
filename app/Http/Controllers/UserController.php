@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class UserController
@@ -56,6 +57,10 @@ class UserController
 
                 return redirect()->route('users')->with('success', 'Usuário criado com sucesso');
             }
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
             DB::rollBack();
 
@@ -114,6 +119,10 @@ class UserController
 
                 return redirect()->route('users')->with('success', 'Usuário atualizado com sucesso');
             }
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
         } catch (Exception $e) {
             DB::rollBack();
 

@@ -27,6 +27,7 @@ class CreateEnterpriseRequest extends FormRequest
             'numberAddress' => 'nullable|numeric',
             'complement' => 'nullable|string|max:100',
             'subscriptionId' => 'required|integer|in:1,2,3',
+            'sellerCode' => 'nullable|string|min:8|max:20',
         ];
     }
 
@@ -69,8 +70,13 @@ class CreateEnterpriseRequest extends FormRequest
             'complement.max' => 'O complemento não pode exceder 100 caracteres',
 
             'subscriptionId.required' => 'Deve ser requerido o ID da assinatura',
-            'subscriptionId.number' => 'O ID da assinatura deve ser um número',
-            'subscriptionId.in' => 'O ID da categoria deve ser 1,2 ou 3',
+            'subscriptionId.integer' => 'O ID da assinatura deve ser um número',
+            'subscriptionId.in' => 'O ID da categoria deve ser 1, 2 ou 3',
+
+            // Seller Code
+            'sellerCode.string' => 'O código do vendedor deve ser um texto.',
+            'sellerCode.min' => 'O código do vendedor deve ter no mínimo 8 caracteres.',
+            'sellerCode.max' => 'O código do vendedor não pode exceder 20 caracteres.',
         ];
     }
 }
