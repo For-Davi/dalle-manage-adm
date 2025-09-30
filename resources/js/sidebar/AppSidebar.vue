@@ -9,6 +9,7 @@ import {
   LogOut,
   SquarePen,
   HandCoins,
+  Store,
 } from 'lucide-vue-next';
 
 defineOptions({
@@ -37,6 +38,11 @@ const items = [
     title: 'Usuários',
     url: '/adm/users',
     icon: User,
+  },
+  {
+    title: 'Vendedores',
+    url: '/adm/sellers',
+    icon: Store,
   },
   {
     title: 'Assinaturas',
