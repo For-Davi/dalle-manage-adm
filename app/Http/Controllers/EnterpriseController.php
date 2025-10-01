@@ -10,6 +10,7 @@ use App\Http\Requests\Enterprise\ShowUsersEnterpriseRequest;
 use App\Http\Requests\Enterprise\UpdateEnterpriseRequest;
 use App\Http\Requests\Enterprise\UpdateUserEnterpriseRequest;
 use App\Repositories\DalleAdm\EnterpriseRepository;
+use App\Repositories\DalleAdm\SellerRepository;
 use App\Repositories\DalleManage\EnterpriseDMRepository;
 use App\Repositories\DalleManage\UserDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
@@ -24,15 +25,18 @@ class EnterpriseController
         protected EnterpriseDMRepository $dmRepository,
         protected EnterpriseRepository $admRepository,
         protected EnterpriseService $service,
-        protected UserDMRepository $userdmRepository
+        protected UserDMRepository $userdmRepository,
+        protected SellerRepository $sellerRepository,
     ) {}
 
     public function index()
     {
         $enterprises = $this->dmRepository->getAll(['subscription']);
+        $sellers = $this->sellerRepository->getAll();
 
         return Inertia::render('Enterprises', [
             'enterprises' => $enterprises,
+            'sellers' => $sellers,
             'flash' => [
                 'success' => session('success'),
                 'error' => session('error'),
@@ -62,10 +66,6 @@ class EnterpriseController
 
                 return redirect()->route('enterprises')->with('success', 'Empresa criada com sucesso');
             }
-        } catch (ValidationException $e) {
-            DB::rollBack();
-
-            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar empresa', $e, $request);
@@ -86,7 +86,11 @@ class EnterpriseController
 
                 return redirect()->route('enterprises')->with('success', 'Usuário criado com sucesso');
             }
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
+        } catch (ValidationException $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar usuário', $e, $request);
 
@@ -131,7 +135,11 @@ class EnterpriseController
 
                 return redirect()->route('enterprises')->with('success', 'Usuário atualizado com sucesso');
             }
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return back()->withErrors($e->errors())->withInput();
+        } catch (ValidationException $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
 

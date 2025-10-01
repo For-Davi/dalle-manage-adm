@@ -23,8 +23,8 @@ class UpdateUserEnterpriseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do usuário é obrigatório.',
-            'id.exists' => 'O ID do usuário informado não existe.',
+            'userID.required' => 'O ID do usuário é obrigatório.',
+            'userID.exists' => 'O ID do usuário informado não existe.',
             'name.required' => 'O nome é obrigatório.',
             'name.string' => 'O nome deve ser um texto válido.',
             'name.min' => 'O nome deve ter pelo menos 3 caracteres.',

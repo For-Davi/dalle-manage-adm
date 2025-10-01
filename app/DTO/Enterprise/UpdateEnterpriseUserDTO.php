@@ -7,7 +7,6 @@ class UpdateEnterpriseUserDTO
     public function __construct(
         public string $name,
         public string $email,
-        public string $password,
     ) {}
 
     public static function fromRequest($data): self
@@ -15,7 +14,6 @@ class UpdateEnterpriseUserDTO
         return new self(
             name: $data['name'],
             email: $data['email'],
-            password: $data['password'],
         );
     }
 
@@ -24,7 +22,6 @@ class UpdateEnterpriseUserDTO
         $data = [
             'name' => $this->name,
             'email' => $this->email,
-            'password' => $this->password,
         ];
 
         return $data;

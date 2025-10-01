@@ -17,6 +17,7 @@ defineOptions({
 
 const props = defineProps<{
   enterprises: IEnterprise[];
+  sellers: ISeller[];
 }>();
 
 const page = usePage();
@@ -27,9 +28,11 @@ const currentEnterprise = reactive<{ enterprise: IEnterprise | null }>({
 const showEnterpriseForm = reactive<{
   open: boolean;
   enterprise: IEnterprise | null;
+  sellers: ISeller | null;
 }>({
   open: false,
   enterprise: null,
+  sellers: null,
 });
 const showUserForm = reactive<{
   open: boolean;
@@ -59,11 +62,13 @@ const changeShowUserEnterpriseManage = (
 };
 const changeShowEnterpriseForm = (
   show: boolean,
-  enterprise: IEnterprise | null = null
+  enterprise: IEnterprise | null = null,
+  sellers: ISeller[] | null = null
 ): void => {
   Object.assign(showEnterpriseForm, {
     open: show,
     enterprise: enterprise,
+    sellers: sellers,
   });
 };
 const changeShowUserForm = (show: boolean, user: IUser | null = null): void => {
@@ -73,7 +78,7 @@ const changeShowUserForm = (show: boolean, user: IUser | null = null): void => {
   });
 };
 const startEdit = (enterprise: IEnterprise) => {
-  changeShowEnterpriseForm(true, enterprise);
+  changeShowEnterpriseForm(true, enterprise, props.sellers);
 };
 const addUser = (enterprise: IEnterprise) => {
   currentEnterprise.enterprise = enterprise;
@@ -117,7 +122,7 @@ watch(
       <div class="m-3 flex justify-end">
         <Button
           class="cursor-pointer bg-black"
-          @click="changeShowEnterpriseForm(true)"
+          @click="changeShowEnterpriseForm(true, null, props.sellers)"
         >
           Criar empresa
           <Plus />

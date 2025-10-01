@@ -2,13 +2,14 @@
 
 namespace App\Services\DalleAdm;
 
+use App\DTO\Enterprise\CreateEnterpriseUserDTO;
 use App\DTO\Enterprise\CreateOrUpdateEnterpriseDTO;
 use App\DTO\Enterprise\UpdateEnterpriseUserDTO;
 use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
+use App\Helpers\EnterpriseHelper;
 use App\Helpers\SellerHelper;
-use App\Helpers\UserEnterpriseHelper;
 use App\Repositories\DalleAdm\EnterpriseRepository;
 use App\Repositories\DalleManage\RoleDMRepository;
 use App\Repositories\DalleManage\SettingAppearanceDMRepository;
@@ -55,7 +56,7 @@ class EnterpriseService
      *  ============================== */
     public function createUser($request)
     {
-        UserEnterpriseHelper::existsEmail($request->user(), $request->email);
+        EnterpriseHelper::existsEmail($request->email, 'create');
 
         $role = $this->roleDMRepository->findByName($request->enterpriseID, 'Master');
 
@@ -71,6 +72,8 @@ class EnterpriseService
 
     public function updateUser($request)
     {
+        EnterpriseHelper::existsEmail($request->email, 'update', $request->userID);
+
         $userDTO = UpdateEnterpriseUserDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,

@@ -42,7 +42,7 @@ class SellerController
             if ($sellers) {
                 DB::commit();
 
-                return redirect()->route('sellers');
+                return redirect()->route('sellers')->with('success', 'Vendedor criado com sucesso');
             }
         } catch (ValidationException $e) {
             DB::rollBack();

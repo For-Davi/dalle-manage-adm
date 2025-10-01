@@ -17,6 +17,7 @@ const props = defineProps<{
   data: {
     open: boolean;
     enterprise: IEnterprise;
+    sellers: ISeller[];
   };
 }>();
 
@@ -342,13 +343,27 @@ watch(
           </Select>
         </div>
         <div class="mb-2 space-y-2">
-          <Label for="code" class="ml-1 font-bold">Código do vendedor</Label>
-          <Input
-            v-model="form.sellerCode"
-            type="name"
-            id="code"
-            placeholder="Insira o código do vendedor"
-          />
+          <Label for="code" class="ml-1 font-bold">Escolha um vendedor</Label>
+          <Select id="code" v-model="form.sellerCode">
+            <SelectTrigger class="w-full cursor-pointer">
+              <SelectValue placeholder="Selecione um vendedor" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem class="cursor-pointer" :value="null">
+                  Nenhum
+                </SelectItem>
+                <SelectItem
+                  v-for="(seller, index) in props.data.sellers"
+                  :key="index"
+                  class="cursor-pointer"
+                  :value="seller.code"
+                >
+                  {{ seller.name }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div class="mt-2 w-full space-y-2" v-if="props.data.enterprise">
           <Label for="active" class="ml-1 font-bold"
