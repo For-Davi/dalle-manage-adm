@@ -9,7 +9,6 @@ use App\DTO\Role\RoleStartDTO;
 use App\DTO\Setting\Appearance\CreateSettingAppearanceDTO;
 use App\DTO\Setting\System\CreateSettingSystemDTO;
 use App\Helpers\EnterpriseHelper;
-use App\Helpers\SellerHelper;
 use App\Repositories\DalleAdm\EnterpriseRepository;
 use App\Repositories\DalleManage\RoleDMRepository;
 use App\Repositories\DalleManage\SettingAppearanceDMRepository;
@@ -87,10 +86,6 @@ class EnterpriseService
      *  ============================== */
     public function create($request)
     {
-        if ($request->sellerCode) {
-            SellerHelper::existsCodeEnterpriseForm($request->sellerCode);
-        }
-
         $enterpriseDTO = CreateOrUpdateEnterpriseDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
@@ -105,7 +100,7 @@ class EnterpriseService
             'numberAddress' => $request->numberAddress,
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
-            'sellerCode' => $request->sellerCode,
+            'sellerID' => $request->sellerID,
         ]);
 
         $enterprise = $this->repository->create($enterpriseDTO->toArray());
@@ -119,10 +114,6 @@ class EnterpriseService
 
     public function update($request)
     {
-        if ($request->sellerCode) {
-            SellerHelper::existsCodeEnterpriseForm($request->sellerCode);
-        }
-
         $enterpriseDTO = CreateOrUpdateEnterpriseDTO::fromRequest([
             'name' => $request->name,
             'email' => $request->email,
@@ -138,7 +129,7 @@ class EnterpriseService
             'complement' => $request->complement,
             'subscriptionId' => $request->subscriptionId,
             'active' => $request->active,
-            'sellerCode' => $request->sellerCode,
+            'sellerID' => $request->sellerID,
         ]);
 
         return $this->repository->update($request->id, $enterpriseDTO->toArray());

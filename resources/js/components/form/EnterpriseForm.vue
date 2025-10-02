@@ -38,7 +38,7 @@ const form = useForm({
   numberAddress: '',
   complement: '',
   subscriptionId: '',
-  sellerCode: '',
+  sellerID: '',
   active: 1,
 });
 
@@ -66,7 +66,7 @@ const clear = () => {
   form.numberAddress = '';
   form.complement = '';
   form.subscriptionId = '';
-  form.sellerCode = '';
+  form.sellerID = '';
   form.clearErrors();
 };
 const checkDataEdit = () => {
@@ -85,7 +85,7 @@ const checkDataEdit = () => {
       numberAddress: props.data.enterprise.number_address,
       complement: props.data.enterprise.complement,
       subscriptionId: props.data.enterprise.subscription_id,
-      sellerCode: props.data.enterprise.seller_id,
+      sellerID: props.data.enterprise.seller_id,
       active: props.data.enterprise.active,
     });
   }
@@ -154,14 +154,6 @@ watch(open, () => {
     checkDataEdit();
   }
 });
-watch(
-  () => form.sellerCode,
-  (value: string) => {
-    if (value !== null) {
-      form.sellerCode = value.toUpperCase();
-    }
-  }
-);
 </script>
 
 <template>
@@ -344,7 +336,7 @@ watch(
         </div>
         <div class="mb-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Escolha um vendedor</Label>
-          <Select id="code" v-model="form.sellerCode">
+          <Select id="code" v-model="form.sellerID">
             <SelectTrigger class="w-full cursor-pointer">
               <SelectValue placeholder="Selecione um vendedor" />
             </SelectTrigger>
@@ -357,7 +349,7 @@ watch(
                   v-for="(seller, index) in props.data.sellers"
                   :key="index"
                   class="cursor-pointer"
-                  :value="seller.code"
+                  :value="seller.id"
                 >
                   {{ seller.name }}
                 </SelectItem>
@@ -401,7 +393,7 @@ watch(
             form.errors.numberAddress ||
             form.errors.complement ||
             form.errors.subscriptionId ||
-            form.errors.sellerCode
+            form.errors.sellerID
           "
         >
           {{
@@ -418,7 +410,7 @@ watch(
             form.errors.numberAddress ||
             form.errors.complement ||
             form.errors.subscriptionId ||
-            form.errors.sellerCode ||
+            form.errors.sellerID ||
             form.errors
           }}
         </div>

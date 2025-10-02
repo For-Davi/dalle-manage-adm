@@ -19,7 +19,7 @@ class CreateOrUpdateEnterpriseDTO
         public ?string $complement,
         public int $subscription_id,
         public int $active,
-        public ?string $seller_id,
+        public ?int $seller_id,
     ) {}
 
     public static function fromRequest(array $data): self
@@ -39,7 +39,7 @@ class CreateOrUpdateEnterpriseDTO
             number_address: $data['numberAddress'] ?? null,
             subscription_id: $data['subscriptionId'],
             active: array_key_exists('active', $data) ? (int) $data['active'] : 1,
-            seller_id: $data['sellerCode'] ?? null,
+            seller_id: $data['sellerID'] ?? null,
         );
     }
 

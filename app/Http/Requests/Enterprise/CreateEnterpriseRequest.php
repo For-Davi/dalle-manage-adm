@@ -27,14 +27,13 @@ class CreateEnterpriseRequest extends FormRequest
             'numberAddress' => 'nullable|numeric',
             'complement' => 'nullable|string|max:100',
             'subscriptionId' => 'required|integer|in:1,2,3',
-            'sellerCode' => 'nullable|string|min:8|max:20',
+            'sellerID' => 'nullable|exists:sellers,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            // Name
             'name.required' => 'O nome da empresa é obrigatório.',
             'name.string' => 'O nome da empresa deve ser um texto.',
             'name.min' => 'O nome da empresa deve ter pelo menos 1 caractere.',
@@ -73,10 +72,7 @@ class CreateEnterpriseRequest extends FormRequest
             'subscriptionId.integer' => 'O ID da assinatura deve ser um número',
             'subscriptionId.in' => 'O ID da categoria deve ser 1, 2 ou 3',
 
-            // Seller Code
-            'sellerCode.string' => 'O código do vendedor deve ser um texto.',
-            'sellerCode.min' => 'O código do vendedor deve ter no mínimo 8 caracteres.',
-            'sellerCode.max' => 'O código do vendedor não pode exceder 20 caracteres.',
+            'sellerID.string' => 'O ID do vendedor informado não existe.',
         ];
     }
 }

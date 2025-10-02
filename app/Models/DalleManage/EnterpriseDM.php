@@ -28,11 +28,6 @@ class EnterpriseDM extends Model
         'seller_id',
     ];
 
-    public function setSellerCodeAttribute($value)
-    {
-        $this->attributes['seller_id'] = strtoupper($value);
-    }
-
     public function subscription()
     {
         return $this->belongsTo(SubscriptionsDM::class, 'subscription_id');
