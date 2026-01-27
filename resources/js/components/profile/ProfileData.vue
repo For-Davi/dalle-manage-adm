@@ -7,7 +7,7 @@ defineOptions({
 });
 
 const props = defineProps<{
-  user: IUser | null;
+  user: IUserAdm | null;
   type: 'data' | 'password';
 }>();
 const emit = defineEmits<{

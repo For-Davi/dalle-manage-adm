@@ -12,12 +12,6 @@ Route::post('/reset', [AuthController::class, 'reset']);
 Route::put('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::middleware(['auth'])->group(function () {
-    Route::prefix('sellers')->group(function () {
-        Route::post('/', [SellerController::class, 'create']);
-        Route::put('/{id}', [SellerController::class, 'update']);
-        Route::delete('/{id}', [SellerController::class, 'delete']);
-    });
-
     Route::prefix('enterprises')->group(function () {
         Route::prefix('users')->group(function () {
             Route::get('/{enterpriseID}', [UserController::class, 'indexUsersByEnterprise']);
@@ -26,6 +20,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{userID}', [UserController::class, 'deleteUserByEnterprise']);
         });
 
+        Route::get('/', [EnterpriseController::class, 'index']);
         Route::post('/', [EnterpriseController::class, 'create']);
         Route::put('/{id}', [EnterpriseController::class, 'update']);
         Route::delete('/{id}', [EnterpriseController::class, 'delete']);
@@ -37,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/password', [UserController::class, 'updatePasswordProfile']);
         });
 
+        Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'create']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'delete']);
@@ -47,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [SellerController::class, 'indexRegistration']);
         });
 
+        Route::get('/', [SellerController::class, 'index']);
         Route::post('/', [SellerController::class, 'create']);
         Route::put('/{id}', [SellerController::class, 'update']);
         Route::delete('/{id}', [SellerController::class, 'delete']);

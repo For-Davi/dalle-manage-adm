@@ -14,3 +14,11 @@ export interface SellerRegistration {
   registration_date: string;
   description: string | null;
 }
+
+export interface DataSeller {
+  id?: number;
+  name: string;
+  email: string;
+  phone: string;
+  code: string;
+}

@@ -11,7 +11,7 @@ defineOptions({
 const props = defineProps<{
   data: {
     open: boolean;
-    user: IUser | null;
+    user: UserAdm | null;
   };
 }>();
 const emit = defineEmits<{

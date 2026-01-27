@@ -27,6 +27,13 @@ class SellerController
         return Inertia::render('Seller', ['sellers' => $sellers]);
     }
 
+    public function index()
+    {
+        $sellers = $this->repository->getAll();
+
+        return response()->json(['sellers' => $sellers]);
+    }
+
     public function create(CreateSellerRequest $request)
     {
         try {

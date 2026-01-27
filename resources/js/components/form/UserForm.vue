@@ -13,7 +13,7 @@ const page = usePage();
 const props = defineProps<{
   data: {
     open: boolean;
-    user: IUser | null;
+    user: IUserAdm | null;
     enterprise: IEnterprise | null;
   };
 }>();

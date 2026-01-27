@@ -15,7 +15,7 @@ const props = defineProps<{
   enterpriseID: number | null;
 }>();
 const emit = defineEmits<{
-  'edit:user': [IUser];
+  'edit:user': [IUserAdm];
 }>();
 
 const listUsers = reactive<{ users: any[] }>({

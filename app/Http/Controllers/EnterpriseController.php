@@ -31,6 +31,13 @@ class EnterpriseController
         return Inertia::render('Enterprise', ['enterprises' => $enterprises]);
     }
 
+    public function index()
+    {
+        $enterprises = $this->dmRepository->getAll(['subscription']);
+
+        return response()->json(['enterprises' => $enterprises]);
+    }
+
     public function create(CreateEnterpriseRequest $request)
     {
         try {

@@ -20,37 +20,6 @@ class UserService
         protected UserRepository $repository,
     ) {}
 
-    /** ==============================
-     *  MÉTODOS DE USUÁRIOS
-     *  ============================== */
-    public function createUser($request)
-    {
-        UserHelper::existsEmail('dalle_manage', $request->email, 'create');
-
-        $role = $this->roleDMRepository->findByName($request->enterpriseID, 'Master');
-
-        $userDTO = CreateEnterpriseUserDTO::fromRequest([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'roleID' => $role->id,
-        ]);
-
-        return $this->userDMRepository->createUserWithEnterpriseId($request->enterpriseID, $userDTO->toArray());
-    }
-
-    public function updateUser($request)
-    {
-        UserHelper::existsEmail('dalle_manage', $request->email, 'update', $request->userID);
-
-        $userDTO = UpdateEnterpriseUserDTO::fromRequest([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
-
-        return $this->userDMRepository->update($request->userID, $userDTO->toArray());
-    }
-
     public function create($request)
     {
         UserHelper::existsEmail('mysql', $request->email, 'create');
@@ -82,12 +51,6 @@ class UserService
             'name' => $request->name,
             'email' => $request->email,
         ];
-
-        if ($request->changePassword === 1) {
-            UserHelper::checkPassword($request->user(), $request->currentPassword);
-
-            $data['password'] = Hash::make($request->password);
-        }
 
         $userDTO = UpdateUserDTO::fromRequest($data);
 

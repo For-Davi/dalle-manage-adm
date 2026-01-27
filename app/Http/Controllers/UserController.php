@@ -40,6 +40,13 @@ class UserController
         ]);
     }
 
+    public function index()
+    {
+        $users = $this->repository->getAll();
+
+        return response()->json(['users' => $users]);
+    }
+
     public function create(CreateUserRequest $request)
     {
         try {

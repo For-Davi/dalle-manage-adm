@@ -18,7 +18,7 @@ defineOptions({
 
 const showFormProfile = reactive<{
   open: boolean;
-  user: IUser | null;
+  user: IUserAdm | null;
 }>({
   open: false,
   user: null,
@@ -64,7 +64,7 @@ const logout = () => {
 };
 const changeShowFormProfile = (
   show: boolean,
-  user: IUser | null = null
+  user: IUserAdm | null = null
 ): void => {
   Object.assign(showFormProfile, {
     open: show,

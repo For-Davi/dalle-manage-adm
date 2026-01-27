@@ -17,7 +17,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   'update:open': [void];
   'add:user': [IEnterprise];
-  'edit:user': [{ enterprise: IEnterprise; user: IUser }];
+  'edit:user': [{ enterprise: IEnterprise; user: IUserAdm }];
 }>();
 
 const enterpriseName = ref<string>('');
@@ -28,7 +28,7 @@ const startAddUser = () => {
     emit('update:open');
   }
 };
-const startEditUser = (user: IUser) => {
+const startEditUser = (user: IUserAdm) => {
   if (props.data.enterprise) {
     emit('edit:user', {
       enterprise: props.data.enterprise,

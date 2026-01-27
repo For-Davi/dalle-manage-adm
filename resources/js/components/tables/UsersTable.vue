@@ -12,11 +12,11 @@ defineOptions({
 const page = usePage();
 
 const props = defineProps<{
-  users: IUser[];
+  users: IUserAdm[];
 }>();
 
 const emit = defineEmits<{
-  'edit:user:': [user: IUser];
+  'edit:user:': [user: IUserAdm];
 }>();
 
 const showConfirmAction = ref<boolean>(false);

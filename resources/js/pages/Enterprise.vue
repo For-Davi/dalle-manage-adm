@@ -36,7 +36,7 @@ const showEnterpriseForm = reactive<{
 });
 const showUserForm = reactive<{
   open: boolean;
-  user: IUser | null;
+  user: IUserAdm | null;
   enterprise: IEnterprise | null;
 }>({
   open: false,
@@ -71,7 +71,10 @@ const changeShowEnterpriseForm = (
     sellers: sellers,
   });
 };
-const changeShowUserForm = (show: boolean, user: IUser | null = null): void => {
+const changeShowUserForm = (
+  show: boolean,
+  user: IUserAdm | null = null
+): void => {
   Object.assign(showUserForm, {
     open: show,
     user: user,
@@ -88,7 +91,7 @@ const addUser = (enterprise: IEnterprise) => {
     enterprise: enterprise,
   });
 };
-const handleEditUser = (enterprise: IEnterprise, user: IUser) => {
+const handleEditUser = (enterprise: IEnterprise, user: IUserAdm) => {
   currentEnterprise.enterprise = enterprise;
   Object.assign(showUserForm, {
     open: true,
@@ -140,7 +143,7 @@ const closeFormOpenManage = () => {
     @update:open="changeShowUserEnterpriseManage(false)"
     @add:user="(enterprise: IEnterprise) => addUser(enterprise)"
     @edit:user="
-      (data: { enterprise: IEnterprise; user: IUser }) =>
+      (data: { enterprise: IEnterprise; user: IUserAdm }) =>
         handleEditUser(data.enterprise, data.user)
     "
   />

@@ -16,24 +16,27 @@ defineOptions({
 const page = usePage();
 
 const props = defineProps<{
-  users: IUser[];
+  users: IUserAdm[];
 }>();
 
 const showUserForm = reactive<{
   open: boolean;
-  user: IUser | null;
+  user: IUserAdm | null;
 }>({
   open: false,
   user: null,
 });
 
-const changeShowUserForm = (show: boolean, user: IUser | null = null): void => {
+const changeShowUserForm = (
+  show: boolean,
+  user: IUserAdm | null = null
+): void => {
   Object.assign(showUserForm, {
     open: show,
     user: user,
   });
 };
-const startEdit = (user: IUser) => {
+const startEdit = (user: IUserAdm) => {
   if (user) {
     changeShowUserForm(true, user);
   }
