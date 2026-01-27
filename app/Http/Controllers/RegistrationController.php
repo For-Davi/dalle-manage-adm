@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 
-class DashboardController
+class RegistrationController
 {
     public function show()
     {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Registration');
     }
 }

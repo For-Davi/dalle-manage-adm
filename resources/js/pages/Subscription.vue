@@ -4,7 +4,7 @@ import SubscriptionsTable from '@/components/tables/SubscriptionsTable.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 
 defineOptions({
-  name: 'Subscriptions',
+  name: 'Subscription',
 });
 
 const props = defineProps<{

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Enterprise;
+namespace App\Http\Requests\User\DalleManage;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteUserEnterpriseRequest extends FormRequest
+class ShowUsersEnterpriseRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,15 +14,15 @@ class DeleteUserEnterpriseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'userID' => 'required|exists:dalle_manage.users,id',
+            'enterpriseID' => 'required|exists:dalle_manage.enterprises,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'userID.required' => 'O ID do usuário é obrigatório.',
-            'userID.exists' => 'O ID do usuário informado não existe.',
+            'enterpriseID.required' => 'O ID da empresa é obrigatório.',
+            'enterpriseID.exists' => 'O ID da empresa informada não existe.',
         ];
     }
 

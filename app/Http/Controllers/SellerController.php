@@ -8,6 +8,7 @@ use App\Http\Requests\Seller\UpdateSellerRequest;
 use App\Repositories\DalleAdm\SellerRepository;
 use App\Services\DalleAdm\SellerService;
 use App\Utils\ErrorLogger;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -19,17 +20,11 @@ class SellerController
         protected SellerService $service
     ) {}
 
-    public function index()
+    public function show()
     {
-        $sellers = $this->repository->getAll(['subscription']);
+        $sellers = $this->repository->getAll();
 
-        return Inertia::render('Sellers', [
-            'sellers' => $sellers,
-            'flash' => [
-                'success' => session('success'),
-                'error' => session('error'),
-            ],
-        ]);
+        return Inertia::render('Seller', ['sellers' => $sellers]);
     }
 
     public function create(CreateSellerRequest $request)
@@ -42,17 +37,15 @@ class SellerController
             if ($sellers) {
                 DB::commit();
 
-                return redirect()->route('sellers')->with('success', 'Vendedor criado com sucesso');
-            }
-        } catch (ValidationException $e) {
-            DB::rollBack();
+                $sellers = $this->repository->getAll();
 
-            return back()->withErrors($e->errors())->withInput();
-        } catch (ValidationException  $e) {
+                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor criado'], 201);
+            }
+        } catch (Exception  $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar vendedor', $e, $request);
 
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
+            return response()->json(['message' => 'Erro ao criar vendedor'], 500);
         }
     }
 
@@ -66,17 +59,15 @@ class SellerController
             if ($sellers) {
                 DB::commit();
 
-                return redirect()->route('sellers')->with('success', 'Vendedor atualizado com sucesso');
-            }
-        } catch (ValidationException $e) {
-            DB::rollBack();
+                $sellers = $this->repository->getAll();
 
-            return back()->withErrors($e->errors())->withInput();
+                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor atualizado']);
+            }
         } catch (ValidationException  $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao atualizar vendedor', $e, $request);
 
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
+            return response()->json(['message' => 'Erro ao atualizar vendedor'], 500);
         }
     }
 
@@ -91,15 +82,15 @@ class SellerController
 
                 DB::commit();
 
-                return redirect()->route('sellers')->with('success', 'Vendedor deletado com sucesso');
+                $sellers = $this->repository->getAll();
+
+                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor excluído']);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao deletar a empresa', $e, $request);
+            ErrorLogger::log('Erro ao excluir vendedor', $e, $request);
 
-            return back()->withErrors(['name' => 'Erro ao deletar vendedor.'])->onlyInput('name');
+            return response()->json(['message' => 'Erro ao excluir vendedor'], 500);
         }
-
-        return redirect()->route('enterprises')->with('error', 'Erro ao deletar vendedor');
     }
 }

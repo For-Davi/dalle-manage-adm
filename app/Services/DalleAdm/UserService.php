@@ -20,9 +20,40 @@ class UserService
         protected UserRepository $repository,
     ) {}
 
+    /** ==============================
+     *  MÉTODOS DE USUÁRIOS
+     *  ============================== */
+    public function createUser($request)
+    {
+        UserHelper::existsEmail('dalle_manage', $request->email, 'create');
+
+        $role = $this->roleDMRepository->findByName($request->enterpriseID, 'Master');
+
+        $userDTO = CreateEnterpriseUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roleID' => $role->id,
+        ]);
+
+        return $this->userDMRepository->createUserWithEnterpriseId($request->enterpriseID, $userDTO->toArray());
+    }
+
+    public function updateUser($request)
+    {
+        UserHelper::existsEmail('dalle_manage', $request->email, 'update', $request->userID);
+
+        $userDTO = UpdateEnterpriseUserDTO::fromRequest([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return $this->userDMRepository->update($request->userID, $userDTO->toArray());
+    }
+
     public function create($request)
     {
-        UserHelper::existsEmail($request->email, 'create');
+        UserHelper::existsEmail('mysql', $request->email, 'create');
 
         $userDTO = CreateUserDTO::fromRequest([
             'name' => $request->name,
@@ -45,7 +76,7 @@ class UserService
 
     public function update($request)
     {
-        UserHelper::existsEmail($request->email, 'update', $request->id);
+        UserHelper::existsEmail('mysql', $request->email, 'update', $request->id);
 
         $data = [
             'name' => $request->name,
@@ -53,7 +84,7 @@ class UserService
         ];
 
         if ($request->changePassword === 1) {
-            UserHelper::isPasswordEqual($request->user(), $request->currentPassword);
+            UserHelper::checkPassword($request->user(), $request->currentPassword);
 
             $data['password'] = Hash::make($request->password);
         }
@@ -84,9 +115,10 @@ class UserService
         }
     }
 
-    public function updateDataProfile($request)
+    public function updateProfile($request)
     {
         UserHelper::existsEmail(
+            'mysql',
             $request->user(),
             $request->email,
         );
@@ -100,7 +132,7 @@ class UserService
 
     public function updatePasswordProfile($request)
     {
-        UserHelper::isPasswordEqual(
+        UserHelper::checkPassword(
             $request->user(),
             $request->currentPassword
         );

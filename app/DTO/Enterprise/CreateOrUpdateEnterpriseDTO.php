@@ -2,7 +2,9 @@
 
 namespace App\DTO\Enterprise;
 
-class CreateOrUpdateEnterpriseDTO
+use App\DTO\BaseDTO;
+
+class CreateOrUpdateEnterpriseDTO extends BaseDTO
 {
     public function __construct(
         public string $name,
@@ -41,26 +43,5 @@ class CreateOrUpdateEnterpriseDTO
             active: array_key_exists('active', $data) ? (int) $data['active'] : 1,
             seller_id: $data['sellerID'] ?? null,
         );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'cnpj' => $this->cnpj,
-            'cpf' => $this->cpf,
-            'cep' => $this->cep,
-            'state' => $this->state,
-            'city' => $this->city,
-            'neighborhood' => $this->neighborhood,
-            'address' => $this->address,
-            'number_address' => $this->number_address,
-            'complement' => $this->complement,
-            'subscription_id' => $this->subscription_id,
-            'active' => $this->active,
-            'seller_id' => $this->seller_id,
-        ];
     }
 }

@@ -9,7 +9,7 @@ class UserDMRepository
 {
     public function __construct(public UsersDM $model) {}
 
-    public function findUsersByEnterpriseId($id)
+    public function findUsersByEnterpriseID($id)
     {
         return $this->model->where('enterprise_id', $id)->get();
     }
@@ -19,7 +19,7 @@ class UserDMRepository
         return $this->model->all();
     }
 
-    public function findById($id)
+    public function findByID($id)
     {
         return $this->model->find($id);
     }

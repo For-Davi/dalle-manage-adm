@@ -2,7 +2,9 @@
 
 namespace App\DTO\Seller;
 
-class CreateOrUpdateSellerDTO
+use App\DTO\BaseDTO;
+
+class CreateOrUpdateSellerDTO extends BaseDTO
 {
     public function __construct(
         public string $name,
@@ -19,17 +21,5 @@ class CreateOrUpdateSellerDTO
             phone: $data['phone'],
             code: $data['code']
         );
-    }
-
-    public function toArray(): array
-    {
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'code' => $this->code,
-        ];
-
-        return $data;
     }
 }

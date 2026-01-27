@@ -1,39 +1,42 @@
 <script setup lang="ts">
+import { Separator } from '@/components/ui/separator';
 import MainLayout from '@/layout/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
-import SellersTable from '../components/tables/SellersTable.vue';
-import { Plus } from 'lucide-vue-next';
-import SellerForm from '@/components/form/SellerForm.vue';
+import UsersTable from '@/components/tables/UsersTable.vue';
 import { reactive, watch } from 'vue';
+import UserForm from '@/components/form/UserForm.vue';
 import { usePage } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
+import { Plus } from 'lucide-vue-next';
 
 defineOptions({
-  name: 'Sellers',
+  name: 'User',
 });
-
-const props = defineProps<{
-  sellers: ISeller[];
-}>();
 
 const page = usePage();
 
-const showSellerForm = reactive<{
+const props = defineProps<{
+  users: IUser[];
+}>();
+
+const showUserForm = reactive<{
   open: boolean;
-  seller: ISeller | null;
+  user: IUser | null;
 }>({
   open: false,
-  seller: null,
+  user: null,
 });
 
-const changeShowSellerForm = (show: boolean, seller: ISeller | null = null) => {
-  Object.assign(showSellerForm, {
+const changeShowUserForm = (show: boolean, user: IUser | null = null): void => {
+  Object.assign(showUserForm, {
     open: show,
-    seller: seller,
+    user: user,
   });
 };
-const startEdit = (seller: ISeller) => {
-  changeShowSellerForm(true, seller);
+const startEdit = (user: IUser) => {
+  if (user) {
+    changeShowUserForm(true, user);
+  }
 };
 
 watch(
@@ -50,23 +53,20 @@ watch(
 <template>
   <MainLayout>
     <div class="p-6">
-      <TitlePage title="Vendedores" />
+      <TitlePage title="Usuários" />
       <Separator class="my-4" />
       <div class="m-3 flex justify-end">
         <Button
           class="cursor-pointer bg-black"
-          @click="changeShowSellerForm(true)"
+          @click="changeShowUserForm(true)"
         >
-          Criar vendedor
+          Criar usuário
           <Plus />
         </Button>
       </div>
-      <SellersTable :sellers="props.sellers" @edit:seller="startEdit" />
+      <UsersTable :users="props.users" @edit:user="startEdit" />
     </div>
   </MainLayout>
   <!-- Modals -->
-  <SellerForm
-    :data="showSellerForm"
-    @update:open="changeShowSellerForm(false)"
-  />
+  <UserForm :data="showUserForm" @update:open="changeShowUserForm(false)" />
 </template>

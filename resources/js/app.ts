@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import { createApp, h } from 'vue';
+import { createPinia } from 'pinia';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Link } from '@inertiajs/vue3';
@@ -95,8 +96,11 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     const app = createApp({ render: () => h(App, props) });
 
+    const pinia = createPinia();
+
     app
       .use(plugin)
+      .use(pinia)
       .component('Card', Card)
       .component('CardContent', CardContent)
       .component('CardHeader', CardHeader)

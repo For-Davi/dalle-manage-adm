@@ -2,7 +2,9 @@
 
 namespace App\DTO\User;
 
-class CreateUserDTO
+use App\DTO\BaseDTO;
+
+class CreateUserDTO extends BaseDTO
 {
     public function __construct(
         public string $name,
@@ -17,16 +19,5 @@ class CreateUserDTO
             email: $data['email'],
             password: $data['password'],
         );
-    }
-
-    public function toArray(): array
-    {
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-        ];
-
-        return $data;
     }
 }

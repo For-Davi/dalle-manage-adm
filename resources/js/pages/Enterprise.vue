@@ -12,7 +12,7 @@ import UserForm from '@/components/form/UserForm.vue';
 import UsersEnterpriseManage from '@/components/manage/UsersEnterpriseManage.vue';
 
 defineOptions({
-  name: 'Enterprises',
+  name: 'Enterprise',
 });
 
 const props = defineProps<{
@@ -102,16 +102,6 @@ const closeFormOpenManage = () => {
     changeShowUserEnterpriseManage(true, currentEnterprise.enterprise);
   }
 };
-
-watch(
-  () => page,
-  () => {
-    if (page.props.flash.success) {
-      toast.success(page.props.flash.success);
-    }
-  },
-  { immediate: true, deep: true }
-);
 </script>
 
 <template>

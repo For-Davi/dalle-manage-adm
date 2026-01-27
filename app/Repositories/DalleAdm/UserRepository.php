@@ -13,7 +13,7 @@ class UserRepository
         return $this->model->all();
     }
 
-    public function findById($id)
+    public function findByID($id)
     {
         return $this->model->find($id);
     }

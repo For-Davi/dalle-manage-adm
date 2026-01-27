@@ -3,7 +3,7 @@ import { computed, watch, ref } from 'vue';
 import TitlePage from '../general/TitlePage.vue';
 import { useForm } from '@inertiajs/vue3';
 import { phoneValidation } from '@/composables/PhoneValidation';
-import { searchCep } from '@/service/cep-service';
+import { searchCep } from '@/services/cep-service';
 
 defineOptions({
   name: 'EnterpriseForm',

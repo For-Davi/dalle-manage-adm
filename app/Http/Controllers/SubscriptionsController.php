@@ -9,11 +9,11 @@ class SubscriptionsController
 {
     public function __construct(protected SubscriptionsDMRepository $repository) {}
 
-    public function index()
+    public function show()
     {
         $subscriptions = $this->repository->getAllEnterprisesBySubscriptions();
 
-        return Inertia::render('Subscriptions', [
+        return Inertia::render('Subscription', [
             'subscriptions' => $subscriptions,
         ]);
     }

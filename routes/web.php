@@ -1,66 +1,30 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-// VIEW
-Route::get('/', function () {
-    return Inertia::render('Auth');
-})->name('login');
+Route::get('/', [AuthController::class, 'showAuthForm'])->name('login');
 Route::get('/reset-password/{token}', [UserController::class, 'showResetForm'])->name('reset.password')->where('token', '.*');
 
-// AÇÕES
-Route::post('/login', [UserController::class, 'login'])->name('user.login');
-Route::post('/logout', [UserController::class, 'logout'])->name('user.logout');
-Route::post('/reset', [UserController::class, 'reset'])->name('verify.reset');
-Route::put('/reset-password', [UserController::class, 'resetPassword'])->name('user.reset');
-
 Route::middleware(['auth'])->group(function () {
-
     Route::prefix('adm')->group(function () {
-        // VIEW
-
-        Route::get('/dashboard', function () {
-            return Inertia::render('Dashboard');
-        })->name('dashboard');
-
-        Route::get('/enterprises', [EnterpriseController::class, 'index'])->name('enterprises');
-        Route::get('/users', [UserController::class, 'index'])->name('users');
-        Route::get('/subscriptions', [SubscriptionsController::class, 'index'])->name('subscriptions');
-        Route::get('/sellers', [SellerController::class, 'index'])->name('sellers');
-
-        // ACTIONS
-        Route::prefix('user')->group(function () {
-            Route::put('/update-data', [UserController::class, 'updateData'])->name('user.update.data');
-            Route::put('/update-password', [UserController::class, 'updatePassword'])->name('user.update.password');
-        });
-
-        Route::prefix('enterprise')->group(function () {
-            Route::post('/create', [EnterpriseController::class, 'create'])->name('enterprise.create');
-            Route::put('/update/{id}', [EnterpriseController::class, 'update'])->name('enterprise.update');
-            Route::delete('/delete/{id}', [EnterpriseController::class, 'delete'])->name('enterprise.delete');
-            Route::get('/users/{enterpriseID}', [EnterpriseController::class, 'indexUsers'])->name('show.users');
-            Route::post('/users/{enterpriseID}', [EnterpriseController::class, 'createUser'])->name('create.user.enterprise');
-            Route::put('/users/{userID}', [EnterpriseController::class, 'updateUser'])->name('update.user.enterprise');
-            Route::delete('/users/{userID}', [EnterpriseController::class, 'deleteUser'])->name('delete.user.enterprise');
-        });
-
-        Route::prefix('users')->group(function () {
-            Route::post('/create', [UserController::class, 'create'])->name('user.create');
-            Route::put('/update/{id}', [UserController::class, 'update'])->name('user.update');
-            Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
-        });
+        Route::get('/dashboard', [DashboardController::class, 'show'])->name('show.dashboard');
+        Route::get('/enterprises', [EnterpriseController::class, 'show'])->name('show.enterprises');
+        Route::get('/users', [UserController::class, 'show'])->name('show.users');
+        Route::get('/subscriptions', [SubscriptionsController::class, 'show'])->name('show.subscriptions');
 
         Route::prefix('sellers')->group(function () {
-            Route::post('/create', [SellerController::class, 'create'])->name('seller.create');
-            Route::put('/update/{id}', [SellerController::class, 'update'])->name('seller.update');
-            Route::delete('/delete/{id}', [SellerController::class, 'delete'])->name('seller.delete');
+            Route::get('/', [SellerController::class, 'show'])->name('show.sellers');
+
+            Route::prefix('registrations')->group(function () {
+                Route::get('/', [RegistrationController::class, 'show'])->name('show.registrations');
+            });
         });
     });
-
-    // MANAGE
 });

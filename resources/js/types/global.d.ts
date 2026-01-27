@@ -1,9 +1,14 @@
 import type { User } from './User.ts';
-import type { RenderAuth } from './Auth.ts';
+import type {
+  RenderAuth,
+  DataLogin,
+  DataReset,
+  DataResetPassword,
+} from './Auth.ts';
 import type { Enterprise } from './Enterprise.ts';
 import type { Subscription } from './Subscription.ts';
-import { Users } from './Users.ts';
-import { Seller } from './Seller.ts';
+import { Seller, SellerRegistration } from './Seller.ts';
+
 export {};
 
 declare global {
@@ -15,7 +20,13 @@ declare global {
 
   type ISubscription = Subscription;
 
-  type IUsers = Users;
-
   type ISeller = Seller;
+
+  type ISellerRegistration = SellerRegistration;
+
+  type IDataLogin = DataLogin;
+
+  type IDataReset = DataReset;
+
+  type IDataResetPassword = DataResetPassword;
 }

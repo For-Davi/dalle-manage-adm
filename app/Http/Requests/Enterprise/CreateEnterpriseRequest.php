@@ -26,7 +26,7 @@ class CreateEnterpriseRequest extends FormRequest
             'address' => 'nullable|string|max:100',
             'numberAddress' => 'nullable|numeric',
             'complement' => 'nullable|string|max:100',
-            'subscriptionId' => 'required|integer|in:1,2,3',
+            'subscriptionId' => 'required|integer',
             'sellerID' => 'nullable|exists:sellers,id',
         ];
     }
@@ -70,7 +70,6 @@ class CreateEnterpriseRequest extends FormRequest
 
             'subscriptionId.required' => 'Deve ser requerido o ID da assinatura',
             'subscriptionId.integer' => 'O ID da assinatura deve ser um número',
-            'subscriptionId.in' => 'O ID da categoria deve ser 1, 2 ou 3',
 
             'sellerID.string' => 'O ID do vendedor informado não existe.',
         ];

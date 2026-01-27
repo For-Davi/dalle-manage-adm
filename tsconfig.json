@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
@@ -13,8 +13,7 @@
     "types": ["vite/client", "node"],
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./resources/js/*"],
-      "@/lib/*": ["./resources/js/lib/*"]
+      "@/*": ["./resources/js/*"]
     }
   },
   "include": [

@@ -2,7 +2,9 @@
 
 namespace App\DTO\User;
 
-class UpdatePasswordProfileDTO
+use App\DTO\BaseDTO;
+
+class UpdatePasswordProfileDTO extends BaseDTO
 {
     public function __construct(
         public string $password,
@@ -13,12 +15,5 @@ class UpdatePasswordProfileDTO
         return new self(
             password: $data['password'],
         );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'password' => $this->password,
-        ];
     }
 }

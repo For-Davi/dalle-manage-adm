@@ -2,7 +2,9 @@
 
 namespace App\DTO\Enterprise;
 
-class CreateEnterpriseUserDTO
+use App\DTO\BaseDTO;
+
+class CreateEnterpriseUserDTO extends BaseDTO
 {
     public function __construct(
         public string $name,
@@ -19,17 +21,5 @@ class CreateEnterpriseUserDTO
             password: $data['password'],
             role_id: $data['roleID']
         );
-    }
-
-    public function toArray(): array
-    {
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password,
-            'role_id' => $this->role_id,
-        ];
-
-        return $data;
     }
 }

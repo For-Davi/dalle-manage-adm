@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Enterprise\CreateEnterpriseRequest;
-use App\Http\Requests\Enterprise\CreateUserEnterpriseRequest;
 use App\Http\Requests\Enterprise\DeleteEnterpriseRequest;
-use App\Http\Requests\Enterprise\DeleteUserEnterpriseRequest;
-use App\Http\Requests\Enterprise\ShowUsersEnterpriseRequest;
 use App\Http\Requests\Enterprise\UpdateEnterpriseRequest;
-use App\Http\Requests\Enterprise\UpdateUserEnterpriseRequest;
 use App\Repositories\DalleAdm\EnterpriseRepository;
 use App\Repositories\DalleAdm\SellerRepository;
 use App\Repositories\DalleManage\EnterpriseDMRepository;
@@ -16,7 +12,6 @@ use App\Repositories\DalleManage\UserDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
 use App\Utils\ErrorLogger;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class EnterpriseController
@@ -25,33 +20,15 @@ class EnterpriseController
         protected EnterpriseDMRepository $dmRepository,
         protected EnterpriseRepository $admRepository,
         protected EnterpriseService $service,
-        protected UserDMRepository $userdmRepository,
+        protected UserDMRepository $userDmRepository,
         protected SellerRepository $sellerRepository,
     ) {}
 
-    public function index()
+    public function show()
     {
         $enterprises = $this->dmRepository->getAll(['subscription']);
-        $sellers = $this->sellerRepository->getAll();
 
-        return Inertia::render('Enterprises', [
-            'enterprises' => $enterprises,
-            'sellers' => $sellers,
-            'flash' => [
-                'success' => session('success'),
-                'error' => session('error'),
-            ],
-        ]);
-    }
-
-    public function indexUsers(ShowUsersEnterpriseRequest $request)
-    {
-        $users = $this->userdmRepository->findUsersByEnterpriseId($request->route('enterpriseID'));
-
-        return response()->json([
-            'users' => $users,
-        ]);
-
+        return Inertia::render('Enterprise', ['enterprises' => $enterprises]);
     }
 
     public function create(CreateEnterpriseRequest $request)
@@ -63,38 +40,15 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
+                $enterprises = $this->dmRepository->getAll(['subscription']);
 
-                return redirect()->route('enterprises')->with('success', 'Empresa criada com sucesso');
+                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa criada'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao criar empresa', $e, $request);
 
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
-        }
-    }
-
-    public function createUser(CreateUserEnterpriseRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            $user = $this->service->createUser($request);
-
-            if ($user) {
-                DB::commit();
-
-                return redirect()->route('enterprises')->with('success', 'Usuário criado com sucesso');
-            }
-        } catch (ValidationException $e) {
-            DB::rollBack();
-
-            return back()->withErrors($e->errors())->withInput();
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao criar usuário', $e, $request);
-
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
+            return response()->json(['message' => 'Erro ao criar empresa'], 500);
         }
     }
 
@@ -108,42 +62,15 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
+                $enterprises = $this->dmRepository->getAll(['subscription']);
 
-                return redirect()->route('enterprises')->with('success', 'Empresa atualizada com sucesso');
+                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa atualizada'], 200);
             }
-        } catch (ValidationException $e) {
-            DB::rollBack();
-
-            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             ErrorLogger::log('Erro ao atualizar empresa', $e, $request);
 
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
-        }
-    }
-
-    public function updateUser(UpdateUserEnterpriseRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            $user = $this->service->updateUser($request);
-
-            if ($user) {
-                DB::commit();
-
-                return redirect()->route('enterprises')->with('success', 'Usuário atualizado com sucesso');
-            }
-        } catch (ValidationException $e) {
-            DB::rollBack();
-
-            return back()->withErrors($e->errors())->withInput();
-        } catch (ValidationException $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
-
-            return back()->withErrors(['error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.']);
+            return response()->json(['message' => 'Erro ao atualizar empresa'], 500);
         }
     }
 
@@ -152,44 +79,21 @@ class EnterpriseController
         try {
             DB::beginTransaction();
 
-            $enterprise = $this->admRepository->delete($request->route('id'));
+            $enterprise = $this->dmRepository->delete($request->route('id'));
 
             if ($enterprise) {
 
                 DB::commit();
 
-                return redirect()->route('enterprises')->with('success', 'Empresa deletada com sucesso');
+                $enterprises = $this->dmRepository->getAll(['subscription']);
+
+                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa excluída'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao deletar a empresa', $e, $request);
+            ErrorLogger::log('Erro ao excluir a empresa', $e, $request);
 
-            return back()->withErrors(['name' => 'Erro ao deletar a empresa.'])->onlyInput('name');
+            return response()->json(['message' => 'Erro ao excluir a empresa'], 500);
         }
-
-        return redirect()->route('enterprises')->with('error', 'Erro ao deletar a empresa');
-    }
-
-    public function deleteUser(DeleteUserEnterpriseRequest $request)
-    {
-        try {
-            DB::beginTransaction();
-
-            $enterprise = $this->userdmRepository->delete($request->route('userID'));
-
-            if ($enterprise) {
-
-                DB::commit();
-
-                return redirect()->route('enterprises')->with('success', 'Usuário deletado com sucesso');
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao deletar a empresa', $e, $request);
-
-            return back()->withErrors(['name' => 'Erro ao deletar usuário.'])->onlyInput('name');
-        }
-
-        return redirect()->route('enterprises')->with('error', 'Erro ao deletar usuário');
     }
 }

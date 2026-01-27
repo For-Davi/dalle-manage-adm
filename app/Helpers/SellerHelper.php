@@ -13,6 +13,12 @@ class SellerHelper
             ->where('code', $code)
             ->first();
 
+        if (! $existCode) {
+            throw ValidationException::withMessages([
+                'sellerCode' => ['O código do vendedor informado não existe.'],
+            ]);
+        }
+
         if ($mode === 'create') {
             if ($existCode) {
                 if ($code === $existCode->code) {
@@ -28,19 +34,6 @@ class SellerHelper
                     'code' => ['Este código ja está sendo usado por outro vendedor.'],
                 ]);
             }
-        }
-    }
-
-    public static function existsCodeEnterpriseForm($code)
-    {
-        $existCode = DB::table('sellers')
-            ->where('code', $code)
-            ->first();
-
-        if (! $existCode) {
-            throw ValidationException::withMessages([
-                'sellerCode' => ['O código do vendedor informado não existe.'],
-            ]);
         }
     }
 
