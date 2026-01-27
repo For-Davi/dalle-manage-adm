@@ -8,7 +8,7 @@ export const updateProfileDataService = (
   status: number;
   data: {
     message: string;
-    user: IUserAdm[];
+    user: IUserAdm;
   };
 }> => {
   return api.put(`${baseUrl}/profile/data`, data);
