@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth-store';
+import { reactive } from 'vue';
 
 defineOptions({
   name: 'AuthForm',
@@ -9,15 +11,15 @@ const emit = defineEmits<{
   'update:changeRender': [IRenderAuth];
 }>();
 
-const form = useForm({
+const { loadingAuth } = storeToRefs(useAuthStore());
+
+const form = reactive({
   email: '',
   password: '',
 });
 
 const submit = async () => {
-  form.post(route('user.login'), {
-    onFinish: () => form.reset('password'),
-  });
+  await useAuthStore().login(form);
 };
 </script>
 
@@ -55,21 +57,16 @@ const submit = async () => {
             >Esqueceu sua senha?</span
           >
         </div>
-        <div v-if="form.errors.email" class="mt-2">
-          <p class="ml-6 text-sm font-medium text-red-600">
-            {{ form.errors.email }}
-          </p>
-        </div>
       </form>
     </CardContent>
     <CardFooter>
       <Button
         type="submit"
         class="w-full cursor-pointer"
-        :disabled="form.processing"
+        :disabled="loadingAuth"
         @click="submit"
       >
-        <div v-if="form.processing">
+        <div v-if="loadingAuth">
           <Loader2 class="mr-2 h-4 w-4 animate-spin" />
         </div>
         <div v-else>Entrar</div>

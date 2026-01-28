@@ -40,4 +40,19 @@ class UserHelper
             }
         }
     }
+
+    public static function checkUserActive($user)
+    {
+        if ($user->active === 0) {
+            throw ValidationException::withMessages([
+                'active' => ['Este usuário está inativo e não pode acessar a conta. Por favor, entre em contato com o administrador.'],
+            ]);
+        }
+    }
+
+    public static function clearTokenReset($user)
+    {
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
+        DB::table('personal_access_tokens')->where('tokenable_id', $user->id)->delete();
+    }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import SubscriptionsTable from '@/components/tables/SubscriptionsTable.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 

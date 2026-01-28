@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import { createError, createSuccess } from '@/composables/CreateNotify';
-import { createSellerService, deleteSellerService, getSellersRegistrationService, updateSellerService } from '@/services/seller-service';
+import {
+  createSellerService,
+  deleteSellerService,
+  getSellersRegistrationService,
+  updateSellerService,
+} from '@/services/seller-service';
 
 export const useSellerStore = defineStore('seller', {
   state: () => ({

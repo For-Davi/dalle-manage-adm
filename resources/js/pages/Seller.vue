@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import SellersTable from '../components/tables/SellersTable.vue';
 import { Plus, UserRoundSearch } from 'lucide-vue-next';

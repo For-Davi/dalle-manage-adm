@@ -39,8 +39,15 @@ class UserService
 
         $this->hasUser($user);
         UserHelper::checkPassword($user, $request->password);
+        UserHelper::checkUserActive($user);
+        UserHelper::clearTokenReset($user);
 
-        return $user;
+        $token = $this->configureToken($user);
+
+        return [
+            'token' => $token,
+            'user' => $user,
+        ];
     }
 
     public function update($request)
@@ -112,7 +119,7 @@ class UserService
         $register = PasswordResetToken::where('token', $request->input('token'))->first();
 
         if (! $register) {
-            return response()->json(['error' => 'Token inválido.'], 400);
+            return response()->json(['message' => 'Token inválido.'], 400);
         }
 
         $isExpired = Carbon::parse($register->created_at)->addMinutes(30)->isPast();
@@ -130,5 +137,12 @@ class UserService
         $register->delete();
 
         return $result;
+    }
+
+    private function configureToken($user)
+    {
+        $tokenResult = $user->createToken('my-app-token');
+
+        return $tokenResult->plainTextToken;
     }
 }

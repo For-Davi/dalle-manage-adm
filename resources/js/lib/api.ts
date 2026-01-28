@@ -1,31 +1,38 @@
 import axios from 'axios';
+import { storeToRefs } from 'pinia';
+import { router } from '@inertiajs/vue3';
+import { useAuthStore } from '@/stores/auth-store';
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost/api',
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
     Accept: 'application/json',
   },
-  withCredentials: true,
 });
 
-const token = document
-  .querySelector('meta[name="csrf-token"]')
-  ?.getAttribute('content');
+api.interceptors.request.use(
+  (config) => {
+    const authStore = useAuthStore();
+    const { token } = storeToRefs(authStore);
 
-if (token) {
-  api.defaults.headers.common['X-CSRF-TOKEN'] = token;
-}
+    if (token.value) {
+      config.headers.Authorization = `Bearer ${token.value}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      window.location.href = '/login';
-    }
+      const authStore = useAuthStore();
+      authStore.setToken(null);
+      authStore.setUser(null);
 
-    if (error.response?.status === 419) {
-      window.location.reload();
+      router.visit(route('login'));
     }
 
     return Promise.reject(error);

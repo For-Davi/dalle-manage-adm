@@ -1,12 +1,11 @@
 import './bootstrap';
 import '../css/app.css';
-import { createApp, h } from 'vue';
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import { createInertiaApp } from '@inertiajs/vue3';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { Link } from '@inertiajs/vue3';
-import { Toaster } from 'vue-sonner';
+import router from './router';
+import App from './App.vue';
 import 'vue-sonner/style.css';
+import { Toaster } from 'vue-sonner';
 import {
   Card,
   CardContent,
@@ -86,94 +85,79 @@ import {
   TabsList,
   TabsTrigger,
 } from './components/ui/tabs/index.js';
+import { Spinner } from './components/ui/spinner/index';
 
-createInertiaApp({
-  resolve: (name) =>
-    resolvePageComponent(
-      `./pages/${name}.vue`,
-      import.meta.glob('./pages/**/*.vue')
-    ),
-  setup({ el, App, props, plugin }) {
-    const app = createApp({ render: () => h(App, props) });
+const app = createApp(App);
 
-    const pinia = createPinia();
+app.use(createPinia());
+app.use(router);
+app.component('Toaster', Toaster);
+app.component('Card', Card);
+app.component('CardContent', CardContent);
+app.component('CardHeader', CardHeader);
+app.component('CardTitle', CardTitle);
+app.component('CardFooter', CardFooter);
+app.component('Dialog', Dialog);
+app.component('DialogContent', DialogContent);
+app.component('DialogHeader', DialogHeader);
+app.component('DialogTitle', DialogTitle);
+app.component('DialogDescription', DialogDescription);
+app.component('DialogOverlay', DialogOverlay);
+app.component('Input', Input);
+app.component('Label', Label);
+app.component('Button', Button);
+app.component('Toaster', Toaster);
+app.component('Sidebar', Sidebar);
+app.component('SidebarContent', SidebarContent);
+app.component('SidebarGroup', SidebarGroup);
+app.component('SidebarGroupContent', SidebarGroupContent);
+app.component('SidebarMenu', SidebarMenu);
+app.component('SidebarMenuButton', SidebarMenuButton);
+app.component('SidebarMenuItem', SidebarMenuItem);
+app.component('SidebarHeader', SidebarHeader);
+app.component('SidebarFooter', SidebarFooter);
+app.component('SidebarProvider', SidebarProvider);
+app.component('Separator', Separator);
+app.component('Table', Table);
+app.component('TableBody', TableBody);
+app.component('TableCaption', TableCaption);
+app.component('TableCell', TableCell);
+app.component('TableEmpty', TableEmpty);
+app.component('TableFooter', TableFooter);
+app.component('TableHead', TableHead);
+app.component('TableHeader', TableHeader);
+app.component('TableRow', TableRow);
+app.component('Select', Select);
+app.component('SelectContent', SelectContent);
+app.component('SelectGroup', SelectGroup);
+app.component('SelectItem', SelectItem);
+app.component('SelectItemText', SelectItemText);
+app.component('SelectLabel', SelectLabel);
+app.component('SelectScrollDownButton', SelectScrollDownButton);
+app.component('SelectScrollUpButton', SelectScrollUpButton);
+app.component('SelectSeparator', SelectSeparator);
+app.component('SelectTrigger', SelectTrigger);
+app.component('SelectValue', SelectValue);
+app.component('Loader2', Loader2);
+app.component('DropdownMenu', DropdownMenu);
+app.component('DropdownMenuCheckboxItem', DropdownMenuCheckboxItem);
+app.component('DropdownMenuContent', DropdownMenuContent);
+app.component('DropdownMenuGroup', DropdownMenuGroup);
+app.component('DropdownMenuItem', DropdownMenuItem);
+app.component('DropdownMenuLabel', DropdownMenuLabel);
+app.component('DropdownMenuPortal', DropdownMenuPortal);
+app.component('DropdownMenuRadioGroup', DropdownMenuRadioGroup);
+app.component('DropdownMenuRadioItem', DropdownMenuRadioItem);
+app.component('DropdownMenuSeparator', DropdownMenuSeparator);
+app.component('DropdownMenuShortcut', DropdownMenuShortcut);
+app.component('DropdownMenuSub', DropdownMenuSub);
+app.component('DropdownMenuSubContent', DropdownMenuSubContent);
+app.component('DropdownMenuSubTrigger', DropdownMenuSubTrigger);
+app.component('DropdownMenuTrigger', DropdownMenuTrigger);
+app.component('Tabs', Tabs);
+app.component('TabsContent', TabsContent);
+app.component('TabsList', TabsList);
+app.component('TabsTrigger', TabsTrigger);
+app.component('Spinner', Spinner);
 
-    app
-      .use(plugin)
-      .use(pinia)
-      .component('Card', Card)
-      .component('CardContent', CardContent)
-      .component('CardHeader', CardHeader)
-      .component('CardTitle', CardTitle)
-      .component('CardFooter', CardFooter)
-      .component('Dialog', Dialog)
-      .component('DialogContent', DialogContent)
-      .component('DialogHeader', DialogHeader)
-      .component('DialogTitle', DialogTitle)
-      .component('DialogDescription', DialogDescription)
-      .component('DialogOverlay', DialogOverlay)
-      .component('Input', Input)
-      .component('Label', Label)
-      .component('Button', Button)
-      .component('Toaster', Toaster)
-      .component('Link', Link)
-      .component('Sidebar', Sidebar)
-      .component('SidebarContent', SidebarContent)
-      .component('SidebarGroup', SidebarGroup)
-      .component('SidebarGroupContent', SidebarGroupContent)
-      .component('SidebarMenu', SidebarMenu)
-      .component('SidebarMenuButton', SidebarMenuButton)
-      .component('SidebarMenuItem', SidebarMenuItem)
-      .component('SidebarHeader', SidebarHeader)
-      .component('SidebarFooter', SidebarFooter)
-      .component('SidebarProvider', SidebarProvider)
-      .component('Separator', Separator)
-      .component('Table', Table)
-      .component('TableBody', TableBody)
-      .component('TableCaption', TableCaption)
-      .component('TableCell', TableCell)
-      .component('TableEmpty', TableEmpty)
-      .component('TableFooter', TableFooter)
-      .component('TableHead', TableHead)
-      .component('TableHeader', TableHeader)
-      .component('TableRow', TableRow)
-      .component('Select', Select)
-      .component('SelectContent', SelectContent)
-      .component('SelectGroup', SelectGroup)
-      .component('SelectItem', SelectItem)
-      .component('SelectItemText', SelectItemText)
-      .component('SelectLabel', SelectLabel)
-      .component('SelectScrollDownButton', SelectScrollDownButton)
-      .component('SelectScrollUpButton', SelectScrollUpButton)
-      .component('SelectSeparator', SelectSeparator)
-      .component('SelectTrigger', SelectTrigger)
-      .component('SelectValue', SelectValue)
-      .component('Loader2', Loader2)
-      .component('DropdownMenu', DropdownMenu)
-      .component('DropdownMenuCheckboxItem', DropdownMenuCheckboxItem)
-      .component('DropdownMenuContent', DropdownMenuContent)
-      .component('DropdownMenuGroup', DropdownMenuGroup)
-      .component('DropdownMenuItem', DropdownMenuItem)
-      .component('DropdownMenuLabel', DropdownMenuLabel)
-      .component('DropdownMenuPortal', DropdownMenuPortal)
-      .component('DropdownMenuRadioGroup', DropdownMenuRadioGroup)
-      .component('DropdownMenuRadioItem', DropdownMenuRadioItem)
-      .component('DropdownMenuSeparator', DropdownMenuSeparator)
-      .component('DropdownMenuShortcut', DropdownMenuShortcut)
-      .component('DropdownMenuSub', DropdownMenuSub)
-      .component('DropdownMenuSubContent', DropdownMenuSubContent)
-      .component('DropdownMenuSubTrigger', DropdownMenuSubTrigger)
-      .component('DropdownMenuTrigger', DropdownMenuTrigger)
-      .component('Tabs', Tabs)
-      .component('TabsContent', TabsContent)
-      .component('TabsList', TabsList)
-      .component('TabsTrigger', TabsTrigger);
-
-    app.mount(el);
-
-    return app;
-  },
-  progress: {
-    color: '#4B5563',
-  },
-});
+app.mount('#app');

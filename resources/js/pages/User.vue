@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Separator } from '@/components/ui/separator';
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import UsersTable from '@/components/tables/UsersTable.vue';
 import { reactive, watch } from 'vue';

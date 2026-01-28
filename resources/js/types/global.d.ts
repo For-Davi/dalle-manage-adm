@@ -6,12 +6,7 @@ import type {
   UserAdm,
   UserDm,
 } from './User.ts';
-import type {
-  RenderAuth,
-  DataLogin,
-  DataReset,
-  DataResetPassword,
-} from './Auth.ts';
+import type { RenderAuth, DataLogin, DataResetPassword } from './Auth.ts';
 import type { DataEnterprise, Enterprise } from './Enterprise.ts';
 import type { Subscription } from './Subscription.ts';
 import { DataSeller, Seller, SellerRegistration } from './Seller.ts';
@@ -34,8 +29,6 @@ declare global {
   type ISellerRegistration = SellerRegistration;
 
   type IDataLogin = DataLogin;
-
-  type IDataReset = DataReset;
 
   type IDataResetPassword = DataResetPassword;
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserHelper;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\User\DalleAdm\NewPasswordRequest;
 use App\Http\Requests\User\DalleAdm\ResetPasswordRequest;
@@ -10,7 +11,6 @@ use App\Services\DalleAdm\UserService;
 use App\Utils\ErrorLogger;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -35,34 +35,32 @@ class AuthController
 
     public function login(LoginRequest $request)
     {
-
-        $credentials = $request->only('email', 'password');
-
         try {
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
+            $result = $this->service->login($request);
 
-                return redirect()->route('dashboard');
-            }
-        } catch (Exception $e) {
-            return back()->withErrors([
-                'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
+            return response()->json([
+                'token' => $result['token'],
+                'user' => $result['user'],
             ]);
-        }
 
-        return back()->withErrors([
-            'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
-        ])->onlyInput('email');
+        } catch (\Exception $e) {
+            ErrorLogger::critical('Erro inesperado no login', $e, $request);
+
+            return response()->json(['message' => 'Erro ao realizar login'], 500);
+        }
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
+        try {
+            UserHelper::clearTokenReset($request->user());
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            return response()->json([], 200);
+        } catch (\Exception $e) {
+            ErrorLogger::critical('Erro inesperado no logout', $e, $request);
 
-        return redirect()->route('login');
+            return response()->json(['message' => 'Erro'], 500);
+        }
     }
 
     public function reset(ResetPasswordRequest $request)
@@ -72,10 +70,10 @@ class AuthController
 
             return redirect()->back()->with('message', $result);
         } catch (Exception $e) {
-            ErrorLogger::log('Erro ao solicitar redefinição de senha', $e, $request);
+            ErrorLogger::critical('Erro ao solicitar redefinição de senha', $e, $request);
 
             return back()->withErrors([
-                'error' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
+                'message' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
             ])->withInput();
         }
     }
@@ -95,7 +93,7 @@ class AuthController
         } catch (Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao redefinir senha', $e, $request);
+            ErrorLogger::critical('Erro ao redefinir senha', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }

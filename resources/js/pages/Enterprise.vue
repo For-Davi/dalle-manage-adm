@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
 import { Plus } from 'lucide-vue-next';
 import EnterpriseForm from '@/components/form/EnterpriseForm.vue';
@@ -19,8 +19,6 @@ const props = defineProps<{
   enterprises: IEnterprise[];
   sellers: ISeller[];
 }>();
-
-const page = usePage();
 
 const currentEnterprise = reactive<{ enterprise: IEnterprise | null }>({
   enterprise: null,

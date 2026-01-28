@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia';
 import { createError, createSuccess } from '@/composables/CreateNotify';
-import { createUserService, deleteUserService, getUsersService, updateProfileDataService, updateProfilePasswordService, updateUserService } from '@/services/user-adm-service';
+import {
+  createUserService,
+  deleteUserService,
+  getUsersService,
+  updateProfileDataService,
+  updateProfilePasswordService,
+  updateUserService,
+} from '@/services/user-adm-service';
 import { useAuthStore } from './auth-store';
 
 export const useUserAdmStore = defineStore('userAdm', {

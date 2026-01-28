@@ -6,6 +6,8 @@ export const loginService = (
   status: number;
   data: {
     message: string;
+    token: string;
+    user: IUserAdm;
   };
 }> => {
   return api.post('/login', data);
@@ -21,14 +23,14 @@ export const logoutService = (): Promise<{
 };
 
 export const resetService = (
-  data: IDataReset
+  email: string
 ): Promise<{
   status: number;
   data: {
     message: string;
   };
 }> => {
-  return api.post('/reset', data);
+  return api.post('/reset', email);
 };
 
 export const resetPasswordService = (

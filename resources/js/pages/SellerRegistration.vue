@@ -3,14 +3,14 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 
 defineOptions({
-  name: 'Dashboard',
+  name: 'Seller Registration',
 });
 </script>
 
 <template>
   <MainLayout>
     <div class="p-6">
-      <TitlePage title="Dashboard" />
+      <TitlePage title="Seller Registration" />
       <Separator class="my-4" />
     </div>
   </MainLayout>
