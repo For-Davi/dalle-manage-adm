@@ -12,7 +12,6 @@ use App\Repositories\DalleManage\UserDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
 use App\Utils\ErrorLogger;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 class EnterpriseController
 {
@@ -23,13 +22,6 @@ class EnterpriseController
         protected UserDMRepository $userDmRepository,
         protected SellerRepository $sellerRepository,
     ) {}
-
-    public function show()
-    {
-        $enterprises = $this->dmRepository->getAll(['subscription']);
-
-        return Inertia::render('Enterprise', ['enterprises' => $enterprises]);
-    }
 
     public function index()
     {

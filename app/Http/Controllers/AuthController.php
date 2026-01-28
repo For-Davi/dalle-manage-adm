@@ -12,7 +12,6 @@ use App\Utils\ErrorLogger;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
 
 class AuthController
 {
@@ -20,18 +19,6 @@ class AuthController
         protected UserService $service,
         protected UserRepository $repository
     ) {}
-
-    public function showAuthForm()
-    {
-        return Inertia::render('Auth');
-    }
-
-    public function showResetForm($token)
-    {
-        return Inertia::render('ResetPassword', [
-            'token' => $token,
-        ]);
-    }
 
     public function login(LoginRequest $request)
     {

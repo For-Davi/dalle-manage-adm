@@ -20,7 +20,6 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 
 class UserController
 {
@@ -30,15 +29,6 @@ class UserController
         protected UserRepository $repository,
         protected UserDMRepository $userDmRepository,
     ) {}
-
-    public function show()
-    {
-        $users = $this->repository->getAll();
-
-        return Inertia::render('User', [
-            'users' => $users,
-        ]);
-    }
 
     public function index()
     {

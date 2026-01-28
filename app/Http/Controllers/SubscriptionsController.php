@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\DalleManage\SubscriptionsDMRepository;
-use Inertia\Inertia;
 
 class SubscriptionsController
 {
@@ -13,8 +12,8 @@ class SubscriptionsController
     {
         $subscriptions = $this->repository->getAllEnterprisesBySubscriptions();
 
-        return Inertia::render('Subscription', [
-            'subscriptions' => $subscriptions,
-        ]);
+        // return  [
+        //     'subscriptions' => $subscriptions,
+        // ]);
     }
 }

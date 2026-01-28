@@ -11,7 +11,6 @@ use App\Utils\ErrorLogger;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
 
 class SellerController
 {
@@ -19,13 +18,6 @@ class SellerController
         protected SellerRepository $repository,
         protected SellerService $service
     ) {}
-
-    public function show()
-    {
-        $sellers = $this->repository->getAll();
-
-        return Inertia::render('Seller', ['sellers' => $sellers]);
-    }
 
     public function index()
     {
