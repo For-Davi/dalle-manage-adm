@@ -35,7 +35,10 @@ const open = computed({
       <DialogHeader>
         <DialogTitle>
           <div class="flex">
-            <LucideCircleUserRound v-if="type === 'data'" class="mr-2 h-7 w-8" />
+            <LucideCircleUserRound
+              v-if="type === 'data'"
+              class="mr-2 h-7 w-8"
+            />
             <LucideLock v-else class="mr-2 h-7 w-8" />
             <p class="text-xl font-bold">
               {{

@@ -3,7 +3,7 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 
 defineOptions({
-  name: 'Seller Registration',
+  name: 'RegistrationIndex',
 });
 </script>
 

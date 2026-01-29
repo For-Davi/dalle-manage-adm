@@ -1,0 +1,20 @@
+import type { RouteRecordRaw } from 'vue-router';
+
+export const enterpriseRoutes: RouteRecordRaw[] = [
+  {
+    path: 'enterprises',
+    name: 'enterprises',
+    component: () => import('@/pages/Enterprise/EnterpriseIndex.vue'),
+  },
+  {
+    path: 'enterprises/create',
+    name: 'enterprise.create',
+    component: () => import('@/pages/Enterprise/EnterpriseCreate.vue'),
+  },
+  {
+    path: 'enterprises/:id/edit',
+    name: 'enterprise.edit',
+    component: () => import('@/pages/Enterprise/EnterpriseEdit.vue'),
+    props: true,
+  },
+];

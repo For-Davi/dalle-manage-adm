@@ -12,4 +12,3 @@ export const getSubscriptionsService = (): Promise<{
 }> => {
   return api.get(`${baseUrl}/`);
 };
-

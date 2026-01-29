@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppSidebar from '@/sidebar/AppSidebar.vue';
+import AppSidebar from '@/components/sidebar/AppSidebar.vue';
 import 'vue-sonner/style.css';
 import { RouterView, useRoute } from 'vue-router';
 

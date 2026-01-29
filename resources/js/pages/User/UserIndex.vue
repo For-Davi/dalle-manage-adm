@@ -11,7 +11,7 @@ defineOptions({
   name: 'User',
 });
 
-const {loadingUserAdm, listUsersAdm} = storeToRefs(useUserAdmStore());
+const { loadingUserAdm, listUsersAdm } = storeToRefs(useUserAdmStore());
 
 const showUserForm = reactive<{
   open: boolean;
@@ -46,26 +46,25 @@ onMounted(async () => {
 </script>
 
 <template>
-    <main>
-        <div v-if="!loadingUserAdm" class="p-6">
-          <TitlePage title="Usuários" />
-          <Separator class="my-4" />
-          <div class="m-3 flex justify-end">
-            <Button
-              class="cursor-pointer bg-black"
-              @click="changeShowUserForm(true)"
-            >
-              Criar usuário
-              <Plus />
-            </Button>
-          </div>
-          <UsersTable :users="listUsersAdm" @edit:user="startEdit" />
-        </div>
-        <div class="p-6" v-else>
-            <Spinner  class="size-8" />
-        </div>
-      <!-- Modals -->
-      <UserForm :data="showUserForm" @update:open="changeShowUserForm(false)" />
-
-    </main>
+  <main>
+    <div v-if="!loadingUserAdm" class="p-6">
+      <TitlePage title="Usuários" />
+      <Separator class="my-4" />
+      <div class="m-3 flex justify-end">
+        <Button
+          class="cursor-pointer bg-black"
+          @click="changeShowUserForm(true)"
+        >
+          Criar usuário
+          <Plus />
+        </Button>
+      </div>
+      <UsersTable :users="listUsersAdm" @edit:user="startEdit" />
+    </div>
+    <div class="p-6" v-else>
+      <Spinner class="size-8" />
+    </div>
+    <!-- Modals -->
+    <UserForm :data="showUserForm" @update:open="changeShowUserForm(false)" />
+  </main>
 </template>

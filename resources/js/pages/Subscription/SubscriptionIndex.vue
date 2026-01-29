@@ -6,10 +6,12 @@ import { onMounted } from 'vue';
 import { useSubscriptionStore } from '@/stores/subscription-store';
 
 defineOptions({
-  name: 'Subscription',
+  name: 'SubscriptionIndex',
 });
 
-const {loadingSubscription, listSubscriptions} = storeToRefs(useSubscriptionStore());
+const { loadingSubscription, listSubscriptions } = storeToRefs(
+  useSubscriptionStore()
+);
 
 const fetchSubscriptions = async () => {
   await useSubscriptionStore().getSubscriptions();
@@ -21,12 +23,12 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="p-6" v-if="!loadingSubscription">
-      <TitlePage title="Assinaturas" />
-      <Separator class="my-4" />
-      <SubscriptionsTable :subscriptions="listSubscriptions" />
-    </div>
-    <div class="p-6" v-else>
-      <Spinner  class="size-8" />
-    </div>
+  <div class="p-6" v-if="!loadingSubscription">
+    <TitlePage title="Assinaturas" />
+    <Separator class="my-4" />
+    <SubscriptionsTable :subscriptions="listSubscriptions" />
+  </div>
+  <div class="p-6" v-else>
+    <Spinner class="size-8" />
+  </div>
 </template>

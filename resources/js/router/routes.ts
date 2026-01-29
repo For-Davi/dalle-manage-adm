@@ -1,4 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router';
+import { enterpriseRoutes } from './modules/enterprise.routes';
+import { userRoutes } from './modules/user.routes';
+import { sellerRoutes } from './modules/seller.routes';
+import { subscriptionRoutes } from './modules/subscription.routes';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -26,31 +30,10 @@ const routes: RouteRecordRaw[] = [
         name: 'dashboard',
         component: () => import('@/pages/Dashboard.vue'),
       },
-      {
-        path: 'enterprises',
-        name: 'enterprises',
-        component: () => import('@/pages/Enterprise.vue'),
-      },
-      {
-        path: 'users',
-        name: 'users',
-        component: () => import('@/pages/User.vue'),
-      },
-      {
-        path: 'subscriptions',
-        name: 'subscriptions',
-        component: () => import('@/pages/Subscription.vue'),
-      },
-      {
-        path: 'sellers',
-        name: 'sellers',
-        component: () => import('@/pages/Seller.vue'),
-      },
-      {
-        path: 'sellers/registrations',
-        name: 'sellerRegistrations',
-        component: () => import('@/pages/SellerRegistration.vue'),
-      },
+      ...enterpriseRoutes,
+      ...userRoutes,
+      ...sellerRoutes,
+      ...subscriptionRoutes,
     ],
   },
 

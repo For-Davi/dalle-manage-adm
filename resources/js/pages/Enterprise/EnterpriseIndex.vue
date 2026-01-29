@@ -104,47 +104,47 @@ onMounted(async () => {
 </script>
 
 <template>
-    <main>
-        <div v-if="!loadingEnterprise">
-            <div class="p-6">
-              <TitlePage title="Empresas" />
-              <Separator class="my-4" />
-              <div class="m-3 flex justify-end">
-                <Button
-                  class="cursor-pointer bg-black"
-                  @click="changeShowEnterpriseForm(true, null)"
-                >
-                  Criar empresa
-                  <Plus />
-                </Button>
-              </div>
-              <EnterprisesTable
-                :enterprises="listEnterprises"
-                @edit:enterprise="startEdit"
-                @open:manage="
-                  (enterprise: IEnterprise) =>
-                    changeShowUserEnterpriseManage(true, enterprise)
-                "
-              />
-              <!-- Modals -->
-              <EnterpriseForm
-                :data="showEnterpriseForm"
-                @update:open="changeShowEnterpriseForm(false)"
-              />
-              <UserForm :data="showUserForm" @update:open="closeFormOpenManage" />
-              <UsersEnterpriseManage
-                :data="showUsersEnterpriseManage"
-                @update:open="changeShowUserEnterpriseManage(false)"
-                @add:user="(enterprise: IEnterprise) => addUser(enterprise)"
-                @edit:user="
-                  (data: { enterprise: IEnterprise; user: IUserAdm }) =>
-                    handleEditUser(data.enterprise, data.user)
-                "
-              />
-            </div>
+  <main>
+    <div v-if="!loadingEnterprise">
+      <div class="p-6">
+        <TitlePage title="Empresas" />
+        <Separator class="my-4" />
+        <div class="m-3 flex justify-end">
+          <Button
+            class="cursor-pointer bg-black"
+            @click="changeShowEnterpriseForm(true, null)"
+          >
+            Criar empresa
+            <Plus />
+          </Button>
         </div>
-        <div class="p-6" v-else>
-          <Spinner  class="size-8" />
-        </div>
-    </main>
+        <EnterprisesTable
+          :enterprises="listEnterprises"
+          @edit:enterprise="startEdit"
+          @open:manage="
+            (enterprise: IEnterprise) =>
+              changeShowUserEnterpriseManage(true, enterprise)
+          "
+        />
+        <!-- Modals -->
+        <EnterpriseForm
+          :data="showEnterpriseForm"
+          @update:open="changeShowEnterpriseForm(false)"
+        />
+        <UserForm :data="showUserForm" @update:open="closeFormOpenManage" />
+        <UsersEnterpriseManage
+          :data="showUsersEnterpriseManage"
+          @update:open="changeShowUserEnterpriseManage(false)"
+          @add:user="(enterprise: IEnterprise) => addUser(enterprise)"
+          @edit:user="
+            (data: { enterprise: IEnterprise; user: IUserAdm }) =>
+              handleEditUser(data.enterprise, data.user)
+          "
+        />
+      </div>
+    </div>
+    <div class="p-6" v-else>
+      <Spinner class="size-8" />
+    </div>
+  </main>
 </template>
