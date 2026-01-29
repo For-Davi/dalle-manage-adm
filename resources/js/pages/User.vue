@@ -4,7 +4,6 @@ import TitlePage from '@/components/general/TitlePage.vue';
 import UsersTable from '@/components/tables/UsersTable.vue';
 import { reactive, onMounted } from 'vue';
 import UserForm from '@/components/form/UserForm.vue';
-import { Plus } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 import { useUserAdmStore } from '@/stores/user-adm-store';
 

@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue';
 import ProfileData from '../profile/ProfileData.vue';
 import ProfilePassword from '../profile/ProfilePassword.vue';
-import { CircleUserRound, Lock } from 'lucide-vue-next';
 
 defineOptions({
   name: 'ProfileForm',
@@ -11,7 +10,7 @@ defineOptions({
 const props = defineProps<{
   data: {
     open: boolean;
-    user: UserAdm | null;
+    user: IUserAdm | null;
   };
 }>();
 const emit = defineEmits<{
@@ -36,8 +35,8 @@ const open = computed({
       <DialogHeader>
         <DialogTitle>
           <div class="flex">
-            <CircleUserRound v-if="type === 'data'" class="mr-2 h-7 w-8" />
-            <Lock v-else class="mr-2 h-7 w-8" />
+            <LucideCircleUserRound v-if="type === 'data'" class="mr-2 h-7 w-8" />
+            <LucideLock v-else class="mr-2 h-7 w-8" />
             <p class="text-xl font-bold">
               {{
                 type === 'data'

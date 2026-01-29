@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
-import { Plus } from 'lucide-vue-next';
 import EnterpriseForm from '@/components/form/EnterpriseForm.vue';
 import { onMounted, reactive } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';

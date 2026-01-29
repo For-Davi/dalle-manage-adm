@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import TitlePage from '@/components/general/TitlePage.vue';
 import SellersTable from '@/components/tables/SellersTable.vue';
-import { Plus, UserRoundSearch } from 'lucide-vue-next';
 import SellerForm from '@/components/form/SellerForm.vue';
 import { reactive, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';

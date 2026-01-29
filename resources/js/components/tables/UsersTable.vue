@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Ellipsis, Pencil, Trash } from 'lucide-vue-next';
 import { usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
@@ -64,7 +63,7 @@ const userId = computed(() => page.props.auth.user?.id);
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" class="cursor-pointer">
-                <Ellipsis />
+                <LucideEllipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-48 sm:w-56">
@@ -77,14 +76,14 @@ const userId = computed(() => page.props.auth.user?.id);
                   class="cursor-pointer text-xs sm:text-sm"
                   @click="emit('edit:user', user)"
                 >
-                  <Pencil /> <span>Editar</span>
+                  <LucidePencil /> <span>Editar</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
                   @click="openConfirmAction(user.id)"
                   v-if="user.created_by && user.id !== userId"
                 >
-                  <Trash class="text-red-600" /> <span>Excluir</span>
+                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

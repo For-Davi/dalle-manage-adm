@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { Ellipsis, Pencil, Trash } from 'lucide-vue-next';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 
 defineOptions({
@@ -61,7 +60,7 @@ const exclude = (id: number) => {
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" class="cursor-pointer">
-                <Ellipsis />
+                <LucideEllipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-48 sm:w-56">
@@ -80,7 +79,7 @@ const exclude = (id: number) => {
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
                   @click="openConfirmAction(seller.id)"
                 >
-                  <Trash class="text-red-600" /> <span>Excluir</span>
+                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

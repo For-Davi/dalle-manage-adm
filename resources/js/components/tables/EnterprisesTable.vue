@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { isActive } from '@/composables/Active';
 import { getNameSubscription } from '@/composables/Subscription';
-import {
-  Ellipsis,
-  Pencil,
-  Trash,
-  Users,
-  CircleCheckBig,
-  CircleX,
-} from 'lucide-vue-next';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
@@ -63,11 +55,11 @@ const exclude = (id: number) => {
     <TableBody>
       <TableRow v-for="(enterprise, index) in props.enterprises" :key="index">
         <TableCell>
-          <CircleCheckBig
+          <LucideCircleCheckBig
             v-if="isActive(enterprise.active)"
             class="h-5 w-5 text-green-600"
           />
-          <CircleX v-else class="h-5 w-5 text-red-600" />
+          <LucideCircleX v-else class="h-5 w-5 text-red-600" />
         </TableCell>
         <TableCell>{{ enterprise.name }}</TableCell>
         <TableCell>{{ enterprise.email }}</TableCell>
@@ -78,7 +70,7 @@ const exclude = (id: number) => {
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" class="cursor-pointer">
-                <Ellipsis />
+                <LucideEllipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-48 sm:w-56">
@@ -90,20 +82,20 @@ const exclude = (id: number) => {
                 class="cursor-pointer text-xs sm:text-sm"
                 @click="emit('open:manage', enterprise)"
               >
-                <Users /> <span>Usuários</span>
+                <LucideUsers /> <span>Usuários</span>
               </DropdownMenuItem>
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs sm:text-sm"
                   @click="emit('edit:enterprise', enterprise)"
                 >
-                  <Pencil /> <span>Editar</span>
+                  <LucidePencil /> <span>Editar</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
                   @click="openConfirmAction(enterprise.id)"
                 >
-                  <Trash class="text-red-600" /> <span>Excluir</span>
+                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

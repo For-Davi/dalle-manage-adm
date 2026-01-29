@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
-import { Ellipsis, Pencil, Trash } from 'lucide-vue-next';
 import Empty from '../info/Empty.vue';
 import axios from 'axios';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
@@ -95,7 +94,7 @@ onMounted(async () => {
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
               <Button variant="ghost" class="cursor-pointer">
-                <Ellipsis />
+                <LucideEllipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent class="w-48 sm:w-56">
@@ -108,13 +107,13 @@ onMounted(async () => {
                   class="cursor-pointer text-xs sm:text-sm"
                   @click="emit('edit:user', user)"
                 >
-                  <Pencil /> <span>Editar</span>
+                  <LucidePencil /> <span>Editar</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs text-red-600 sm:text-sm"
                   @click="openConfirmAction(user.id)"
                 >
-                  <Trash class="text-red-600" /> <span>Excluir</span>
+                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>

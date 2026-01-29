@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { CircleCheckBig } from 'lucide-vue-next';
-import { CircleX } from 'lucide-vue-next';
 import { formatPriceBR } from '@/composables/FormatPrice';
 import { getNameSubscription } from '@/composables/Subscription';
 
@@ -29,11 +27,11 @@ const props = defineProps<{
         :key="index"
       >
         <TableCell>
-          <CircleCheckBig
+          <LucideCircleCheckBig
             v-if="subscription.active === 1"
             class="h-5 w-5 text-green-600"
           />
-          <CircleX v-else class="h-5 w-5 text-red-600" />
+          <LucideCircleX v-else class="h-5 w-5 text-red-600" />
         </TableCell>
         <TableCell>{{ getNameSubscription(subscription.name) }}</TableCell>
         <TableCell>R$ {{ formatPriceBR(subscription.price) }}</TableCell>
