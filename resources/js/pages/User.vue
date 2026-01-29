@@ -1,23 +1,18 @@
 <script setup lang="ts">
 import { Separator } from '@/components/ui/separator';
-import MainLayout from '@/layouts/MainLayout.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import UsersTable from '@/components/tables/UsersTable.vue';
-import { reactive, watch } from 'vue';
+import { reactive, onMounted } from 'vue';
 import UserForm from '@/components/form/UserForm.vue';
-import { usePage } from '@inertiajs/vue3';
-import { toast } from 'vue-sonner';
 import { Plus } from 'lucide-vue-next';
+import { storeToRefs } from 'pinia';
+import { useUserAdmStore } from '@/stores/user-adm-store';
 
 defineOptions({
   name: 'User',
 });
 
-const page = usePage();
-
-const props = defineProps<{
-  users: IUserAdm[];
-}>();
+const {loadingUserAdm, listUsersAdm} = storeToRefs(useUserAdmStore());
 
 const showUserForm = reactive<{
   open: boolean;
@@ -42,34 +37,36 @@ const startEdit = (user: IUserAdm) => {
   }
 };
 
-watch(
-  () => page,
-  () => {
-    if (page.props.flash.success) {
-      toast.success(page.props.flash.success);
-    }
-  },
-  { immediate: true, deep: true }
-);
+const fetchUsers = async () => {
+  await useUserAdmStore().getUsersAdm();
+};
+
+onMounted(async () => {
+  await fetchUsers();
+});
 </script>
 
 <template>
-  <MainLayout>
-    <div class="p-6">
-      <TitlePage title="Usuários" />
-      <Separator class="my-4" />
-      <div class="m-3 flex justify-end">
-        <Button
-          class="cursor-pointer bg-black"
-          @click="changeShowUserForm(true)"
-        >
-          Criar usuário
-          <Plus />
-        </Button>
-      </div>
-      <UsersTable :users="props.users" @edit:user="startEdit" />
-    </div>
-  </MainLayout>
-  <!-- Modals -->
-  <UserForm :data="showUserForm" @update:open="changeShowUserForm(false)" />
+    <main>
+        <div v-if="!loadingUserAdm" class="p-6">
+          <TitlePage title="Usuários" />
+          <Separator class="my-4" />
+          <div class="m-3 flex justify-end">
+            <Button
+              class="cursor-pointer bg-black"
+              @click="changeShowUserForm(true)"
+            >
+              Criar usuário
+              <Plus />
+            </Button>
+          </div>
+          <UsersTable :users="listUsersAdm" @edit:user="startEdit" />
+        </div>
+        <div class="p-6" v-else>
+            <Spinner  class="size-8" />
+        </div>
+      <!-- Modals -->
+      <UserForm :data="showUserForm" @update:open="changeShowUserForm(false)" />
+
+    </main>
 </template>

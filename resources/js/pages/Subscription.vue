@@ -1,23 +1,32 @@
 <script setup lang="ts">
-import MainLayout from '@/layouts/MainLayout.vue';
 import SubscriptionsTable from '@/components/tables/SubscriptionsTable.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
+import { storeToRefs } from 'pinia';
+import { onMounted } from 'vue';
+import { useSubscriptionStore } from '@/stores/subscription-store';
 
 defineOptions({
   name: 'Subscription',
 });
 
-const props = defineProps<{
-  subscriptions: ISubscriptions;
-}>();
+const {loadingSubscription, listSubscriptions} = storeToRefs(useSubscriptionStore());
+
+const fetchSubscriptions = async () => {
+  await useSubscriptionStore().getSubscriptions();
+};
+
+onMounted(async () => {
+  await fetchSubscriptions();
+});
 </script>
 
 <template>
-  <MainLayout>
-    <div class="p-6">
+    <div class="p-6" v-if="!loadingSubscription">
       <TitlePage title="Assinaturas" />
       <Separator class="my-4" />
-      <SubscriptionsTable :subscriptions="props.subscriptions" />
+      <SubscriptionsTable :subscriptions="listSubscriptions" />
     </div>
-  </MainLayout>
+    <div class="p-6" v-else>
+      <Spinner  class="size-8" />
+    </div>
 </template>

@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import MainLayout from '@/layouts/MainLayout.vue';
 import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
 import { Plus } from 'lucide-vue-next';
 import EnterpriseForm from '@/components/form/EnterpriseForm.vue';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
-import { watch } from 'vue';
-import { usePage } from '@inertiajs/vue3';
-import { toast } from 'vue-sonner';
 import UserForm from '@/components/form/UserForm.vue';
 import UsersEnterpriseManage from '@/components/manage/UsersEnterpriseManage.vue';
+import { storeToRefs } from 'pinia';
+import { useEnterpriseStore } from '@/stores/enterprise-store';
 
 defineOptions({
   name: 'Enterprise',
 });
 
-const props = defineProps<{
-  enterprises: IEnterprise[];
-  sellers: ISeller[];
-}>();
+const { loadingEnterprise, listEnterprises } =
+  storeToRefs(useEnterpriseStore());
 
 const currentEnterprise = reactive<{ enterprise: IEnterprise | null }>({
   enterprise: null,
@@ -26,11 +22,9 @@ const currentEnterprise = reactive<{ enterprise: IEnterprise | null }>({
 const showEnterpriseForm = reactive<{
   open: boolean;
   enterprise: IEnterprise | null;
-  sellers: ISeller | null;
 }>({
   open: false,
   enterprise: null,
-  sellers: null,
 });
 const showUserForm = reactive<{
   open: boolean;
@@ -60,13 +54,11 @@ const changeShowUserEnterpriseManage = (
 };
 const changeShowEnterpriseForm = (
   show: boolean,
-  enterprise: IEnterprise | null = null,
-  sellers: ISeller[] | null = null
+  enterprise: IEnterprise | null = null
 ): void => {
   Object.assign(showEnterpriseForm, {
     open: show,
     enterprise: enterprise,
-    sellers: sellers,
   });
 };
 const changeShowUserForm = (
@@ -79,7 +71,7 @@ const changeShowUserForm = (
   });
 };
 const startEdit = (enterprise: IEnterprise) => {
-  changeShowEnterpriseForm(true, enterprise, props.sellers);
+  changeShowEnterpriseForm(true, enterprise);
 };
 const addUser = (enterprise: IEnterprise) => {
   currentEnterprise.enterprise = enterprise;
@@ -103,47 +95,57 @@ const closeFormOpenManage = () => {
     changeShowUserEnterpriseManage(true, currentEnterprise.enterprise);
   }
 };
+const fetchEnterprises = async () => {
+  await useEnterpriseStore().getEnterprises();
+};
+
+onMounted(async () => {
+  await fetchEnterprises();
+});
 </script>
 
 <template>
-  <MainLayout>
-    <div class="p-6">
-      <TitlePage title="Empresas" />
-      <Separator class="my-4" />
-      <div class="m-3 flex justify-end">
-        <Button
-          class="cursor-pointer bg-black"
-          @click="changeShowEnterpriseForm(true, null, props.sellers)"
-        >
-          Criar empresa
-          <Plus />
-        </Button>
-      </div>
-      <EnterprisesTable
-        :enterprises="props.enterprises"
-        @edit:enterprise="startEdit"
-        @open:manage="
-          (enterprise: IEnterprise) =>
-            changeShowUserEnterpriseManage(true, enterprise)
-        "
-      />
-    </div>
-  </MainLayout>
-
-  <!-- Modals -->
-  <EnterpriseForm
-    :data="showEnterpriseForm"
-    @update:open="changeShowEnterpriseForm(false)"
-  />
-  <UserForm :data="showUserForm" @update:open="closeFormOpenManage" />
-  <UsersEnterpriseManage
-    :data="showUsersEnterpriseManage"
-    @update:open="changeShowUserEnterpriseManage(false)"
-    @add:user="(enterprise: IEnterprise) => addUser(enterprise)"
-    @edit:user="
-      (data: { enterprise: IEnterprise; user: IUserAdm }) =>
-        handleEditUser(data.enterprise, data.user)
-    "
-  />
-  />
+    <main>
+        <div v-if="!loadingEnterprise">
+            <div class="p-6">
+              <TitlePage title="Empresas" />
+              <Separator class="my-4" />
+              <div class="m-3 flex justify-end">
+                <Button
+                  class="cursor-pointer bg-black"
+                  @click="changeShowEnterpriseForm(true, null)"
+                >
+                  Criar empresa
+                  <Plus />
+                </Button>
+              </div>
+              <EnterprisesTable
+                :enterprises="listEnterprises"
+                @edit:enterprise="startEdit"
+                @open:manage="
+                  (enterprise: IEnterprise) =>
+                    changeShowUserEnterpriseManage(true, enterprise)
+                "
+              />
+              <!-- Modals -->
+              <EnterpriseForm
+                :data="showEnterpriseForm"
+                @update:open="changeShowEnterpriseForm(false)"
+              />
+              <UserForm :data="showUserForm" @update:open="closeFormOpenManage" />
+              <UsersEnterpriseManage
+                :data="showUsersEnterpriseManage"
+                @update:open="changeShowUserEnterpriseManage(false)"
+                @add:user="(enterprise: IEnterprise) => addUser(enterprise)"
+                @edit:user="
+                  (data: { enterprise: IEnterprise; user: IUserAdm }) =>
+                    handleEditUser(data.enterprise, data.user)
+                "
+              />
+            </div>
+        </div>
+        <div class="p-6" v-else>
+          <Spinner  class="size-8" />
+        </div>
+    </main>
 </template>

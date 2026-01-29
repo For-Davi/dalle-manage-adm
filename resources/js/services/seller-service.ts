@@ -1,6 +1,6 @@
 import api from '@/lib/api';
 
-const baseUrl = 'seller';
+const baseUrl = 'sellers';
 
 export const getSellersRegistrationService = (): Promise<{
   status: number;
@@ -10,6 +10,16 @@ export const getSellersRegistrationService = (): Promise<{
   };
 }> => {
   return api.get(`${baseUrl}/registrations`);
+};
+
+export const getSellersService = (): Promise<{
+  status: number;
+  data: {
+    message: string;
+    sellers: ISeller[];
+  };
+}> => {
+  return api.get(`${baseUrl}/`);
 };
 
 export const createSellerService = (

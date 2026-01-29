@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import { registerLucideIcons } from './plugins/lucide';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';
@@ -60,7 +61,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from './components/ui/select/index.js';
-import { Loader2 } from 'lucide-vue-next';
 import { Separator } from './components/ui/separator/index.js';
 import {
   DropdownMenu,
@@ -91,7 +91,6 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-app.component('Toaster', Toaster);
 app.component('Card', Card);
 app.component('CardContent', CardContent);
 app.component('CardHeader', CardHeader);
@@ -138,7 +137,6 @@ app.component('SelectScrollUpButton', SelectScrollUpButton);
 app.component('SelectSeparator', SelectSeparator);
 app.component('SelectTrigger', SelectTrigger);
 app.component('SelectValue', SelectValue);
-app.component('Loader2', Loader2);
 app.component('DropdownMenu', DropdownMenu);
 app.component('DropdownMenuCheckboxItem', DropdownMenuCheckboxItem);
 app.component('DropdownMenuContent', DropdownMenuContent);
@@ -159,5 +157,7 @@ app.component('TabsContent', TabsContent);
 app.component('TabsList', TabsList);
 app.component('TabsTrigger', TabsTrigger);
 app.component('Spinner', Spinner);
+
+registerLucideIcons(app);
 
 app.mount('#app');

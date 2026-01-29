@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnterpriseController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,5 +49,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [SellerController::class, 'create']);
         Route::put('/{id}', [SellerController::class, 'update']);
         Route::delete('/{id}', [SellerController::class, 'delete']);
+    });
+
+    Route::prefix('subscriptions')->group(function () {
+        Route::get('/', [SubscriptionController::class, 'index']);
+        // Route::put('/{id}', [SellerController::class, 'update']);
     });
 });

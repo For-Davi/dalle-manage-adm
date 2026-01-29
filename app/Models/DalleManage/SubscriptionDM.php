@@ -4,7 +4,7 @@ namespace App\Models\DalleManage;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SubscriptionsDM extends Model
+class SubscriptionDM extends Model
 {
     protected $connection = 'dalle_manage';
 

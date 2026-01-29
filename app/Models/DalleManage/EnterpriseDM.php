@@ -30,7 +30,7 @@ class EnterpriseDM extends Model
 
     public function subscription()
     {
-        return $this->belongsTo(SubscriptionsDM::class, 'subscription_id');
+        return $this->belongsTo(SubscriptionDM::class, 'subscription_id');
     }
 
     public function roles()

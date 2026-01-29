@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { storeToRefs } from 'pinia';
-import { router } from '@inertiajs/vue3';
 import { useAuthStore } from '@/stores/auth-store';
+import router from '@/router';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost/api',
@@ -32,7 +32,7 @@ api.interceptors.response.use(
       authStore.setToken(null);
       authStore.setUser(null);
 
-      router.visit(route('login'));
+      router.push({ name: 'login' });
     }
 
     return Promise.reject(error);

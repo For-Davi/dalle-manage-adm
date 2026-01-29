@@ -2,12 +2,12 @@
 
 namespace App\Repositories\DalleManage;
 
-use App\Models\DalleManage\SubscriptionsDM;
+use App\Models\DalleManage\SubscriptionDM;
 
-class SubscriptionsDMRepository
+class SubscriptionDMRepository
 {
     public function __construct(
-        public SubscriptionsDM $model,
+        public SubscriptionDM $model,
     ) {}
 
     public function getAll()
