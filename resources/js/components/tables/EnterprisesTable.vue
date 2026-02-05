@@ -1,118 +1,105 @@
 <script setup lang="ts">
-import { isActive } from '@/composables/useVerify';
-import { getNameSubscription } from '@/composables/useSubscription';
-import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { isActive } from '@/composables/useVerify';
+import { getNameSubscription } from '@/composables/useSubscription';
 import { goUrlName } from '@/composables/useRedirect';
+import ConfirmAction from '../confirm/ConfirmAction.vue';
 
-defineOptions({
-  name: 'EnterprisesTable',
-});
+defineOptions({ name: 'EnterprisesTable' });
 
-const emit = defineEmits<{
-  'open:manage': [IEnterprise];
-}>();
 const props = defineProps<{
   enterprises: IEnterprise[];
 }>();
 
-const showConfirmAction = ref<boolean>(false);
-const monirotingEnterpriseId = ref<number | null>(null);
+const emit = defineEmits<{
+  'open:manage': [enterprise: IEnterprise];
+}>();
 
-const openConfirmAction = (id: number) => {
-  ((showConfirmAction.value = true), (monirotingEnterpriseId.value = id));
+const isConfirmOpen = ref(false);
+const isDeleting = ref(false);
+const selectedId = ref<number | null>(null);
+
+const openDeleteModal = (id: number) => {
+  selectedId.value = id;
+  isConfirmOpen.value = true;
 };
-const closeConfirmAction = () => {
-  ((showConfirmAction.value = false), clear());
+const handleExclude = () => {
+  if (selectedId.value === null) return;
+
+  router.delete(route('enterprise.delete', selectedId.value), {
+    onBefore: () => { isDeleting.value = true; },
+    onSuccess: () => {
+      isConfirmOpen.value = false;
+      selectedId.value = null;
+    },
+    onFinish: () => { isDeleting.value = false; },
+  });
 };
-const okConfirmAction = async () => {
-  await exclude(monirotingEnterpriseId.value ?? 0);
-  clear();
-};
-const clear = () => {
-  monirotingEnterpriseId.value = null;
-};
-const exclude = (id: number) => {
-  if (id !== null) {
-    ((showConfirmAction.value = false),
-      router.delete(route('enterprise.delete', id)));
-  }
-};
-const goEdit = async (enterpriseID: number) => {
-  await goUrlName('enterprise.edit', { id: enterpriseID });
-};
+
+const goEdit = (id: number) => goUrlName('enterprise.edit', { id });
 </script>
 
 <template>
   <Table>
     <TableHeader>
       <TableRow>
-        <TableHead> Status </TableHead>
+        <TableHead>Status</TableHead>
         <TableHead>Nome</TableHead>
         <TableHead>Email</TableHead>
-        <TableHead> Assinatura </TableHead>
-        <TableHead> Ações </TableHead>
+        <TableHead>Assinatura</TableHead>
+        <TableHead class="text-right">Ações</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
-      <TableRow v-for="(enterprise, index) in props.enterprises" :key="index">
+      <TableRow v-for="enterprise in props.enterprises" :key="enterprise.id">
         <TableCell>
-          <LucideCircleCheckBig
-            v-if="isActive(enterprise.active)"
-            class="h-5 w-5 text-green-600"
-          />
+          <LucideCircleCheckBig v-if="isActive(enterprise.active)" class="h-5 w-5 text-green-600" />
           <LucideCircleX v-else class="h-5 w-5 text-red-600" />
         </TableCell>
-        <TableCell>{{ enterprise.name }}</TableCell>
+        <TableCell class="font-medium">{{ enterprise.name }}</TableCell>
         <TableCell>{{ enterprise.email }}</TableCell>
-        <TableCell>
-          {{ getNameSubscription(enterprise.subscription.name) }}
-        </TableCell>
-        <TableCell>
+        <TableCell>{{ getNameSubscription(enterprise.subscription.name) }}</TableCell>
+        <TableCell class="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
-              <Button variant="ghost" class="cursor-pointer">
-                <LucideEllipsis />
+              <Button variant="ghost" size="icon">
+                <LucideEllipsis class="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-48 sm:w-56">
-              <DropdownMenuLabel class="text-xs sm:text-sm"
-                >Opções</DropdownMenuLabel
-              >
+            <DropdownMenuContent align="end" class="w-48">
+              <DropdownMenuLabel>Opções</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                class="cursor-pointer text-xs sm:text-sm"
-                @click="emit('open:manage', enterprise)"
-              >
-                <LucideUsers /> <span>Usuários</span>
+
+              <DropdownMenuItem @click="emit('open:manage', enterprise)">
+                <LucideUsers class="mr-2 h-4 w-4" /> Usuários
               </DropdownMenuItem>
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  class="cursor-pointer text-xs sm:text-sm"
-                  @click="goEdit(enterprise.id)"
-                >
-                  <LucidePencil /> <span>Editar</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  class="cursor-pointer text-xs text-red-600 sm:text-sm"
-                  @click="openConfirmAction(enterprise.id)"
-                >
-                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
+
+              <DropdownMenuItem @click="goEdit(enterprise.id)">
+                <LucidePencil class="mr-2 h-4 w-4" /> Editar
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                class="text-red-600 focus:text-red-600"
+                @click="openDeleteModal(enterprise.id)"
+              >
+                <LucideTrash class="mr-2 h-4 w-4" /> Excluir
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </TableCell>
       </TableRow>
     </TableBody>
   </Table>
-  <!-- Modals -->
+
   <ConfirmAction
-    :open="showConfirmAction"
-    title="Exclusão de empresa"
-    message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá a empresa permanentemente."
-    @update:open="closeConfirmAction()"
-    @okConfirmAction="okConfirmAction()"
+    v-model:open="isConfirmOpen"
+    title="Excluir Empresa"
+    message="Esta ação é irreversível e excluirá todos os dados vinculados a esta empresa."
+    :loading="isDeleting"
+    variant="destructive"
+    @confirm="handleExclude"
   />
 </template>
