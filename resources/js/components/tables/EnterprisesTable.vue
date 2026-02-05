@@ -4,13 +4,13 @@ import { getNameSubscription } from '@/composables/useSubscription';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { goUrlName } from '@/composables/useRedirect';
 
 defineOptions({
   name: 'EnterprisesTable',
 });
 
 const emit = defineEmits<{
-  'edit:enterprise': [enterprise: IEnterprise];
   'open:manage': [IEnterprise];
 }>();
 const props = defineProps<{
@@ -38,6 +38,9 @@ const exclude = (id: number) => {
     ((showConfirmAction.value = false),
       router.delete(route('enterprise.delete', id)));
   }
+};
+const goEdit = async (enterpriseID: number) => {
+  await goUrlName('enterprise.edit', { id: enterpriseID });
 };
 </script>
 
@@ -87,7 +90,7 @@ const exclude = (id: number) => {
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   class="cursor-pointer text-xs sm:text-sm"
-                  @click="emit('edit:enterprise', enterprise)"
+                  @click="goEdit(enterprise.id)"
                 >
                   <LucidePencil /> <span>Editar</span>
                 </DropdownMenuItem>

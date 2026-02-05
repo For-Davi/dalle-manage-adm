@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia';
 import { searchCep } from '@/services/cep-service';
 import { useSellerStore } from '@/stores/seller-store';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
-import { validateCreate } from './validation';
+import { validateCreateorUpdate } from './validation';
 import router from '@/router';
 
 defineOptions({
@@ -36,7 +36,7 @@ const form = reactive({
 });
 
 const create = async () => {
-  const status = validateCreate(form);
+  const status = validateCreateorUpdate(form);
   if (status.status) {
     const response = await useEnterpriseStore().createEnterprise(form);
     if (response?.status === 201) {

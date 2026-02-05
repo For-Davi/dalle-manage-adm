@@ -9,9 +9,15 @@ class EnterpriseDMRepository
 {
     public function __construct(public EnterpriseDM $model) {}
 
-    public function findById($id)
+    public function findById($id, $relations = [])
     {
-        return $this->model->find($id);
+        $query = $this->model->query();
+
+        if (! empty($relations)) {
+            $query->with($relations);
+        }
+
+        return $query->find($id);
     }
 
     public function getAll(array $relations = [])

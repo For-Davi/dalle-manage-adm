@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::get('/', [EnterpriseController::class, 'index']);
+        Route::get('/{id}', [EnterpriseController::class, 'show']);
         Route::post('/', [EnterpriseController::class, 'create']);
         Route::put('/{id}', [EnterpriseController::class, 'update']);
         Route::delete('/{id}', [EnterpriseController::class, 'delete']);

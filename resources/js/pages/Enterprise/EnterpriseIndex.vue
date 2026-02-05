@@ -52,15 +52,6 @@ const changeShowUserEnterpriseManage = (
     enterprise: enterprise,
   });
 };
-const changeShowEnterpriseForm = (
-  show: boolean,
-  enterprise: IEnterprise | null = null
-): void => {
-  Object.assign(showEnterpriseForm, {
-    open: show,
-    enterprise: enterprise,
-  });
-};
 const changeShowUserForm = (
   show: boolean,
   user: IUserAdm | null = null
@@ -70,9 +61,7 @@ const changeShowUserForm = (
     user: user,
   });
 };
-const startEdit = (enterprise: IEnterprise) => {
-  changeShowEnterpriseForm(true, enterprise);
-};
+
 const addUser = (enterprise: IEnterprise) => {
   currentEnterprise.enterprise = enterprise;
   Object.assign(showUserForm, {
@@ -119,19 +108,8 @@ onMounted(async () => {
             <LucidePlus />
           </Button>
         </div>
-        <EnterprisesTable
-          :enterprises="listEnterprises"
-          @edit:enterprise="startEdit"
-          @open:manage="
-            (enterprise: IEnterprise) =>
-              changeShowUserEnterpriseManage(true, enterprise)
-          "
-        />
+        <EnterprisesTable :enterprises="listEnterprises" />
         <!-- Modals -->
-        <EnterpriseForm
-          :data="showEnterpriseForm"
-          @update:open="changeShowEnterpriseForm(false)"
-        />
         <UserForm :data="showUserForm" @update:open="closeFormOpenManage" />
         <UsersEnterpriseManage
           :data="showUsersEnterpriseManage"

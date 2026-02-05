@@ -7,6 +7,7 @@ import {
   deleteUserByEnterpriseService,
   getEnterprisesService,
   getUsersByEnterpriseService,
+  showEnterpriseService,
   updateEnterpriseService,
   updateUserByEnterpriseService,
 } from '@/services/enterprise-service';
@@ -35,6 +36,17 @@ export const useEnterpriseStore = defineStore('enterprise', {
           this.setListEnterprises(response.data.enterprises);
         }
         return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async showEnterprise(enterpriseID: number) {
+      try {
+        this.setLoading(true);
+        return await showEnterpriseService(enterpriseID);
       } catch (error) {
         createError(error);
         return null;

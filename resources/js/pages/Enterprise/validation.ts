@@ -13,12 +13,11 @@ interface DataCreate {
   address: string;
   numberAddress: string;
   complement: string;
-  subscriptionID: number;
-  sellerID: number | null;
+  subscriptionID: number | null;
   active: number;
 }
 
-export const validateCreate = (data: DataCreate) => {
+export const validateCreateorUpdate = (data: DataCreate) => {
   const errors: string[] = [];
 
   if (!data.name) {
@@ -38,6 +37,10 @@ export const validateCreate = (data: DataCreate) => {
 
   if (data.cnpj && data.cnpj.length !== 14) {
     errors.push('Informe um CNPJ válido');
+  }
+
+  if (!data.subscriptionID) {
+    errors.push('Informe uma assinatura');
   }
 
   if (errors.length) {

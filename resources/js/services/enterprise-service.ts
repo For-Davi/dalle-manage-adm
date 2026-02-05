@@ -13,6 +13,18 @@ export const getEnterprisesService = (): Promise<{
   return api.get(`${baseUrl}/`);
 };
 
+export const showEnterpriseService = (
+  enterpriseID: number
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    enterprise: IEnterprise;
+  };
+}> => {
+  return api.get(`${baseUrl}/${enterpriseID}`);
+};
+
 export const createEnterpriseService = (
   data: IDataEnterprise
 ): Promise<{

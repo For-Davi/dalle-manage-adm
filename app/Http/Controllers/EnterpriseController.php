@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Enterprise\CreateEnterpriseRequest;
 use App\Http\Requests\Enterprise\DeleteEnterpriseRequest;
+use App\Http\Requests\Enterprise\ShowEnterpriseRequest;
 use App\Http\Requests\Enterprise\UpdateEnterpriseRequest;
 use App\Repositories\DalleAdm\EnterpriseRepository;
 use App\Repositories\DalleAdm\SellerRepository;
@@ -28,6 +29,13 @@ class EnterpriseController
         $enterprises = $this->dmRepository->getAll(['subscription']);
 
         return response()->json(['enterprises' => $enterprises]);
+    }
+
+    public function show(ShowEnterpriseRequest $request)
+    {
+        $enterprise = $this->dmRepository->findById($request->route('id'), ['seller', 'subscription']);
+
+        return response()->json(['enterprise' => $enterprise]);
     }
 
     public function create(CreateEnterpriseRequest $request)
