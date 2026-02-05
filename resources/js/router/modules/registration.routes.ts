@@ -4,6 +4,7 @@ export const registrationRoutes: RouteRecordRaw[] = [
   {
     path: 'sellers/registrations',
     name: 'registrations',
-    component: () => import('@/pages/Registration/RegistrationIndex.vue'),
+    component: () =>
+      import('@/pages/Seller/Registration/RegistrationIndex.vue'),
   },
 ];

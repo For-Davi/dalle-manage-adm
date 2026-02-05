@@ -55,7 +55,7 @@ onMounted(async () => {
         </Button>
         <Button class="cursor-pointer" @click="changeShowSellerForm(true)">
           Criar vendedor
-          <Plus />
+          <LucidePlus />
         </Button>
       </div>
       <SellersTable :sellers="listSellers" @edit:seller="startEdit" />

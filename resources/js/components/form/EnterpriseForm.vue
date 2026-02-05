@@ -2,7 +2,6 @@
 import { computed, watch, ref } from 'vue';
 import TitlePage from '../general/TitlePage.vue';
 import { useForm } from '@inertiajs/vue3';
-import { phoneValidation } from '@/composables/PhoneValidation';
 import { searchCep } from '@/services/cep-service';
 
 defineOptions({
@@ -255,7 +254,7 @@ watch(open, () => {
               v-if="loading"
               class="absolute top-1/2 right-3 -translate-y-1/2"
             >
-              <Loader2 class="h-4 w-4 animate-spin" />
+              <LucideLoader2 class="h-4 w-4 animate-spin" />
             </div>
           </Input>
         </div>
@@ -417,7 +416,7 @@ watch(open, () => {
         <div class="mt-3 w-full">
           <Button class="w-full cursor-pointer">
             <div v-if="form.processing">
-              <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+              <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
             </div>
             <div v-else>{{ props.data.enterprise ? 'Salvar' : 'Criar' }}</div>
           </Button>

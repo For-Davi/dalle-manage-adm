@@ -6,7 +6,7 @@ import {
   resetPasswordService,
   resetService,
 } from '@/services/auth-service';
-import { createError, createSuccess } from '@/composables/CreateNotify';
+import { createError, createSuccess } from '@/composables/useCreateNotify';
 import router from '@/router';
 
 export const useAuthStore = defineStore('auth', {

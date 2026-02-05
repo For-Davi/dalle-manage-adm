@@ -16,6 +16,10 @@ class RolesDM extends Model
         'permissions',
     ];
 
+    protected $casts = [
+        'permissions' => 'array',
+    ];
+
     public function enterprise()
     {
         return $this->belongsTo(EnterpriseDM::class, 'enterprise_id');

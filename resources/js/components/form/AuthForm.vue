@@ -67,7 +67,7 @@ const submit = async () => {
         @click="submit"
       >
         <div v-if="loadingAuth">
-          <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+          <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
         </div>
         <div v-else>Entrar</div>
       </Button>

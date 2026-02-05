@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { isActive } from '@/composables/Active';
-import { getNameSubscription } from '@/composables/Subscription';
+import { isActive } from '@/composables/useVerify';
+import { getNameSubscription } from '@/composables/useSubscription';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';

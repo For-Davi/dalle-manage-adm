@@ -56,7 +56,7 @@ onMounted(async () => {
           @click="changeShowUserForm(true)"
         >
           Criar usuário
-          <Plus />
+          <LucidePlus />
         </Button>
       </div>
       <UsersTable :users="listUsersAdm" @edit:user="startEdit" />

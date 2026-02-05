@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { formatPriceBR } from '@/composables/FormatPrice';
-import { getNameSubscription } from '@/composables/Subscription';
+import { formatPriceBR } from '@/composables/useFormt';
+import { getNameSubscription } from '@/composables/useSubscription';
 
 defineOptions({
   name: 'SubscriptionsTable',

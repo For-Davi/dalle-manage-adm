@@ -19,7 +19,6 @@ export const createEnterpriseService = (
   status: number;
   data: {
     message: string;
-    enterprises: IEnterprise[];
   };
 }> => {
   return api.post(`${baseUrl}/`, data);
@@ -31,7 +30,6 @@ export const updateEnterpriseService = (
   status: number;
   data: {
     message: string;
-    enterprises: IEnterprise[];
   };
 }> => {
   return api.put(`${baseUrl}/`, data);

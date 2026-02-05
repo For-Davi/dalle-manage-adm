@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { createError, createSuccess } from '@/composables/CreateNotify';
+import { createError, createSuccess } from '@/composables/useCreateNotify';
 import {
   createUserService,
   deleteUserService,

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { createError, createSuccess } from '@/composables/CreateNotify';
+import { createError, createSuccess } from '@/composables/useCreateNotify';
 import {
   createEnterpriseService,
   createUserByEnterpriseService,
@@ -47,7 +47,6 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(true);
         const response = await createEnterpriseService(data);
         if (response.status === 201) {
-          this.setListEnterprises(response.data.enterprises);
           createSuccess(response.data.message);
         }
         return response;
@@ -63,7 +62,6 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(true);
         const response = await updateEnterpriseService(data);
         if (response.status === 200) {
-          this.setListEnterprises(response.data.enterprises);
           createSuccess(response.data.message);
         }
         return response;

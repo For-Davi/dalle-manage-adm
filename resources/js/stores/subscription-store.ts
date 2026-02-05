@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { createError } from '@/composables/CreateNotify';
+import { createError } from '@/composables/useCreateNotify';
 import { getSubscriptionsService } from '@/services/subscription-service';
 
 export const useSubscriptionStore = defineStore('subscription', {

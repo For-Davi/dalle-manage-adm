@@ -39,13 +39,12 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
-                $enterprises = $this->dmRepository->getAll(['subscription']);
 
-                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa criada'], 201);
+                return response()->json(['message' => 'Empresa criada'], 201);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao criar empresa', $e, $request);
+            ErrorLogger::critical('Erro ao criar empresa', $e, $request);
 
             return response()->json(['message' => 'Erro ao criar empresa'], 500);
         }
@@ -61,13 +60,12 @@ class EnterpriseController
 
             if ($enterprise) {
                 DB::commit();
-                $enterprises = $this->dmRepository->getAll(['subscription']);
 
-                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa atualizada'], 200);
+                return response()->json(['message' => 'Empresa atualizada'], 200);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao atualizar empresa', $e, $request);
+            ErrorLogger::critical('Erro ao atualizar empresa', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar empresa'], 500);
         }
@@ -90,7 +88,7 @@ class EnterpriseController
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao excluir a empresa', $e, $request);
+            ErrorLogger::critical('Erro ao excluir a empresa', $e, $request);
 
             return response()->json(['message' => 'Erro ao excluir a empresa'], 500);
         }

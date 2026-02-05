@@ -99,7 +99,7 @@ class EnterpriseService
             'address' => $request->address,
             'numberAddress' => $request->numberAddress,
             'complement' => $request->complement,
-            'subscriptionId' => $request->subscriptionId,
+            'subscriptionID' => $request->subscriptionID,
             'sellerID' => $request->sellerID,
         ]);
 

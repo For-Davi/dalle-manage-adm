@@ -66,7 +66,7 @@ watch(
         </Button>
         <Button class="cursor-pointer">
           <div v-if="form.processing">
-            <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+            <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
           </div>
           <div v-else>Atualizar dados</div>
         </Button>

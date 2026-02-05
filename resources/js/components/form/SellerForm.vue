@@ -179,7 +179,7 @@ watch(
         <div class="mt-4 flex w-full justify-center space-y-2">
           <Button class="w-full cursor-pointer">
             <div v-if="form.processing">
-              <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+              <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
             </div>
             <div v-else>{{ props.data.seller ? 'Salvar' : 'Criar' }}</div>
           </Button>

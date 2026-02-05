@@ -39,7 +39,7 @@ class CreateOrUpdateEnterpriseDTO extends BaseDTO
             address: $data['address'] ?? null,
             complement: $data['complement'] ?? null,
             number_address: $data['numberAddress'] ?? null,
-            subscription_id: $data['subscriptionId'],
+            subscription_id: $data['subscriptionID'],
             active: array_key_exists('active', $data) ? (int) $data['active'] : 1,
             seller_id: $data['sellerID'] ?? null,
         );

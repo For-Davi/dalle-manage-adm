@@ -7,6 +7,7 @@ import UserForm from '@/components/form/UserForm.vue';
 import UsersEnterpriseManage from '@/components/manage/UsersEnterpriseManage.vue';
 import { storeToRefs } from 'pinia';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
+import { goUrlName } from '@/composables/useRedirect';
 
 defineOptions({
   name: 'Enterprise',
@@ -112,10 +113,10 @@ onMounted(async () => {
         <div class="m-3 flex justify-end">
           <Button
             class="cursor-pointer bg-black"
-            @click="changeShowEnterpriseForm(true, null)"
+            @click="goUrlName('enterprise.create')"
           >
             Criar empresa
-            <Plus />
+            <LucidePlus />
           </Button>
         </div>
         <EnterprisesTable

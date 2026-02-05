@@ -26,7 +26,7 @@ class CreateEnterpriseRequest extends FormRequest
             'address' => 'nullable|string|max:100',
             'numberAddress' => 'nullable|numeric',
             'complement' => 'nullable|string|max:100',
-            'subscriptionId' => 'required|integer',
+            'subscriptionID' => 'required|integer',
             'sellerID' => 'nullable|exists:sellers,id',
         ];
     }

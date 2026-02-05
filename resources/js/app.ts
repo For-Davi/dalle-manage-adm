@@ -8,6 +8,14 @@ import App from './App.vue';
 import 'vue-sonner/style.css';
 import { Toaster } from 'vue-sonner';
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import {
   Card,
   CardContent,
   CardFooter,
@@ -91,6 +99,12 @@ const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.component('Breadcrumb', Breadcrumb);
+app.component('BreadcrumbItem', BreadcrumbItem);
+app.component('BreadcrumbLink', BreadcrumbLink);
+app.component('BreadcrumbList', BreadcrumbList);
+app.component('BreadcrumbPage', BreadcrumbPage);
+app.component('BreadcrumbSeparator', BreadcrumbSeparator);
 app.component('Card', Card);
 app.component('CardContent', CardContent);
 app.component('CardHeader', CardHeader);
