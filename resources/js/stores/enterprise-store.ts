@@ -100,6 +100,17 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(false);
       }
     },
+    async showUserByEnterprise(userID: number) {
+      try {
+        this.setLoading(true);
+        return await showUserByEnterpriseService(userID);
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
     async getUsersByEnterprise(enterpriseID: number) {
       try {
         this.setLoading(true);

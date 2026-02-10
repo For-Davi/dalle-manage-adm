@@ -60,6 +60,19 @@ export const deleteEnterpriseService = (
 };
 
 // Usuários por empresa
+export const showUserByEnterpriseService = (
+  enterpriseID: number,
+  userID: number
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    user: IUserDm;
+  };
+}> => {
+  return api.get(`${baseUrl}/${enterpriseID}/users/${userID}`);
+};
+
 export const getUsersByEnterpriseService = (
   enterpriseID: number
 ): Promise<{
@@ -69,7 +82,7 @@ export const getUsersByEnterpriseService = (
     users: IUserDm[];
   };
 }> => {
-  return api.get(`${baseUrl}/users/${enterpriseID}/`);
+  return api.get(`${baseUrl}/${enterpriseID}/users/`);
 };
 
 export const createUserByEnterpriseService = (
@@ -82,11 +95,12 @@ export const createUserByEnterpriseService = (
     users: IUserDm[];
   };
 }> => {
-  return api.post(`${baseUrl}/users/${enterpriseID}/`, data);
+  return api.post(`${baseUrl}/${enterpriseID}/users/`, data);
 };
 
 export const updateUserByEnterpriseService = (
   data: IDataUserDm,
+  enterpriseID: number,
   userID: number
 ): Promise<{
   status: number;
@@ -95,10 +109,11 @@ export const updateUserByEnterpriseService = (
     users: IUserDm[];
   };
 }> => {
-  return api.put(`${baseUrl}/users/${userID}/`, data);
+  return api.put(`${baseUrl}/${enterpriseID}/users/${userID}/`, data);
 };
 
 export const deleteUserByEnterpriseService = (
+    enterpriseID: number,
   userID: number
 ): Promise<{
   status: number;
@@ -107,5 +122,5 @@ export const deleteUserByEnterpriseService = (
     users: IUserDm[];
   };
 }> => {
-  return api.delete(`${baseUrl}/users/${userID}/`);
+  return api.delete(`${baseUrl}/${enterpriseID}/users/${userID}/`);
 };

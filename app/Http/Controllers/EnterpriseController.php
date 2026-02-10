@@ -33,7 +33,7 @@ class EnterpriseController
 
     public function show(ShowEnterpriseRequest $request)
     {
-        $enterprise = $this->dmRepository->findById($request->route('id'), ['seller', 'subscription']);
+        $enterprise = $this->dmRepository->findById($request->route('enterprise'), ['seller', 'subscription']);
 
         return response()->json(['enterprise' => $enterprise]);
     }
@@ -84,7 +84,7 @@ class EnterpriseController
         try {
             DB::beginTransaction();
 
-            $enterprise = $this->dmRepository->delete($request->route('id'));
+            $enterprise = $this->dmRepository->delete($request->route('enterprise'));
 
             if ($enterprise) {
 

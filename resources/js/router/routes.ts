@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
-import { enterpriseRoutes } from './modules/enterprise.routes';
+import { enterpriseRoutes } from './modules/enterprise/enterprise.routes';
 import { userRoutes } from './modules/user.routes';
 import { sellerRoutes } from './modules/seller.routes';
 import { subscriptionRoutes } from './modules/subscription.routes';

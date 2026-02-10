@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
+import { userRoutes } from './user.routes';
 
 export const enterpriseRoutes: RouteRecordRaw[] = [
   {
@@ -17,4 +18,5 @@ export const enterpriseRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/Enterprise/EnterpriseEdit.vue'),
     props: true,
   },
+  ...userRoutes,
 ];

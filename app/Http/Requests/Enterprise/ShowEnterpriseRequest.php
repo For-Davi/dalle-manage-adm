@@ -14,22 +14,22 @@ class ShowEnterpriseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:dalle_manage.enterprises,id',
+            'enterprise' => 'required|exists:dalle_manage.enterprises,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID da empresa é obrigatório.',
-            'id.exists' => 'A empresa informada não foi encontrada.',
+            'enterprise.required' => 'O ID da empresa é obrigatório.',
+            'enterprise.exists' => 'A empresa informada não foi encontrada.',
         ];
     }
 
     public function validationData()
     {
         return array_merge($this->all(), [
-            'id' => $this->route('id'),
+            'enterprise' => $this->route('enterprise'),
         ]);
     }
 }

@@ -14,15 +14,15 @@ class DeleteEnterpriseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:dalle_manage.enterprises,id',
+            'enterprise' => 'required|exists:dalle_manage.enterprises,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID da empresa é obrigatório.',
-            'id.exists' => 'O ID da empresa informada não existe.',
+            'enterprise.required' => 'O ID da empresa é obrigatório.',
+            'enterprise.exists' => 'O ID da empresa informada não existe.',
         ];
     }
 

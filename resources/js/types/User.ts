@@ -23,8 +23,6 @@ export interface DataUserDm {
   name: string;
   email: string;
   password: string;
-  roleID: number;
-  departmentID: number | null;
   createEmployee: boolean;
 }
 

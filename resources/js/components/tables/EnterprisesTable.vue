@@ -28,16 +28,18 @@ const handleExclude = () => {
   if (selectedId.value === null) return;
 
   router.delete(route('enterprise.delete', selectedId.value), {
-    onBefore: () => { isDeleting.value = true; },
+    onBefore: () => {
+      isDeleting.value = true;
+    },
     onSuccess: () => {
       isConfirmOpen.value = false;
       selectedId.value = null;
     },
-    onFinish: () => { isDeleting.value = false; },
+    onFinish: () => {
+      isDeleting.value = false;
+    },
   });
 };
-
-const goEdit = (id: number) => goUrlName('enterprise.edit', { id });
 </script>
 
 <template>
@@ -54,12 +56,17 @@ const goEdit = (id: number) => goUrlName('enterprise.edit', { id });
     <TableBody>
       <TableRow v-for="enterprise in props.enterprises" :key="enterprise.id">
         <TableCell>
-          <LucideCircleCheckBig v-if="isActive(enterprise.active)" class="h-5 w-5 text-green-600" />
+          <LucideCircleCheckBig
+            v-if="isActive(enterprise.active)"
+            class="h-5 w-5 text-green-600"
+          />
           <LucideCircleX v-else class="h-5 w-5 text-red-600" />
         </TableCell>
         <TableCell class="font-medium">{{ enterprise.name }}</TableCell>
         <TableCell>{{ enterprise.email }}</TableCell>
-        <TableCell>{{ getNameSubscription(enterprise.subscription.name) }}</TableCell>
+        <TableCell>{{
+          getNameSubscription(enterprise.subscription.name)
+        }}</TableCell>
         <TableCell class="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger as-child>
@@ -71,11 +78,15 @@ const goEdit = (id: number) => goUrlName('enterprise.edit', { id });
               <DropdownMenuLabel>Opções</DropdownMenuLabel>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem @click="emit('open:manage', enterprise)">
+              <DropdownMenuItem
+                @click="goUrlName('enterprise-users', { id: enterprise.id })"
+              >
                 <LucideUsers class="mr-2 h-4 w-4" /> Usuários
               </DropdownMenuItem>
 
-              <DropdownMenuItem @click="goEdit(enterprise.id)">
+              <DropdownMenuItem
+                @click="goUrlName('enterprise.edit', { id: enterprise.id })"
+              >
                 <LucidePencil class="mr-2 h-4 w-4" /> Editar
               </DropdownMenuItem>
 

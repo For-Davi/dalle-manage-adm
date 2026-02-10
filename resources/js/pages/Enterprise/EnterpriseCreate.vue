@@ -7,6 +7,7 @@ import { useSellerStore } from '@/stores/seller-store';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { validateCreateorUpdate } from './validation';
 import router from '@/router';
+import { goUrlName } from '@/composables/useRedirect';
 
 defineOptions({
   name: 'EnterpriseCreate',
@@ -40,7 +41,7 @@ const create = async () => {
   if (status.status) {
     const response = await useEnterpriseStore().createEnterprise(form);
     if (response?.status === 201) {
-      await router.push({ name: 'enterprises' });
+      await goUrlName('enterprises');
     }
   }
 };
@@ -89,11 +90,6 @@ watch(
           form.city = response.data.localidade;
           form.address = response.data.logradouro;
         }
-      } else {
-        form.neighborhood = '';
-        form.state = '';
-        form.city = '';
-        form.address = '';
       }
       loading.value = false;
     }
@@ -112,7 +108,7 @@ onMounted(async () => {
 
 <template>
   <main class="bg-slate-50/50 p-4 md:p-8">
-    <div v-if="!loadingEnterprise && !loadingSeller" class=" ">
+    <div v-if="!loadingEnterprise && !loadingSeller">
       <div class="mb-2">
         <TitlePage title="Registro de Empresa" />
         <p class="text-muted-foreground mt-1 text-sm">
@@ -129,9 +125,7 @@ onMounted(async () => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer font-bold">
-              Cadastro
-            </BreadcrumbLink>
+            <BreadcrumbLink class="font-bold"> Cadastro </BreadcrumbLink>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

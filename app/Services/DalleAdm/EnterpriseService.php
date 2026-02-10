@@ -132,6 +132,6 @@ class EnterpriseService
             'sellerID' => $request->sellerID,
         ]);
 
-        return $this->repository->update($request->id, $enterpriseDTO->toArray());
+        return $this->repository->update($request->enterprise, $enterpriseDTO->toArray());
     }
 }

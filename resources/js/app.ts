@@ -15,6 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { Switch } from '@/components/ui/switch/index';
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogOverlay,
+  DialogFooter,
 } from './components/ui/dialog/index.js';
 import {
   Sidebar,
@@ -116,6 +118,7 @@ app.component('DialogHeader', DialogHeader);
 app.component('DialogTitle', DialogTitle);
 app.component('DialogDescription', DialogDescription);
 app.component('DialogOverlay', DialogOverlay);
+app.component('DialogFooter', DialogFooter);
 app.component('Input', Input);
 app.component('Label', Label);
 app.component('Button', Button);
@@ -171,6 +174,7 @@ app.component('TabsContent', TabsContent);
 app.component('TabsList', TabsList);
 app.component('TabsTrigger', TabsTrigger);
 app.component('Spinner', Spinner);
+app.component('Switch', Switch);
 
 registerLucideIcons(app);
 

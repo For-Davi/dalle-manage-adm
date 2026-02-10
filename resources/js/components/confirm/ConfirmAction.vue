@@ -20,12 +20,12 @@ const props = withDefaults(
     cancelText: 'Cancelar',
     variant: 'destructive',
     loading: false,
-  },
+  }
 );
 
 const emit = defineEmits<{
   'update:open': [value: boolean];
-  'confirm': [void];
+  confirm: [void];
 }>();
 
 const isOpen = computed({
@@ -38,29 +38,24 @@ const isOpen = computed({
   <Dialog v-model:open="isOpen">
     <DialogContent class="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle class="text-xl font-semibold leading-none tracking-tight">
+        <DialogTitle class="text-xl leading-none font-semibold tracking-tight">
           {{ title }}
         </DialogTitle>
-        <DialogDescription class="pt-4 text-muted-foreground">
+        <DialogDescription class="text-muted-foreground pt-4">
           {{ message }}
         </DialogDescription>
       </DialogHeader>
 
       <DialogFooter class="mt-6 flex justify-end gap-2">
-        <Button
-          variant="outline"
-          @click="isOpen = false"
-          :disabled="loading"
-        >
+        <Button variant="outline" @click="isOpen = false" :disabled="loading">
           {{ cancelText }}
         </Button>
 
-        <Button
-          :variant="variant"
-          :disabled="loading"
-          @click="emit('confirm')"
-        >
-          <span v-if="loading" class="mr-2 h-4 w-4 animate-spin border-2 border-current border-t-transparent rounded-full"></span>
+        <Button :variant="variant" :disabled="loading" @click="emit('confirm')">
+          <span
+            v-if="loading"
+            class="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+          ></span>
           {{ confirmText }}
         </Button>
       </DialogFooter>
