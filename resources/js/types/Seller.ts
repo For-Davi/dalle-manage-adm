@@ -4,6 +4,7 @@ export interface Seller {
   email: string;
   phone: string;
   code: string;
+  created_at: string;
 }
 
 export interface SellerRegistration {

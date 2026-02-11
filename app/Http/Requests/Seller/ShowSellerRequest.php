@@ -4,7 +4,7 @@ namespace App\Http\Requests\Seller;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteSellerRequest extends FormRequest
+class ShowSellerRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -22,7 +22,7 @@ class DeleteSellerRequest extends FormRequest
     {
         return [
             'seller.required' => 'O ID do(a) vendedor(a) é obrigatório.',
-            'seller.exists' => 'O ID  do(a) vendedor(a) informado(a) não existe.',
+            'seller.exists' => 'O ID do(a) vendedor(a) informado(a) não existe.',
         ];
     }
 

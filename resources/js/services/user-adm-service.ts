@@ -35,6 +35,18 @@ export const getUsersService = (): Promise<{
   return api.get(`${baseUrl}/`);
 };
 
+export const showUserService = (
+  userID: number
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    user: IUserAdm;
+  };
+}> => {
+  return api.get(`${baseUrl}/${userID}`);
+};
+
 export const createUserService = (
   data: IDataUserAdm
 ): Promise<{
@@ -48,6 +60,7 @@ export const createUserService = (
 };
 
 export const updateUserService = (
+  userID: number,
   data: IDataUserAdm
 ): Promise<{
   status: number;
@@ -56,7 +69,7 @@ export const updateUserService = (
     users: IUserAdm[];
   };
 }> => {
-  return api.put(`${baseUrl}/`, data);
+  return api.put(`${baseUrl}/${userID}`, data);
 };
 
 export const deleteUserService = (

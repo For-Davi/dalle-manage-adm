@@ -4,15 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Seller\CreateSellerRequest;
 use App\Http\Requests\Seller\DeleteSellerRequest;
+use App\Http\Requests\Seller\ShowSellerRequest;
 use App\Http\Requests\Seller\UpdateSellerRequest;
 use App\Repositories\DalleAdm\SellerRepository;
 use App\Services\DalleAdm\SellerService;
-use App\Utils\ErrorLogger;
-use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
-class SellerController
+class SellerController extends BaseController
 {
     public function __construct(
         protected SellerRepository $repository,
@@ -21,75 +18,89 @@ class SellerController
 
     public function index()
     {
-        $sellers = $this->repository->getAll();
+        return $this->safeExecute(function () {
 
-        return response()->json(['sellers' => $sellers]);
+            $sellers = $this->repository->getAll();
+
+            return response()->json([
+                'sellers' => $sellers,
+            ]);
+
+        }, 'Erro ao listar vendedores');
+    }
+
+    public function show(ShowSellerRequest $request)
+    {
+        return $this->safeExecute(function () use ($request) {
+
+            $seller = $this->repository
+                ->findById($request->route('seller'));
+
+            return response()->json([
+                'seller' => $seller,
+            ]);
+
+        }, 'Erro ao buscar vendedor', $request);
     }
 
     public function create(CreateSellerRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
-            $sellers = $this->service->create($request);
+            $seller = $this->service->create($request);
 
-            if ($sellers) {
-                DB::commit();
-
-                $sellers = $this->repository->getAll();
-
-                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor criado'], 201);
+            if (! $seller) {
+                return response()->json([
+                    'message' => 'Vendedor não criado',
+                ], 400);
             }
-        } catch (Exception  $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao criar vendedor', $e, $request);
 
-            return response()->json(['message' => 'Erro ao criar vendedor'], 500);
-        }
+            $sellers = $this->repository->getAll();
+
+            return response()->json([
+                'sellers' => $sellers,
+                'message' => 'Vendedor criado',
+            ], 201);
+
+        }, 'Erro ao criar vendedor', $request);
     }
 
     public function update(UpdateSellerRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
-            $sellers = $this->service->update($request);
+            $seller = $this->service->update($request);
 
-            if ($sellers) {
-                DB::commit();
-
-                $sellers = $this->repository->getAll();
-
-                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor atualizado']);
+            if (! $seller) {
+                return response()->json([
+                    'message' => 'Vendedor não atualizado',
+                ], 400);
             }
-        } catch (ValidationException  $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao atualizar vendedor', $e, $request);
 
-            return response()->json(['message' => 'Erro ao atualizar vendedor'], 500);
-        }
+            $sellers = $this->repository->getAll();
+
+            return response()->json([
+                'sellers' => $sellers,
+                'message' => 'Vendedor atualizado',
+            ]);
+
+        }, 'Erro ao atualizar vendedor', $request);
     }
 
     public function delete(DeleteSellerRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
-            $sellers = $this->repository->delete($request->route('id'));
+            $this->repository
+                ->delete($request->route('seller'));
 
-            if ($sellers) {
+            $sellers = $this->repository->getAll();
 
-                DB::commit();
+            return response()->json([
+                'sellers' => $sellers,
+                'message' => 'Vendedor excluído',
+            ]);
 
-                $sellers = $this->repository->getAll();
-
-                return response()->json(['sellers' => $sellers, 'message' => 'Vendedor excluído']);
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            ErrorLogger::log('Erro ao excluir vendedor', $e, $request);
-
-            return response()->json(['message' => 'Erro ao excluir vendedor'], 500);
-        }
+        }, 'Erro ao excluir vendedor', $request);
     }
 }

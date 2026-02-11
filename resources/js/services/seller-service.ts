@@ -22,6 +22,18 @@ export const getSellersService = (): Promise<{
   return api.get(`${baseUrl}/`);
 };
 
+export const showSellerService = (
+  sellerID: number
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    seller: ISeller;
+  };
+}> => {
+  return api.get(`${baseUrl}/${sellerID}`);
+};
+
 export const createSellerService = (
   data: IDataSeller
 ): Promise<{
@@ -35,6 +47,7 @@ export const createSellerService = (
 };
 
 export const updateSellerService = (
+  sellerID: number,
   data: IDataSeller
 ): Promise<{
   status: number;
@@ -43,7 +56,7 @@ export const updateSellerService = (
     sellers: ISeller[];
   };
 }> => {
-  return api.put(`${baseUrl}/`, data);
+  return api.put(`${baseUrl}/${sellerID}`, data);
 };
 
 export const deleteSellerService = (

@@ -11,10 +11,8 @@ use App\Repositories\DalleAdm\SellerRepository;
 use App\Repositories\DalleManage\EnterpriseDMRepository;
 use App\Repositories\DalleManage\UserDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
-use App\Utils\ErrorLogger;
-use Illuminate\Support\Facades\DB;
 
-class EnterpriseController
+class EnterpriseController extends BaseController
 {
     public function __construct(
         protected EnterpriseDMRepository $dmRepository,
@@ -26,79 +24,91 @@ class EnterpriseController
 
     public function index()
     {
-        $enterprises = $this->dmRepository->getAll(['subscription']);
+        return $this->safeExecute(function () {
 
-        return response()->json(['enterprises' => $enterprises]);
+            $enterprises = $this->dmRepository->getAll(['subscription']);
+
+            return response()->json([
+                'enterprises' => $enterprises,
+            ]);
+
+        }, 'Erro ao listar empresas');
     }
 
     public function show(ShowEnterpriseRequest $request)
     {
-        $enterprise = $this->dmRepository->findById($request->route('enterprise'), ['seller', 'subscription']);
+        return $this->safeExecute(function () use ($request) {
 
-        return response()->json(['enterprise' => $enterprise]);
+            $enterprise = $this->dmRepository->findById(
+                $request->route('enterprise'),
+                ['seller', 'subscription']
+            );
+
+            return response()->json([
+                'enterprise' => $enterprise,
+            ]);
+
+        }, 'Erro ao buscar empresa', $request);
     }
 
     public function create(CreateEnterpriseRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
             $enterprise = $this->service->create($request);
 
-            if ($enterprise) {
-                DB::commit();
-
-                return response()->json(['message' => 'Empresa criada'], 201);
+            if (! $enterprise) {
+                return response()->json([
+                    'message' => 'Empresa não criada',
+                ], 400);
             }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            ErrorLogger::critical('Erro ao criar empresa', $e, $request);
 
-            return response()->json(['message' => 'Erro ao criar empresa'], 500);
-        }
+            return response()->json([
+                'message' => 'Empresa criada',
+            ], 201);
+
+        }, 'Erro ao criar empresa', $request);
     }
 
     public function update(UpdateEnterpriseRequest $request)
     {
-        try {
-
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
             $enterprise = $this->service->update($request);
 
-            if ($enterprise) {
-                DB::commit();
-
-                return response()->json(['message' => 'Empresa atualizada'], 200);
+            if (! $enterprise) {
+                return response()->json([
+                    'message' => 'Empresa não atualizada',
+                ], 400);
             }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            ErrorLogger::critical('Erro ao atualizar empresa', $e, $request);
 
-            return response()->json(['message' => 'Erro ao atualizar empresa'], 500);
-        }
+            return response()->json([
+                'message' => 'Empresa atualizada',
+            ]);
+
+        }, 'Erro ao atualizar empresa', $request);
     }
 
     public function delete(DeleteEnterpriseRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
-            $enterprise = $this->dmRepository->delete($request->route('enterprise'));
+            $enterprise = $this->dmRepository
+                ->delete($request->route('enterprise'));
 
-            if ($enterprise) {
-
-                DB::commit();
-
-                $enterprises = $this->dmRepository->getAll(['subscription']);
-
-                return response()->json(['enterprises' => $enterprises, 'message' => 'Empresa excluída'], 200);
+            if (! $enterprise) {
+                return response()->json([
+                    'message' => 'Empresa não encontrada',
+                ], 404);
             }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            ErrorLogger::critical('Erro ao excluir a empresa', $e, $request);
 
-            return response()->json(['message' => 'Erro ao excluir a empresa'], 500);
-        }
+            $enterprises = $this->dmRepository->getAll(['subscription']);
+
+            return response()->json([
+                'enterprises' => $enterprises,
+                'message' => 'Empresa excluída',
+            ]);
+
+        }, 'Erro ao excluir empresa', $request);
     }
 }

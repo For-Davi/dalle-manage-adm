@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Seller;
+namespace App\Http\Requests\User\DalleAdm;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteSellerRequest extends FormRequest
+class ShowUserRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,15 +14,15 @@ class DeleteSellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'seller' => 'required|exists:sellers,id',
+            'user' => 'required|exists:users,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'seller.required' => 'O ID do(a) vendedor(a) é obrigatório.',
-            'seller.exists' => 'O ID  do(a) vendedor(a) informado(a) não existe.',
+            'user.required' => 'O ID do usuário é obrigatório.',
+            'user.exists' => 'O ID do usuário informado não existe.',
         ];
     }
 

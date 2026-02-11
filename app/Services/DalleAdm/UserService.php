@@ -52,7 +52,7 @@ class UserService
 
     public function update($request)
     {
-        UserHelper::existsEmail('mysql', $request->email, 'update', $request->id);
+        UserHelper::existsEmail('mysql', $request->email, 'update', $request->route('user'));
 
         $data = [
             'name' => $request->name,
@@ -61,7 +61,7 @@ class UserService
 
         $userDTO = UpdateUserDTO::fromRequest($data);
 
-        return $this->repository->update($request->id, $userDTO->toArray());
+        return $this->repository->update($request->route('user'), $userDTO->toArray());
     }
 
     public function reset($request)

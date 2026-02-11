@@ -5,6 +5,7 @@ import {
   deleteSellerService,
   getSellersRegistrationService,
   getSellersService,
+  showSellerService,
   updateSellerService,
 } from '@/services/seller-service';
 
@@ -32,6 +33,17 @@ export const useSellerStore = defineStore('seller', {
           this.setListSellers(response.data.sellers);
         }
         return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async showSeller(sellerID: number) {
+      try {
+        this.setLoading(true);
+        return await showSellerService(sellerID);
       } catch (error) {
         createError(error);
         return null;
@@ -70,10 +82,10 @@ export const useSellerStore = defineStore('seller', {
         this.setLoading(false);
       }
     },
-    async updateSeller(data: IDataSeller) {
+    async updateSeller(sellerID: number, data: IDataSeller) {
       try {
         this.setLoading(true);
-        const response = await updateSellerService(data);
+        const response = await updateSellerService(sellerID, data);
         if (response.status === 200) {
           this.setListSellers(response.data.sellers);
           createSuccess(response.data.message);

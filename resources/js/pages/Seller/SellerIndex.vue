@@ -1,73 +1,34 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
-import SellersTable from '@/components/tables/SellersTable.vue';
-import SellerForm from '@/components/form/SellerForm.vue';
-import { reactive, onMounted } from 'vue';
-import { storeToRefs } from 'pinia';
+import { goUrlName } from '@/composables/useRedirect';
 import { useSellerStore } from '@/stores/seller-store';
+import SellersTable from '@/components/tables/SellersTable.vue';
 
 defineOptions({
   name: 'SellerIndex',
 });
 
-const { loadingSeller, listSellers } = storeToRefs(useSellerStore());
-
-const showSellerForm = reactive<{
-  open: boolean;
-  seller: ISeller | null;
-}>({
-  open: false,
-  seller: null,
-});
-
-const changeShowSellerForm = (show: boolean, seller: ISeller | null = null) => {
-  Object.assign(showSellerForm, {
-    open: show,
-    seller: seller,
-  });
-};
-const startEdit = (seller: ISeller) => {
-  changeShowSellerForm(true, seller);
-};
-
-const fetchSellers = async () => {
-  await useSellerStore().getSellers();
-};
-
 onMounted(async () => {
-  await fetchSellers();
+  await useSellerStore().getSellers();
 });
 </script>
 
 <template>
   <main>
-    <div v-if="!loadingSeller" class="p-6">
+    <div class="p-6">
       <TitlePage title="Vendedores" />
       <Separator class="my-4" />
-      <div class="m-3 flex justify-end gap-2">
+      <div class="m-3 flex justify-end">
         <Button
-          class="cursor-pointer"
-          variant="outline"
-          @click="changeShowSellerForm(true)"
+          class="cursor-pointer bg-black"
+          @click="goUrlName('seller.create')"
         >
-          Inscrições
-          <UserRoundSearch />
-        </Button>
-        <Button class="cursor-pointer" @click="changeShowSellerForm(true)">
           Criar vendedor
           <LucidePlus />
         </Button>
       </div>
-      <SellersTable :sellers="listSellers" @edit:seller="startEdit" />
+      <SellersTable />
     </div>
-    <div v-else class="p-6">
-      <Spinner class="size-8" />
-    </div>
-
-    <!-- Modals -->
-    <SellerForm
-      :data="showSellerForm"
-      @update:open="changeShowSellerForm(false)"
-    />
   </main>
 </template>

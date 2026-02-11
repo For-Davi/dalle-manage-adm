@@ -3,15 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\DalleManage\SubscriptionDMRepository;
+use Illuminate\Http\Request;
 
-class SubscriptionController
+class SubscriptionController extends BaseController
 {
-    public function __construct(protected SubscriptionDMRepository $repository) {}
+    public function __construct(
+        protected SubscriptionDMRepository $repository
+    ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $subscriptions = $this->repository->getAllEnterprisesBySubscriptions();
+        return $this->safeExecute(function () {
 
-        return response()->json(['subscriptions' => $subscriptions]);
+            $subscriptions = $this->repository
+                ->getAllEnterprisesBySubscriptions();
+
+            return response()->json([
+                'subscriptions' => $subscriptions,
+            ]);
+
+        }, 'Erro ao buscar subscriptions', $request);
     }
 }

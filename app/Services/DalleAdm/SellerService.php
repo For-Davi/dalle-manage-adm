@@ -32,8 +32,8 @@ class SellerService
     public function update($request)
     {
 
-        SellerHelper::existsEmail($request->email, 'update', $request->id);
-        SellerHelper::existsCode($request->code, 'update', $request->id);
+        SellerHelper::existsEmail($request->email, 'update', $request->route('seller'));
+        SellerHelper::existsCode($request->code, 'update', $request->route('seller'));
 
         $sellerDTO = CreateOrUpdateSellerDTO::fromRequest([
             'name' => $request->name,
@@ -42,8 +42,6 @@ class SellerService
             'code' => $request->code,
         ]);
 
-        $seller = $this->repository->update($request->id, $sellerDTO->toArray());
-
-        return $seller;
+        return $this->repository->update($request->route('seller'), $sellerDTO->toArray());
     }
 }

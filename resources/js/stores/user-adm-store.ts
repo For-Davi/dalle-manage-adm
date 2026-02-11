@@ -1,9 +1,11 @@
+import { userRoutes } from './../router/modules/user.routes';
 import { defineStore } from 'pinia';
 import { createError, createSuccess } from '@/composables/useCreateNotify';
 import {
   createUserService,
   deleteUserService,
   getUsersService,
+  showUserService,
   updateProfileDataService,
   updateProfilePasswordService,
   updateUserService,
@@ -37,6 +39,17 @@ export const useUserAdmStore = defineStore('userAdm', {
         this.setLoading(false);
       }
     },
+    async showUserAdm(userID: number) {
+      try {
+        this.setLoading(true);
+        return await showUserService(userID);
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
     async createUser(data: IDataUserAdm) {
       try {
         this.setLoading(true);
@@ -53,10 +66,10 @@ export const useUserAdmStore = defineStore('userAdm', {
         this.setLoading(false);
       }
     },
-    async updateUser(data: IDataUserAdm) {
+    async updateUser(userID: number, data: IDataUserAdm) {
       try {
         this.setLoading(true);
-        const response = await updateUserService(data);
+        const response = await updateUserService(userID, data);
         if (response.status === 200) {
           this.setListUsersAdm(response.data.users);
           createSuccess(response.data.message);

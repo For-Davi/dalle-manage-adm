@@ -38,9 +38,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::get('/', [UserController::class, 'index']);
+        Route::get('/{user}', [UserController::class, 'show']);
         Route::post('/', [UserController::class, 'create']);
-        Route::put('/{id}', [UserController::class, 'update']);
-        Route::delete('/{id}', [UserController::class, 'delete']);
+        Route::put('/{user}', [UserController::class, 'update']);
+        Route::delete('/{user}', [UserController::class, 'delete']);
     });
 
     Route::prefix('sellers')->group(function () {
@@ -49,9 +50,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         Route::get('/', [SellerController::class, 'index']);
+        Route::get('/{seller}', [SellerController::class, 'show']);
         Route::post('/', [SellerController::class, 'create']);
-        Route::put('/{id}', [SellerController::class, 'update']);
-        Route::delete('/{id}', [SellerController::class, 'delete']);
+        Route::put('/{seller}', [SellerController::class, 'update']);
+        Route::delete('/{seller}', [SellerController::class, 'delete']);
     });
 
     Route::prefix('subscriptions')->group(function () {

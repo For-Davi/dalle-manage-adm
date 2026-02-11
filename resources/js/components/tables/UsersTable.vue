@@ -1,104 +1,103 @@
 <script setup lang="ts">
-import { usePage } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
+import { goUrlName } from '@/composables/useRedirect';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
-import { router } from '@inertiajs/vue3';
+import { storeToRefs } from 'pinia';
+import { useEnterpriseStore } from '@/stores/enterprise-store';
+import { useUserAdmStore } from '@/stores/user-adm-store';
+import { createError } from '@/composables/useCreateNotify';
 
 defineOptions({
   name: 'UsersTable',
 });
 
-const page = usePage();
+const { loadingEnterprise, listUserDm } = storeToRefs(useEnterpriseStore());
 
-const props = defineProps<{
-  users: IUserAdm[];
-}>();
+const isConfirmOpen = ref(false);
+const selectedId = ref<number | null>(null);
 
-const emit = defineEmits<{
-  'edit:user:': [user: IUserAdm];
-}>();
-
-const showConfirmAction = ref<boolean>(false);
-const monitoringUserId = ref<number | null>(null);
-
-const okConfirmAction = async () => {
-  await exclude(monitoringUserId.value ?? 0);
-  clear();
+const openDeleteModal = (id: number) => {
+  selectedId.value = id;
+  isConfirmOpen.value = true;
 };
-const openConfirmAction = (id: number) => {
-  showConfirmAction.value = true;
-  monitoringUserId.value = id;
-};
-const closeConfirmAction = () => {
-  showConfirmAction.value = false;
-  clear();
-};
-const exclude = (id: number) => {
-  if (id !== null) {
-    ((showConfirmAction.value = false),
-      router.delete(route('user.delete', id)));
+const handleExclude = async () => {
+  try {
+    const response = await useUserAdmStore().deleteUser(
+      Number(selectedId.value)
+    );
+
+    if (response?.status === 200) {
+      selectedId.value = null;
+      isConfirmOpen.value = false;
+    }
+  } catch (error) {
+    createError(error || 'Ocorreu um erro ao excluir o usuário.');
   }
 };
-const clear = () => {
-  monitoringUserId.value = null;
-};
-
-const userId = computed(() => page.props.auth.user?.id);
 </script>
 
 <template>
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead> Nome </TableHead>
-        <TableHead>Email</TableHead>
-        <TableHead> Ação </TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow v-for="(user, index) in props.users" :key="index">
-        <TableCell>{{ user.name }}</TableCell>
-        <TableCell>{{ user.email }}</TableCell>
-        <TableCell>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="ghost" class="cursor-pointer">
-                <LucideEllipsis />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-48 sm:w-56">
-              <DropdownMenuLabel class="text-xs sm:text-sm"
-                >Opções</DropdownMenuLabel
-              >
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  class="cursor-pointer text-xs sm:text-sm"
-                  @click="emit('edit:user', user)"
+  <main>
+    <Table v-if="!loadingEnterprise">
+      <TableHeader>
+        <TableRow>
+          <TableHead> Nome </TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead> Ação </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-for="(user, index) in listUserDm" :key="index">
+          <TableCell>{{ user.name }}</TableCell>
+          <TableCell>{{ user.email }}</TableCell>
+          <TableCell>
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="ghost" class="cursor-pointer">
+                  <LucideEllipsis />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent class="w-48 sm:w-56">
+                <DropdownMenuLabel class="text-xs sm:text-sm"
+                  >Opções</DropdownMenuLabel
                 >
-                  <LucidePencil /> <span>Editar</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  class="cursor-pointer text-xs text-red-600 sm:text-sm"
-                  @click="openConfirmAction(user.id)"
-                  v-if="user.created_by && user.id !== userId"
-                >
-                  <LucideTrash class="text-red-600" /> <span>Excluir</span>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    class="cursor-pointer text-xs sm:text-sm"
+                    @click="
+                      goUrlName('user.edit', {
+                        id: user.id,
+                      })
+                    "
+                  >
+                    <LucidePencil /> <span>Editar</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    class="cursor-pointer text-xs text-red-600 sm:text-sm"
+                    @click="openDeleteModal(user.id)"
+                  >
+                    <LucideTrash class="text-red-600" /> <span>Excluir</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    <div class="p-6" v-else>
+      <Spinner class="size-8" />
+    </div>
+  </main>
 
   <!-- Modals -->
   <ConfirmAction
-    :open="showConfirmAction"
-    title="Exclusão de usuário"
-    message="Caso tenha certeza, clique em 'Confirmar', pois essa ação é irreversível e excluirá o usuário permanentemente."
-    @update:open="closeConfirmAction()"
-    @okConfirmAction="okConfirmAction()"
+    v-model:open="isConfirmOpen"
+    title="Excluir Usuário"
+    message="Esta ação é irreversível e excluirá este usuário."
+    :loading="loadingEnterprise"
+    variant="destructive"
+    @confirm="handleExclude"
   />
 </template>

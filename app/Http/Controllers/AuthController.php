@@ -8,12 +8,9 @@ use App\Http\Requests\User\DalleAdm\NewPasswordRequest;
 use App\Http\Requests\User\DalleAdm\ResetPasswordRequest;
 use App\Repositories\DalleAdm\UserRepository;
 use App\Services\DalleAdm\UserService;
-use App\Utils\ErrorLogger;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class AuthController
+class AuthController extends BaseController
 {
     public function __construct(
         protected UserService $service,
@@ -22,7 +19,8 @@ class AuthController
 
     public function login(LoginRequest $request)
     {
-        try {
+        return $this->safeExecute(function () use ($request) {
+
             $result = $this->service->login($request);
 
             return response()->json([
@@ -30,63 +28,49 @@ class AuthController
                 'user' => $result['user'],
             ]);
 
-        } catch (\Exception $e) {
-            ErrorLogger::critical('Erro inesperado no login', $e, $request);
-
-            return response()->json(['message' => 'Erro ao realizar login'], 500);
-        }
+        }, 'Erro ao realizar login', $request);
     }
 
     public function logout(Request $request)
     {
-        try {
+        return $this->safeExecute(function () use ($request) {
+
             UserHelper::clearTokenReset($request->user());
 
             return response()->json([], 200);
-        } catch (\Exception $e) {
-            ErrorLogger::critical('Erro inesperado no logout', $e, $request);
 
-            return response()->json(['message' => 'Erro'], 500);
-        }
+        }, 'Erro inesperado no logout', $request);
     }
 
     public function reset(ResetPasswordRequest $request)
     {
-        try {
+        return $this->safeExecute(function () use ($request) {
+
             $result = $this->service->reset($request);
 
-            return redirect()->back()->with('message', $result);
-        } catch (Exception $e) {
-            ErrorLogger::critical('Erro ao solicitar redefinição de senha', $e, $request);
+            return redirect()
+                ->back()
+                ->with('message', $result);
 
-            return back()->withErrors([
-                'message' => 'Ocorreu um erro no servidor. Por favor, tente novamente.',
-            ])->withInput();
-        }
+        }, 'Erro ao solicitar redefinição de senha', $request);
     }
 
     public function resetPassword(NewPasswordRequest $request)
     {
-        try {
-            DB::beginTransaction();
+        return $this->safeTransaction(function () use ($request) {
 
             $user = $this->service->newPassword($request);
 
             if ($user) {
-                DB::commit();
-
                 return redirect()->route('login');
             }
-        } catch (Exception $e) {
-            DB::rollBack();
 
-            ErrorLogger::critical('Erro ao redefinir senha', $e, $request);
+            return back()
+                ->withErrors([
+                    'password' => 'Erro ao atualizar senha.',
+                ])
+                ->onlyInput('password');
 
-            return response()->json(['message' => $e->getMessage()], 500);
-        }
-
-        return back()->withErrors([
-            'password' => 'Erro ao atualizar senha.',
-        ])->onlyInput('password');
+        }, 'Erro ao redefinir senha', $request);
     }
 }

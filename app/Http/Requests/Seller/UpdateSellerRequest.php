@@ -14,7 +14,7 @@ class UpdateSellerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|exists:sellers',
+            'seller' => 'required|exists:sellers',
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
             'phone' => 'required|string|max:20',
@@ -25,8 +25,8 @@ class UpdateSellerRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'id.required' => 'O ID do(a) vendedor(a) é obrigatório',
-            'id.exists' => 'O ID do(a) vendedor(a) não existe',
+            'seller.required' => 'O ID do(a) vendedor(a) é obrigatório',
+            'seller.exists' => 'O ID do(a) vendedor(a) não existe',
             'name.required' => 'O nome é obrigatório',
             'name.string' => 'O nome deve ser um texto válido',
             'name.min' => 'O nome deve ter pelo menos 3 caracteres',
