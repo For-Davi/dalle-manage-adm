@@ -14,15 +14,15 @@ class ShowUsersEnterpriseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'enterpriseID' => 'required|exists:dalle_manage.enterprises,id',
+            'enterprise' => 'required|exists:dalle_manage.enterprises,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'enterpriseID.required' => 'O ID da empresa é obrigatório.',
-            'enterpriseID.exists' => 'O ID da empresa informada não existe.',
+            'enterprise.required' => 'O ID da empresa é obrigatório.',
+            'enterprise.exists' => 'O ID da empresa informada não existe.',
         ];
     }
 

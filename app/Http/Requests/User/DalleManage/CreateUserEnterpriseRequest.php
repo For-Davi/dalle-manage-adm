@@ -14,7 +14,7 @@ class CreateUserEnterpriseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'enterpriseID' => 'required|exists:dalle_manage.enterprises,id',
+            'enterprise' => 'required|exists:dalle_manage.enterprises,id',
             'roleID' => 'required|exists:dalle_manage.roles,id',
             'departmentID' => 'nullable|exists:dalle_manage.departments,id',
             'name' => 'required|string|min:3|max:100',
@@ -27,8 +27,8 @@ class CreateUserEnterpriseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'enterpriseID.required' => 'O ID da empresa é obrigatório',
-            'enterpriseID.exists' => 'O ID da empresa informada não é válido',
+            'enterprise.required' => 'O ID da empresa é obrigatório',
+            'enterprise.exists' => 'O ID da empresa informada não é válido',
             'name.required' => 'O nome é obrigatório',
             'name.string' => 'O nome deve ser um texto válido',
             'name.min' => 'O nome deve ter pelo menos 3 caracteres',
@@ -48,7 +48,7 @@ class CreateUserEnterpriseRequest extends FormRequest
     public function validationData()
     {
         return array_merge($this->all(), [
-            'enterpriseID' => $this->route('enterpriseID'),
+            'enterprise' => $this->route('enterprise'),
         ]);
     }
 }

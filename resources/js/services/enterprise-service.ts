@@ -113,7 +113,7 @@ export const updateUserByEnterpriseService = (
 };
 
 export const deleteUserByEnterpriseService = (
-    enterpriseID: number,
+  enterpriseID: number,
   userID: number
 ): Promise<{
   status: number;

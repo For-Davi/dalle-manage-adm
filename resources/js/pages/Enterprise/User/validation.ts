@@ -7,6 +7,11 @@ interface DataCreate {
   confirmPassword: string;
 }
 
+interface DataUpdate {
+  name: string;
+  email: string;
+}
+
 export const validateCreate = (data: DataCreate) => {
   const errors: string[] = [];
 
@@ -27,6 +32,28 @@ export const validateCreate = (data: DataCreate) => {
 
   if (data.password !== data.confirmPassword) {
     errors.push('As senhas não coincidem');
+  }
+
+  if (errors.length) {
+    createErrorData(errors.join('\n'));
+    return { status: false };
+  }
+
+  return { status: true };
+};
+
+export const validateUpdate = (data: DataUpdate) => {
+  const errors: string[] = [];
+
+  if (!data.name) {
+    errors.push('Deve ser informado o nome do usuário');
+  }
+
+  if (
+    data.email &&
+    !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(data.email)
+  ) {
+    errors.push('Informe um e-mail válido');
   }
 
   if (errors.length) {

@@ -8,6 +8,7 @@ import {
   getEnterprisesService,
   getUsersByEnterpriseService,
   showEnterpriseService,
+  showUserByEnterpriseService,
   updateEnterpriseService,
   updateUserByEnterpriseService,
 } from '@/services/enterprise-service';
@@ -100,10 +101,10 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(false);
       }
     },
-    async showUserByEnterprise(userID: number) {
+    async showUserByEnterprise(enterpriseID: number, userID: number) {
       try {
         this.setLoading(true);
-        return await showUserByEnterpriseService(userID);
+        return await showUserByEnterpriseService(enterpriseID, userID);
       } catch (error) {
         createError(error);
         return null;
@@ -145,10 +146,18 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(false);
       }
     },
-    async updateUserByEnterprise(data: IDataUserDm, userID: number) {
+    async updateUserByEnterprise(
+      data: IDataUserDm,
+      userID: number,
+      enterpriseID: number
+    ) {
       try {
         this.setLoading(true);
-        const response = await updateUserByEnterpriseService(data, userID);
+        const response = await updateUserByEnterpriseService(
+          data,
+          enterpriseID,
+          userID
+        );
         if (response.status === 200) {
           this.setListUserDm(response.data.users);
           createSuccess(response.data.message);
@@ -161,10 +170,13 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(false);
       }
     },
-    async deleteUserByEnterprise(userID: number) {
+    async deleteUserByEnterprise(userID: number, enterpriseID: number) {
       try {
         this.setLoading(true);
-        const response = await deleteUserByEnterpriseService(userID);
+        const response = await deleteUserByEnterpriseService(
+          userID,
+          enterpriseID
+        );
         if (response.status === 200) {
           this.setListUserDm(response.data.users);
           createSuccess(response.data.message);

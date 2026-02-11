@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { router } from '@inertiajs/vue3';
 import { goUrlName } from '@/composables/useRedirect';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { storeToRefs } from 'pinia';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
+import { createError } from '@/composables/useCreateNotify';
 
 defineOptions({
   name: 'UsersDmTable',
 });
+
+const props = defineProps<{
+  enterpriseId: string;
+}>();
 
 const { loadingEnterprise, listUserDm } = storeToRefs(useEnterpriseStore());
 
@@ -20,21 +24,23 @@ const openDeleteModal = (id: number) => {
   selectedId.value = id;
   isConfirmOpen.value = true;
 };
-const handleExclude = () => {
-  if (selectedId.value === null) return;
+const handleExclude = async () => {
+  try {
+    isDeleting.value = true;
+    const response = await useEnterpriseStore().deleteUserByEnterprise(
+      Number(selectedId.value),
+      Number(props.enterpriseId) ?? 0
+    );
 
-  router.delete(route('enterprise.delete', selectedId.value), {
-    onBefore: () => {
-      isDeleting.value = true;
-    },
-    onSuccess: () => {
-      isConfirmOpen.value = false;
+    if (response?.status === 200) {
       selectedId.value = null;
-    },
-    onFinish: () => {
-      isDeleting.value = false;
-    },
-  });
+      isConfirmOpen.value = false;
+    }
+  } catch (error) {
+    createError(error || 'Ocorreu um erro ao excluir o usuário.');
+  } finally {
+    isDeleting.value = false;
+  }
 };
 </script>
 
@@ -68,7 +74,10 @@ const handleExclude = () => {
                   <DropdownMenuItem
                     class="cursor-pointer text-xs sm:text-sm"
                     @click="
-                      goUrlName('enterprise-user.edit', { userID: user.id })
+                      goUrlName('enterprise-user.edit', {
+                        userID: user.id,
+                        id: props.enterpriseId,
+                      })
                     "
                   >
                     <LucidePencil /> <span>Editar</span>

@@ -17,20 +17,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('enterprises')->group(function () {
 
         Route::get('/', [EnterpriseController::class, 'index']);
-        Route::post('/', [EnterpriseController::class, 'create']);
         Route::get('/{enterprise}', [EnterpriseController::class, 'show']);
+        Route::post('/', [EnterpriseController::class, 'create']);
         Route::put('/{enterprise}', [EnterpriseController::class, 'update']);
         Route::delete('/{enterprise}', [EnterpriseController::class, 'delete']);
 
         Route::prefix('{enterprise}/users')->group(function () {
-            Route::get('/', [UserController::class, 'indexByEnterprise']);
-            Route::get('/{user}', [UserController::class, 'showByEnterprise']);
-            Route::post('/', [UserController::class, 'storeByEnterprise']);
-            Route::put('/{user}', [UserController::class, 'update']);
-            Route::delete('/{user}', [UserController::class, 'destroy']);
+            Route::get('/', [UserController::class, 'indexUsersByEnterprise']);
+            Route::get('/{user}', [UserController::class, 'showUserByEnterprise']);
+            Route::post('/', [UserController::class, 'createUserByEnterprise']);
+            Route::put('/{user}', [UserController::class, 'updateUserByEnterprise']);
+            Route::delete('/{user}', [UserController::class, 'deleteUserByEnterprise']);
         });
     });
-
 
     Route::prefix('users')->group(function () {
         Route::prefix('profile')->group(function () {

@@ -5,7 +5,7 @@ namespace App\Http\Requests\User\DalleManage;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class DeleteUserEnterpriseRequest extends FormRequest
+class ShowUserEnterpriseRequest extends FormRequest
 {
     public function authorize(): bool
     {

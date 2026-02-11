@@ -14,7 +14,7 @@ export const userRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/Enterprise/User/UserCreate.vue'),
   },
   {
-    path: 'enterprises/users/:userID/edit',
+    path: 'enterprises/:id/users/:userID/edit',
     name: 'enterprise-user.edit',
     props: true,
     component: () => import('@/pages/Enterprise/User/UserEdit.vue'),

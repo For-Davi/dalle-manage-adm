@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
-import { validateCreate } from './validation';
+import { validateUpdate } from './validation';
 import { storeToRefs } from 'pinia';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { goUrlName } from '@/composables/useRedirect';
@@ -11,6 +11,7 @@ defineOptions({
 });
 
 const props = defineProps<{
+  userID: string;
   id: string;
 }>();
 
@@ -19,25 +20,32 @@ const { loadingEnterprise } = storeToRefs(useEnterpriseStore());
 const form = reactive({
   name: '' as string,
   email: '' as string,
-  password: '' as string,
-  createEmployee: false as boolean,
 });
-const confirmPassword = ref<string>('');
 const entepriseName = ref<string>('');
 
-const create = async () => {
-  const status = validateCreate({
-    ...form,
-    confirmPassword: confirmPassword.value,
-  });
+const update = async () => {
+  const status = validateUpdate(form);
   if (status.status) {
-    const response = await useEnterpriseStore().createUserByEnterprise(
+    const response = await useEnterpriseStore().updateUserByEnterprise(
       form,
+      Number(props.userID),
       Number(props.id)
     );
     if (response?.status === 201) {
-      await goUrlName('enterprise-users', { id: props.id });
+      await goUrlName('enterprise-users', { id: props.userID });
     }
+  }
+};
+const fetchUser = async () => {
+  const response = await useEnterpriseStore().showUserByEnterprise(
+    Number(props.id),
+    Number(props.userID)
+  );
+  if (response?.status === 200) {
+    Object.assign(form, {
+      name: response.data.user.name,
+      email: response.data.user.email,
+    });
   }
 };
 const fetchNameEnterprise = async () => {
@@ -50,14 +58,13 @@ const clear = () => {
   Object.assign(form, {
     name: '',
     email: '',
-    password: '',
-    createEmployee: false,
   });
-  confirmPassword.value = '';
+  entepriseName.value = '';
 };
 
 onMounted(async () => {
   clear();
+  fetchUser();
   fetchNameEnterprise();
 });
 </script>
@@ -83,7 +90,7 @@ onMounted(async () => {
           <BreadcrumbItem>
             <BreadcrumbLink class="cursor-pointer" as-child>
               <RouterLink
-                :to="{ name: 'enterprise-users', params: { id: props.id } }"
+                :to="{ name: 'enterprise-users', params: { id: props.userID } }"
               >
                 Usuários
               </RouterLink>
@@ -95,7 +102,7 @@ onMounted(async () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <form @submit.prevent="create" class="space-y-6">
+      <form @submit.prevent="update" class="space-y-6">
         <Card>
           <CardHeader>
             <CardTitle class="text-lg">Dados do usuário</CardTitle>
@@ -118,38 +125,6 @@ onMounted(async () => {
                 placeholder="contato@empresa.com"
               />
             </div>
-            <div class="space-y-2">
-              <Label for="switchChangePassword" class="ml-1 font-bold"
-                >Cadastrar como funcionário?</Label
-              >
-              <Switch
-                v-model="form.createEmployee"
-                id="switchCreateEmployee"
-                class="ml-1 cursor-pointer"
-              />
-            </div>
-            <div class="space-y-2">
-              <Label for="password" class="ml-1 font-bold">Senha</Label>
-              <Input
-                v-model="form.password"
-                type="password"
-                id="password"
-                autocomplete="new-password"
-                placeholder="Insira a senha"
-              />
-            </div>
-            <div class="space-y-2">
-              <Label for="confirmPassword" class="ml-1 font-bold"
-                >Confirme a senha</Label
-              >
-              <Input
-                v-model="confirmPassword"
-                type="password"
-                id="confirmPassword"
-                autocomplete="new-password"
-                placeholder="Confirme a senha"
-              />
-            </div>
           </CardContent>
         </Card>
         <div class="mt-8 flex items-center justify-end gap-4">
@@ -161,7 +136,7 @@ onMounted(async () => {
               v-if="loadingEnterprise"
               class="mr-2 h-4 w-4 animate-spin"
             />
-            {{ loadingEnterprise ? 'Salvando...' : 'Cadastrar Usuário' }}
+            {{ loadingEnterprise ? 'Atualizando...' : 'Atualizar Usuário' }}
           </Button>
         </div>
       </form>

@@ -22,8 +22,8 @@ export interface DataUserDm {
   id?: number;
   name: string;
   email: string;
-  password: string;
-  createEmployee: boolean;
+  password?: string;
+  createEmployee?: boolean;
 }
 
 export interface DataProfile {

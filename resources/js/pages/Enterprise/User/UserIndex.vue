@@ -47,7 +47,7 @@ onMounted(async () => {
           <LucidePlus />
         </Button>
       </div>
-      <UsersDmTable />
+      <UsersDmTable :enterprise-id="props.id" />
     </div>
   </main>
 </template>

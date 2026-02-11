@@ -9,6 +9,7 @@ use App\Http\Requests\User\DalleAdm\UpdateProfileRequest;
 use App\Http\Requests\User\DalleAdm\UpdateUserRequest;
 use App\Http\Requests\User\DalleManage\CreateUserEnterpriseRequest;
 use App\Http\Requests\User\DalleManage\DeleteUserEnterpriseRequest;
+use App\Http\Requests\User\DalleManage\ShowUserEnterpriseRequest;
 use App\Http\Requests\User\DalleManage\ShowUsersEnterpriseRequest;
 use App\Http\Requests\User\DalleManage\UpdateUserEnterpriseRequest;
 use App\Repositories\DalleAdm\UserRepository;
@@ -54,7 +55,7 @@ class UserController
         } catch (Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao criar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao criar usuário', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -78,7 +79,7 @@ class UserController
         } catch (Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao atualizar usuário', $e, $request);
 
             return response()->json(['message' => $e->getMessage()], 500);
         }
@@ -108,7 +109,7 @@ class UserController
             abort(403, 'Você não tem permissão para fazer esta ação.');
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao deletar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao deletar usuário', $e, $request);
 
             return response()->json(['message' => 'Erro ao deletar usuário'], 500);
         }
@@ -129,7 +130,7 @@ class UserController
         } catch (Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar dados', $e, $request);
+            ErrorLogger::critical('Erro ao atualizar dados', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar perfil'], 500);
         }
@@ -150,7 +151,7 @@ class UserController
         } catch (Exception $e) {
             DB::rollBack();
 
-            ErrorLogger::log('Erro ao atualizar senha', $e, $request);
+            ErrorLogger::critical('Erro ao atualizar senha', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar senha'], 500);
         }
@@ -158,9 +159,34 @@ class UserController
 
     public function indexUsersByEnterprise(ShowUsersEnterpriseRequest $request)
     {
-        $users = $this->userDmRepository->findUsersByEnterpriseID($request->route('enterpriseID'));
+        try {
+            $enterpriseId = $request->route('enterprise');
 
-        return response()->json(['users' => $users]);
+            $users = $this->userDmRepository
+                ->findUsersByEnterpriseID($enterpriseId);
+
+            return response()->json(['users' => $users]);
+
+        } catch (\Exception $e) {
+            ErrorLogger::critical('Erro ao listar usuários da organização', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar usuários'], 500);
+        }
+    }
+
+    public function showUserByEnterprise(ShowUserEnterpriseRequest $request)
+    {
+        try {
+            $user = $this->userDmRepository
+                ->findByID($request->route('user'));
+
+            return response()->json(['user' => $user]);
+
+        } catch (\Exception $e) {
+            ErrorLogger::critical('Erro ao buscar usuário da organização', $e, $request);
+
+            return response()->json(['message' => 'Erro ao buscar usuário'], 500);
+        }
     }
 
     public function createUserByEnterprise(CreateUserEnterpriseRequest $request)
@@ -173,13 +199,13 @@ class UserController
             if ($user) {
                 DB::commit();
 
-                $users = $this->userDmRepository->findUsersByEnterpriseID($request->route('enterpriseID'));
+                $users = $this->userDmRepository->findUsersByEnterpriseID($request->route('enterprise'));
 
                 return response()->json(['users' => $users, 'message' => 'Usuário criado'], 201);
             }
         } catch (Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao criar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao criar usuário da organização', $e, $request);
 
             return response()->json(['message' => 'Erro ao criar usuário'], 500);
         }
@@ -195,7 +221,7 @@ class UserController
             if ($user) {
                 DB::commit();
 
-                $user = $this->userDmRepository->findByID($request->route('userID'));
+                $user = $this->userDmRepository->findByID($request->route('user'));
                 $users = $this->userDmRepository->findUsersByEnterpriseID($user->enterprise_id);
 
                 return response()->json(['users' => $users, 'message' => 'Usuário atualizado']);
@@ -203,7 +229,7 @@ class UserController
             }
         } catch (Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao atualizar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao atualizar usuário da organização', $e, $request);
 
             return response()->json(['message' => 'Erro ao atualizar usuário'], 500);
         }
@@ -214,20 +240,20 @@ class UserController
         try {
             DB::beginTransaction();
 
-            $user = $this->userDmRepository->delete($request->route('userID'));
+            $user = $this->userDmRepository->delete($request->route('user'));
 
             if ($user) {
 
                 DB::commit();
 
-                $user = $this->userDmRepository->findByID($request->route('userID'));
+                $user = $this->userDmRepository->findByID($request->route('user'));
                 $users = $this->userDmRepository->findUsersByEnterpriseID($user->enterprise_id);
 
                 return response()->json(['users' => $users, 'message' => 'Usuário deletado']);
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            ErrorLogger::log('Erro ao deletar usuário', $e, $request);
+            ErrorLogger::critical('Erro ao deletar usuário da organização', $e, $request);
 
             return response()->json(['message' => 'Erro ao deletar usuário'], 500);
         }
