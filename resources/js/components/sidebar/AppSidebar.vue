@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import ProfileForm from '@/components/form/ProfileForm.vue';
+import ProfileForm from '@/components/form/profile/ProfileForm.vue';
 import {
   User,
   Building2,

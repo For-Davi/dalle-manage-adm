@@ -5,6 +5,8 @@ import {
   logoutService,
   resetPasswordService,
   resetService,
+  updateDataService,
+  updatePasswordService,
 } from '@/services/auth-service';
 import { createError, createSuccess } from '@/composables/useCreateNotify';
 import router from '@/router';
@@ -63,9 +65,9 @@ export const useAuthStore = defineStore('auth', {
       try {
         this.setLoading(true);
         const response = await resetService(email);
-        if (response.status === 200) {
-          createSuccess(response.data.message);
-        }
+        createSuccess(
+          'Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha'
+        );
 
         return response;
       } catch (error) {
@@ -82,6 +84,39 @@ export const useAuthStore = defineStore('auth', {
         if (response.status === 200) {
           createSuccess(response.data.message);
           await router.push({ name: 'login' });
+        }
+
+        return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async updateData(data: IUpdateData) {
+      try {
+        this.setLoading(true);
+        const response = await updateDataService(data);
+        if (response.status === 200) {
+          createSuccess(response.data.message);
+          this.setUser(response.data.user);
+        }
+
+        return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async updatePassword(data: IUpdatePassword) {
+      try {
+        this.setLoading(true);
+        const response = await updatePasswordService(data);
+        if (response.status === 200) {
+          createSuccess(response.data.message);
         }
 
         return response;

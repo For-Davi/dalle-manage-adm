@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import { reactive, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth-store';
+import { validateUpdateData } from './validation';
 
 defineOptions({
   name: 'ProfileData',
 });
+
+const { user, loadingAuth } = storeToRefs(useAuthStore());
 
 const props = defineProps<{
   user: IUserAdm | null;
@@ -15,19 +19,25 @@ const emit = defineEmits<{
   'update:open': [void];
 }>();
 
-const form = useForm({
+const form = reactive({
   name: '',
   email: '',
 });
 
-const submit = () => {
-  form.put(route('user.update.data'), {
-    onSuccess: () => emit('update:open'),
-  });
+const submit = async () => {
+  const status = validateUpdateData(form);
+  if (status.status) {
+    const response = await useAuthStore().updateData(form);
+    if (response?.status === 200) {
+      emit('update:open');
+    }
+  }
 };
 const mountData = async () => {
-  ((form.name = props.user?.name ?? ''),
-    (form.email = props.user?.email ?? ''));
+  Object.assign(form, {
+    name: user.value?.name || '',
+    email: props.user?.email || '',
+  });
 };
 
 watch(
@@ -52,11 +62,6 @@ watch(
         <Label for="email" class="font-bold">Email</Label>
         <Input v-model="form.email" id="email" placeholder="Insira um email" />
       </div>
-      <div v-if="form.errors.email">
-        <p class="mt-2 ml-1 text-sm font-bold font-medium text-red-600">
-          {{ form.errors.email }}
-        </p>
-      </div>
       <div class="mt-3 flex justify-end">
         <Button
           @click="emit('updateType', 'password')"
@@ -64,11 +69,9 @@ watch(
         >
           Alterar senha
         </Button>
-        <Button class="cursor-pointer">
-          <div v-if="form.processing">
-            <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
-          </div>
-          <div v-else>Atualizar dados</div>
+        <Button type="submit" class="px-8" :disabled="loadingAuth">
+          <LucideLoader2 v-if="loadingAuth" class="mr-2 h-4 w-4 animate-spin" />
+          {{ loadingAuth ? 'Salvando...' : 'Atualizar dados' }}
         </Button>
       </div>
     </form>

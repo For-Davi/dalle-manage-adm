@@ -2,16 +2,6 @@ import api from '@/lib/api';
 
 const baseUrl = 'sellers';
 
-export const getSellersRegistrationService = (): Promise<{
-  status: number;
-  data: {
-    message: string;
-    registrations: ISellerRegistration[];
-  };
-}> => {
-  return api.get(`${baseUrl}/registrations`);
-};
-
 export const getSellersService = (): Promise<{
   status: number;
   data: {
@@ -69,4 +59,36 @@ export const deleteSellerService = (
   };
 }> => {
   return api.delete(`${baseUrl}/${sellerID}`);
+};
+
+export const getSellersRegistrationService = (): Promise<{
+  status: number;
+  data: {
+    message: string;
+    registrations: ISellerRegistration[];
+  };
+}> => {
+  return api.get(`${baseUrl}/registrations`);
+};
+
+export const showSellerRegistrationService = (registrationID: number): Promise<{
+  status: number;
+  data: {
+    message: string;
+    registration: ISellerRegistration;
+  };
+}> => {
+  return api.get(`${baseUrl}/registrations/${registrationID}`);
+};
+
+export const deleteRegistrationService = (
+  registrationID: number
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    registrations: ISellerRegistration[];
+  };
+}> => {
+  return api.delete(`${baseUrl}/registrations/${registrationID}`);
 };

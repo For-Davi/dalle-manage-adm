@@ -13,6 +13,29 @@ export const loginService = (
   return api.post('/login', data);
 };
 
+export const updateDataService = (
+  data: IUpdateData
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+    user: IUserAdm;
+  };
+}> => {
+  return api.put('users/profile/data', data);
+};
+
+export const updatePasswordService = (
+  data: IUpdatePassword
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+  };
+}> => {
+  return api.put('users/profile/password', data);
+};
+
 export const logoutService = (): Promise<{
   status: number;
   data: {

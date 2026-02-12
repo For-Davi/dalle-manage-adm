@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
+import { validateUpdatePassword } from './validation';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth-store';
 
 defineOptions({
   name: 'ProfilePassword',
@@ -11,20 +13,24 @@ const emit = defineEmits<{
   'update:open': [void];
 }>();
 
-const form = useForm({
+const { loadingAuth } = storeToRefs(useAuthStore());
+
+const form = reactive({
   currentPassword: '',
   password: '',
 });
 const confirmPassword = ref('');
 
-const submit = () => {
-  if (confirmPassword.value !== form.password) {
-    form.setError('password', 'As senhas não coincidem');
-  } else {
-    form.clearErrors('password');
-    form.put(route('user.update.password'), {
-      onSuccess: () => emit('update:open'),
-    });
+const submit = async () => {
+  const status = validateUpdatePassword({
+    ...form,
+    confirmPassword: confirmPassword.value,
+  });
+  if (status.status) {
+    const response = await useAuthStore().updatePassword(form);
+    if (response?.status === 200) {
+      emit('update:open');
+    }
   }
 };
 </script>
@@ -61,11 +67,6 @@ const submit = () => {
           placeholder="Confirme a nova senha"
         />
       </div>
-      <div v-if="form.errors.password">
-        <p class="mt-2 ml-1 text-sm font-bold font-medium text-red-600">
-          {{ form.errors.password }}
-        </p>
-      </div>
       <div class="mt-3 flex justify-end">
         <Button
           @click="emit('updateType', 'data')"
@@ -73,11 +74,9 @@ const submit = () => {
         >
           Alterar dados
         </Button>
-        <Button class="cursor-pointer">
-          <div v-if="form.processing">
-            <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
-          </div>
-          <div v-else>Atualizar senha</div>
+        <Button type="submit" class="px-8" :disabled="loadingAuth">
+          <LucideLoader2 v-if="loadingAuth" class="mr-2 h-4 w-4 animate-spin" />
+          {{ loadingAuth ? 'Salvando...' : 'Atualizar senha' }}
         </Button>
       </div>
     </form>

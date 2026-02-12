@@ -3,14 +3,14 @@ import { ref } from 'vue';
 import { goUrlName } from '@/composables/useRedirect';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { storeToRefs } from 'pinia';
-import { useUserAdmStore } from '@/stores/user-adm-store';
 import { createError } from '@/composables/useCreateNotify';
+import { useSellerStore } from '@/stores/seller-store';
 
 defineOptions({
-  name: 'UsersTable',
+  name: 'RegistrationsTable',
 });
 
-const { loadingUserAdm, listUsersAdm } = storeToRefs(useUserAdmStore());
+const { loadingSeller, listRegistrations } = storeToRefs(useSellerStore());
 
 const isConfirmOpen = ref(false);
 const selectedId = ref<number | null>(null);
@@ -21,7 +21,7 @@ const openDeleteModal = (id: number) => {
 };
 const handleExclude = async () => {
   try {
-    const response = await useUserAdmStore().deleteUser(
+    const response = await useSellerStore().deleteSeller(
       Number(selectedId.value)
     );
 
@@ -30,25 +30,32 @@ const handleExclude = async () => {
       isConfirmOpen.value = false;
     }
   } catch (error) {
-    createError(error || 'Ocorreu um erro ao excluir o usuário.');
+    createError(error || 'Ocorreu um erro ao excluir a inscrição.');
   }
 };
 </script>
 
 <template>
   <main>
-    <Table v-if="!loadingUserAdm">
+    <Table v-if="!loadingSeller">
       <TableHeader>
         <TableRow>
           <TableHead> Nome </TableHead>
           <TableHead>Email</TableHead>
+          <TableHead>Telefone</TableHead>
+          <TableHead>Data de registro</TableHead>
           <TableHead> Ação </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow v-for="(user, index) in listUsersAdm" :key="index">
-          <TableCell>{{ user.name }}</TableCell>
-          <TableCell>{{ user.email }}</TableCell>
+        <TableRow
+          v-for="(registration, index) in listRegistrations"
+          :key="index"
+        >
+          <TableCell>{{ registration.name }}</TableCell>
+          <TableCell>{{ registration.email }}</TableCell>
+          <TableCell>{{ registration.phone }}</TableCell>
+          <TableCell>{{ registration.created_at }}</TableCell>
           <TableCell>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
@@ -62,19 +69,19 @@ const handleExclude = async () => {
                 >
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem
+                  <!-- <DropdownMenuItem
                     class="cursor-pointer text-xs sm:text-sm"
                     @click="
-                      goUrlName('user.edit', {
-                        id: user.id,
+                      goUrlName('seller.edit', {
+                        id: seller.id,
                       })
                     "
                   >
                     <LucidePencil /> <span>Editar</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> -->
                   <DropdownMenuItem
                     class="cursor-pointer text-xs text-red-600 sm:text-sm"
-                    @click="openDeleteModal(user.id)"
+                    @click="openDeleteModal(registration.id)"
                   >
                     <LucideTrash class="text-red-600" /> <span>Excluir</span>
                   </DropdownMenuItem>
@@ -93,9 +100,9 @@ const handleExclude = async () => {
   <!-- Modals -->
   <ConfirmAction
     v-model:open="isConfirmOpen"
-    title="Excluir Usuário"
-    message="Esta ação é irreversível e excluirá este usuário."
-    :loading="loadingUserAdm"
+    title="Excluir Inscrição"
+    message="Esta ação é irreversível e excluirá esta inscrição."
+    :loading="loadingSeller"
     variant="destructive"
     @confirm="handleExclude"
   />

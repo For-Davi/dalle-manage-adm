@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EnterpriseController;
+use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
@@ -46,7 +47,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('sellers')->group(function () {
         Route::prefix('registrations')->group(function () {
-            Route::get('/', [SellerController::class, 'indexRegistration']);
+            Route::get('/', [RegistrationController::class, 'index']);
+            Route::delete('/{registration}', [RegistrationController::class, 'delete']);
         });
 
         Route::get('/', [SellerController::class, 'index']);

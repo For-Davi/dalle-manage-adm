@@ -12,7 +12,7 @@ export interface SellerRegistration {
   name: string;
   email: string;
   phone: string;
-  registration_date: string;
+  created_at: string;
   description: string | null;
 }
 

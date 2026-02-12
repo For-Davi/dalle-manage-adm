@@ -1,39 +1,41 @@
 <script setup lang="ts">
-import { useForm } from '@inertiajs/vue3';
-import { toast } from 'vue-sonner';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '@/stores/auth-store';
+import { onMounted, reactive } from 'vue';
 
 defineOptions({
-  name: 'Reset',
+  name: 'AuthForm',
 });
 
 const emit = defineEmits<{
   'update:changeRender': [IRenderAuth];
 }>();
 
-const form = useForm({
+const { loadingAuth } = storeToRefs(useAuthStore());
+
+const form = reactive({
   email: '',
+  password: '',
 });
 
 const submit = async () => {
-  form.post(route('verify.reset'), {
-    onFinish: () => {
-      form.reset('email');
-      emit('update:changeRender', 'auth');
-    },
-    onSuccess: () => {
-      toast.success(
-        'Caso o e-mail esteja em nossos registro, você receberá um email para a redefinição de senha'
-      );
-    },
-  });
+  await useAuthStore().login(form);
 };
+const clear = () => {
+  form.email = '';
+  form.password = '';
+};
+
+onMounted(() => {
+  clear();
+});
 </script>
 
 <template>
   <Card class="w-100">
     <CardHeader>
       <CardTitle>Dalle Manage Adm</CardTitle>
-      <CardDescription> Esqueceu sua senha? </CardDescription>
+      <CardDescription> Faça seu login </CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <form @submit.prevent="submit">
@@ -46,17 +48,22 @@ const submit = async () => {
             autocomplete="new-email"
           />
         </div>
+        <div class="space-y-1">
+          <Label for="password">Password</Label>
+          <Input
+            v-model="form.password"
+            id="password"
+            type="password"
+            placeholder="Insira sua senha"
+            autocomplete="new-password"
+          />
+        </div>
         <div class="mt-2">
           <span
-            @click="emit('update:changeRender', 'auth')"
+            @click="emit('update:changeRender', 'reset')"
             class="ml-1 cursor-pointer text-sm underline"
-            >Entrar na conta</span
+            >Esqueceu sua senha?</span
           >
-        </div>
-        <div v-if="form.errors.email" class="mt-2">
-          <p class="ml-6 text-sm font-medium text-red-600">
-            {{ form.errors.email }}
-          </p>
         </div>
       </form>
     </CardContent>
@@ -64,13 +71,13 @@ const submit = async () => {
       <Button
         type="submit"
         class="w-full cursor-pointer"
-        :disabled="form.processing"
+        :disabled="loadingAuth"
         @click="submit"
       >
-        <div v-if="form.processing">
+        <div v-if="loadingAuth">
           <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
         </div>
-        <div v-else>Enviar</div>
+        <div v-else>Entrar</div>
       </Button>
     </CardFooter>
   </Card>

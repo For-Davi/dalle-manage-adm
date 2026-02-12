@@ -8,13 +8,6 @@ interface DataCreate {
   code: string;
 }
 
-interface DataUpdate {
-  name: string;
-  email: string;
-  phone: string;
-  code: string;
-}
-
 export const validateCreateOrUpdate = (data: DataCreate) => {
   const errors: string[] = [];
 

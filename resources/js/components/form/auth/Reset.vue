@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth-store';
-import { reactive } from 'vue';
+import { onMounted, reactive } from 'vue';
 
 defineOptions({
-  name: 'AuthForm',
+  name: 'Reset',
 });
 
 const emit = defineEmits<{
@@ -15,19 +15,27 @@ const { loadingAuth } = storeToRefs(useAuthStore());
 
 const form = reactive({
   email: '',
-  password: '',
 });
 
 const submit = async () => {
-  await useAuthStore().login(form);
+  await useAuthStore().reset(form.email);
+  form.email = ';';
+  emit('update:changeRender', 'auth');
 };
+const clear = () => {
+  form.email = '';
+};
+
+onMounted(() => {
+  clear();
+});
 </script>
 
 <template>
   <Card class="w-100">
     <CardHeader>
       <CardTitle>Dalle Manage Adm</CardTitle>
-      <CardDescription> Faça seu login </CardDescription>
+      <CardDescription> Esqueceu sua senha? </CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <form @submit.prevent="submit">
@@ -40,36 +48,19 @@ const submit = async () => {
             autocomplete="new-email"
           />
         </div>
-        <div class="space-y-1">
-          <Label for="password">Password</Label>
-          <Input
-            v-model="form.password"
-            id="password"
-            type="password"
-            placeholder="Insira sua senha"
-            autocomplete="new-password"
-          />
-        </div>
         <div class="mt-2">
           <span
-            @click="emit('update:changeRender', 'reset')"
+            @click="emit('update:changeRender', 'auth')"
             class="ml-1 cursor-pointer text-sm underline"
-            >Esqueceu sua senha?</span
+            >Entrar na conta</span
           >
         </div>
       </form>
     </CardContent>
     <CardFooter>
-      <Button
-        type="submit"
-        class="w-full cursor-pointer"
-        :disabled="loadingAuth"
-        @click="submit"
-      >
-        <div v-if="loadingAuth">
-          <LucideLoader2 class="mr-2 h-4 w-4 animate-spin" />
-        </div>
-        <div v-else>Entrar</div>
+      <Button type="submit" class="px-8" :disabled="loadingAuth">
+        <LucideLoader2 v-if="loadingAuth" class="mr-2 h-4 w-4 animate-spin" />
+        {{ loadingAuth ? 'Enviando...' : 'Enviar redefinição' }}
       </Button>
     </CardFooter>
   </Card>
