@@ -71,7 +71,9 @@ export const getSellersRegistrationService = (): Promise<{
   return api.get(`${baseUrl}/registrations`);
 };
 
-export const showSellerRegistrationService = (registrationID: number): Promise<{
+export const showSellerRegistrationService = (
+  registrationID: number
+): Promise<{
   status: number;
   data: {
     message: string;

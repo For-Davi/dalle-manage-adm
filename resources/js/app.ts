@@ -14,7 +14,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+} from '@/components/ui/breadcrumb/index';
 import { Switch } from '@/components/ui/switch/index';
 import {
   Card,
@@ -22,10 +22,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from './components/ui/card/index.js';
-import { Input } from './components/ui/input/index.js';
-import { Label } from './components/ui/label/index.js';
-import { Button } from './components/ui/button/index.js';
+} from './components/ui/card/index';
+import { Input } from './components/ui/input/index';
+import { Label } from './components/ui/label/index';
+import { Button } from './components/ui/button/index';
 import {
   Dialog,
   DialogContent,
@@ -34,7 +34,7 @@ import {
   DialogDescription,
   DialogOverlay,
   DialogFooter,
-} from './components/ui/dialog/index.js';
+} from './components/ui/dialog/index';
 import {
   Sidebar,
   SidebarContent,
@@ -46,7 +46,17 @@ import {
   SidebarHeader,
   SidebarFooter,
   SidebarProvider,
-} from './components/ui/sidebar/index.js';
+} from './components/ui/sidebar/index';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from './components/ui/sheet/index';
 import {
   Table,
   TableBody,
@@ -57,7 +67,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './components/ui/table/index.js';
+} from './components/ui/table/index';
 import {
   Select,
   SelectContent,
@@ -70,8 +80,8 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from './components/ui/select/index.js';
-import { Separator } from './components/ui/separator/index.js';
+} from './components/ui/select/index';
+import { Separator } from './components/ui/separator/index';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -88,13 +98,13 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from './components/ui/dropdown-menu/index.js';
+} from './components/ui/dropdown-menu/index';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from './components/ui/tabs/index.js';
+} from './components/ui/tabs/index';
 import { Spinner } from './components/ui/spinner/index';
 
 const app = createApp(App);
@@ -107,6 +117,16 @@ app.component('BreadcrumbLink', BreadcrumbLink);
 app.component('BreadcrumbList', BreadcrumbList);
 app.component('BreadcrumbPage', BreadcrumbPage);
 app.component('BreadcrumbSeparator', BreadcrumbSeparator);
+app.component('Card', Card);
+app.component('Sheet', Sheet);
+app.component('SheetClose', SheetClose);
+app.component('SheetContent', SheetContent);
+app.component('SheetDescription', SheetDescription);
+app.component('SheetFooter', SheetFooter);
+app.component('SheetHeader', SheetHeader);
+app.component('SheetTitle', SheetTitle);
+app.component('SheetTrigger', SheetTrigger);
+app.component('Card', Card);
 app.component('Card', Card);
 app.component('CardContent', CardContent);
 app.component('CardHeader', CardHeader);
