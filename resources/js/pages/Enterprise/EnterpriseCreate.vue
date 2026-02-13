@@ -7,6 +7,8 @@ import { useSellerStore } from '@/stores/seller-store';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { validateCreateorUpdate } from './validation';
 import { goUrlName } from '@/composables/useRedirect';
+import { useSubscriptionStore } from '@/stores/subscription-store';
+import { getNameSubscription } from '@/composables/useSubscription';
 
 defineOptions({
   name: 'EnterpriseCreate',
@@ -14,6 +16,7 @@ defineOptions({
 
 const { loadingSeller, listSellers } = storeToRefs(useSellerStore());
 const { loadingEnterprise } = storeToRefs(useEnterpriseStore());
+const { loadingSubscription, listSubscriptions } = storeToRefs(useSubscriptionStore());
 
 const loading = ref<boolean>(false);
 const type = ref<'cnpj' | 'cpf'>('cnpj');
@@ -65,6 +68,9 @@ const clear = () => {
 };
 const fetchSellers = async () => {
   await useSellerStore().getSellers();
+};
+const fetchSubscription = async () => {
+  await useSubscriptionStore().getSubscriptions();
 };
 
 const actions = computed<IMenuAction[]>(() => [
@@ -126,12 +132,13 @@ watch(
 onMounted(async () => {
   clear();
   await fetchSellers();
+  await fetchSubscription();
 });
 </script>
 
 <template>
   <main class="bg-slate-50/50 p-4 md:p-8">
-    <div v-if="!loadingEnterprise && !loadingSeller">
+    <div v-if="!loadingEnterprise && !loadingSeller && !loadingSubscription">
       <div class="mb-2">
         <TitlePage title="Registro de Empresa" />
         <p class="text-muted-foreground mt-1 text-sm">
@@ -277,9 +284,7 @@ onMounted(async () => {
                   <SelectValue placeholder="Selecione um plano" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem :value="1">Grátis</SelectItem>
-                  <SelectItem :value="2">Básica</SelectItem>
-                  <SelectItem :value="3">Premium</SelectItem>
+                  <SelectItem v-for="(item, i) in listSubscriptions" :key="item.id" :value="item.id">{{ getNameSubscription(item.name) }}</SelectItem>
                 </SelectContent>
               </Select>
             </div>

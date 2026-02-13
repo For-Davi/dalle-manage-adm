@@ -100,11 +100,30 @@ import {
   DropdownMenuTrigger,
 } from './components/ui/dropdown-menu/index';
 import {
+    Calendar,
+    CalendarCell,
+    CalendarCellTrigger,
+    CalendarGrid,
+    CalendarHeader,
+    CalendarGridBody,
+    CalendarGridHead,
+    CalendarGridRow,
+    CalendarHeadCell,
+    CalendarHeading,
+    CalendarNextButton,
+    CalendarPrevButton,
+} from './components/ui/calendar/index'
+import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from './components/ui/tabs/index';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Spinner } from './components/ui/spinner/index';
 import MenuActions from './components/shared/menu/MenuActions.vue';
 import AppBreadcrumb from './components/shared/route/AppBreadcrumb.vue';
@@ -116,6 +135,21 @@ app.use(router);
 app.component('AppBreadcrumb', AppBreadcrumb);
 app.component('MenuActions', MenuActions);
 app.component('Breadcrumb', Breadcrumb);
+app.component('Calendar', Calendar);
+app.component('CalendarCell', CalendarCell);
+app.component('CalendarCellTrigger', CalendarCellTrigger);
+app.component('CalendarGrid', CalendarGrid);
+app.component('CalendarHeader', CalendarHeader);
+app.component('CalendarGridBody', CalendarGridBody);
+app.component('CalendarGridHead', CalendarGridHead);
+app.component('CalendarGridRow', CalendarGridRow);
+app.component('CalendarHeadCell', CalendarHeadCell);
+app.component('CalendarHeading', CalendarHeading);
+app.component('CalendarNextButton', CalendarNextButton);
+app.component('CalendarPrevButton', CalendarPrevButton);
+app.component('Popover', Popover);
+app.component('PopoverContent', PopoverContent);
+app.component('PopoverTrigger', PopoverTrigger);
 app.component('BreadcrumbItem', BreadcrumbItem);
 app.component('BreadcrumbLink', BreadcrumbLink);
 app.component('BreadcrumbList', BreadcrumbList);
