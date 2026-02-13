@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import EnterprisesTable from '@/components/tables/EnterprisesTable.vue';
+import EnterprisesTable from '@/components/table/EnterprisesTable.vue';
 import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';

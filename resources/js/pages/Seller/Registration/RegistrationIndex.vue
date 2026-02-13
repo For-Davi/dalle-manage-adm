@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { useSellerStore } from '@/stores/seller-store';
-import RegistrationsTable from '@/components/tables/RegistrationsTable.vue';
+import RegistrationsTable from '@/components/table/RegistrationsTable.vue';
 
 defineOptions({
   name: 'RegistrationIndex',

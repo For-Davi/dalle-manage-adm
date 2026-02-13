@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { goUrlName } from '@/composables/useRedirect';
 import { useSellerStore } from '@/stores/seller-store';
-import SellersTable from '@/components/tables/SellersTable.vue';
+import SellersTable from '@/components/table/SellersTable.vue';
 import { LucideUserPlus } from 'lucide-vue-next';
 
 defineOptions({

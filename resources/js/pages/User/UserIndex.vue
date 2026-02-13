@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { goUrlName } from '@/composables/useRedirect';
-import UsersTable from '@/components/tables/UsersTable.vue';
+import UsersTable from '@/components/table/UsersTable.vue';
 import { useUserAdmStore } from '@/stores/user-adm-store';
 
 defineOptions({

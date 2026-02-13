@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SubscriptionsTable from '@/components/tables/SubscriptionsTable.vue';
+import SubscriptionsTable from '@/components/table/SubscriptionsTable.vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';

@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { goUrlName } from '@/composables/useRedirect';
-import UsersDmTable from '@/components/tables/UsersDmTable.vue';
+import UsersDmTable from '@/components/table/UsersDmTable.vue';
 
 defineOptions({
   name: 'EnterpriseUserIndex',
