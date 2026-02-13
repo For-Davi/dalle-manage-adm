@@ -25,6 +25,15 @@ const actions = computed<IMenuAction[]>(() => [
     onClick: () => goUrlName('enterprise-user.create', { id: props.id }),
   },
 ]);
+const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
+  {
+    label: 'Empresas',
+    to: { name: 'enterprises' },
+  },
+  {
+    label: 'Usuários',
+  },
+])
 
 onMounted(async () => {
   await useEnterpriseStore().getUsersByEnterprise(Number(props.id));
@@ -36,21 +45,7 @@ onMounted(async () => {
     <div class="p-6">
       <TitlePage title="Empresas" />
       <Separator class="my-4" />
-      <Breadcrumb class="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer" as-child>
-              <RouterLink :to="{ name: 'enterprises' }"> Empresas </RouterLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer font-bold">
-              Usuários
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <AppBreadcrumb :items="breadcrumbItems" />
       <MenuActions :actions="actions" />
       <UsersDmTable :enterprise-id="props.id" />
     </div>

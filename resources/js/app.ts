@@ -107,11 +107,13 @@ import {
 } from './components/ui/tabs/index';
 import { Spinner } from './components/ui/spinner/index';
 import MenuActions from './components/shared/menu/MenuActions.vue';
+import AppBreadcrumb from './components/shared/route/AppBreadcrumb.vue';
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.component('AppBreadcrumb', AppBreadcrumb);
 app.component('MenuActions', MenuActions);
 app.component('Breadcrumb', Breadcrumb);
 app.component('BreadcrumbItem', BreadcrumbItem);

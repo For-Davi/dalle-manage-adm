@@ -53,6 +53,15 @@ const actions = computed<IMenuAction[]>(() => [
     icon: 'LucidePlus',
   },
 ]);
+const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
+  {
+    label: 'Vendedores',
+    to: { name: 'sellers' },
+  },
+  {
+    label: 'Cadastro',
+  },
+])
 
 onMounted(async () => {
   clear();
@@ -69,19 +78,7 @@ onMounted(async () => {
         </p>
       </div>
       <Separator class="my-2" />
-      <Breadcrumb class="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer" as-child>
-              <RouterLink :to="{ name: 'sellers' }"> Vendedores </RouterLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink class="font-bold"> Cadastro </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <AppBreadcrumb :items="breadcrumbItems" />
       <form @submit.prevent="create" class="space-y-6">
         <Card>
           <CardHeader>

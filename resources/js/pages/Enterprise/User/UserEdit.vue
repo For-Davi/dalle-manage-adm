@@ -78,6 +78,22 @@ const actions = computed<IMenuAction[]>(() => [
     loading: loadingEnterprise.value,
   },
 ]);
+const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
+  {
+    label: 'Empresas',
+    to: { name: 'enterprises' },
+  },
+  {
+    label: 'Usuários',
+    to: {
+      name: 'enterprise-users',
+      params: { id: props.userID },
+    },
+  },
+  {
+    label: 'Cadastro',
+  },
+])
 
 onMounted(async () => {
   clear();
@@ -96,29 +112,7 @@ onMounted(async () => {
         </p>
       </div>
       <Separator class="my-2" />
-      <Breadcrumb class="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer" as-child>
-              <RouterLink :to="{ name: 'enterprises' }"> Empresas </RouterLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer" as-child>
-              <RouterLink
-                :to="{ name: 'enterprise-users', params: { id: props.userID } }"
-              >
-                Usuários
-              </RouterLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink class="font-bold"> Cadastro </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <AppBreadcrumb :items="breadcrumbItems" />
       <form @submit.prevent="update" class="space-y-6">
         <Card>
           <CardHeader>

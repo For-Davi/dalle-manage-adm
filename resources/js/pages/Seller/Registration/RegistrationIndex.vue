@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { useSellerStore } from '@/stores/seller-store';
 import RegistrationsTable from '@/components/table/RegistrationsTable.vue';
@@ -12,6 +12,16 @@ const fetchRegistrations = async () => {
   await useSellerStore().getSellersRegistration();
 };
 
+const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
+  {
+    label: 'Vendedores',
+    to: { name: 'sellers' },
+  },
+  {
+    label: 'Inscrições',
+  },
+])
+
 onMounted(async () => {
   await fetchRegistrations();
 });
@@ -21,19 +31,7 @@ onMounted(async () => {
   <main class="p-6">
     <TitlePage title="Inscrições" />
     <Separator class="my-4" />
-    <Breadcrumb class="mb-4">
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink class="cursor-pointer" as-child>
-            <RouterLink :to="{ name: 'sellers' }"> Vendedores </RouterLink>
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink class="font-bold"> Inscrições </BreadcrumbLink>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <AppBreadcrumb :items="breadcrumbItems" />
     <RegistrationsTable />
   </main>
 </template>

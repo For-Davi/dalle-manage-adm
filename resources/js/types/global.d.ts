@@ -18,7 +18,7 @@ import type { Subscription } from './Subscription.ts';
 import { DataSeller, Seller, SellerRegistration } from './Seller.ts';
 import { Department } from './Department.js';
 import { Image } from './Media.js';
-import { MenuAction } from './General.js';
+import { BreadcrumbItem, MenuAction } from './General.js';
 
 export {};
 
@@ -62,4 +62,6 @@ declare global {
   type IDataUserDm = DataUserDm;
 
   type IMenuAction = MenuAction;
+
+  type IBreadcrumbItem = BreadcrumbItem;
 }

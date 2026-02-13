@@ -1,3 +1,5 @@
+import { RouteLocationRaw } from "vue-router";
+
 export type MenuAction = {
   label?: string;
   icon?: any;
@@ -8,3 +10,8 @@ export type MenuAction = {
   loading?: boolean;
   onClick?: () => void;
 };
+
+export interface BreadcrumbItem {
+  label: string
+  to?: RouteLocationRaw
+}
