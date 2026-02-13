@@ -106,11 +106,13 @@ import {
   TabsTrigger,
 } from './components/ui/tabs/index';
 import { Spinner } from './components/ui/spinner/index';
+import MenuActions from './components/shared/menu/MenuActions.vue';
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.component('MenuActions', MenuActions);
 app.component('Breadcrumb', Breadcrumb);
 app.component('BreadcrumbItem', BreadcrumbItem);
 app.component('BreadcrumbLink', BreadcrumbLink);
@@ -126,8 +128,6 @@ app.component('SheetFooter', SheetFooter);
 app.component('SheetHeader', SheetHeader);
 app.component('SheetTitle', SheetTitle);
 app.component('SheetTrigger', SheetTrigger);
-app.component('Card', Card);
-app.component('Card', Card);
 app.component('CardContent', CardContent);
 app.component('CardHeader', CardHeader);
 app.component('CardTitle', CardTitle);

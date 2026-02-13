@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { validateCreate } from './validation';
 import { storeToRefs } from 'pinia';
@@ -55,6 +55,23 @@ const clear = () => {
   });
   confirmPassword.value = '';
 };
+
+const actions = computed<IMenuAction[]>(() => [
+  {
+    label: 'Limpar formulário',
+    type: 'button',
+    variant: 'outline',
+    onClick: clear,
+    disabled: loadingEnterprise.value,
+  },
+  {
+    label: loadingEnterprise.value ? 'Salvando...' : 'Cadastrar Usuário',
+    type: 'submit',
+    class: 'px-8',
+    disabled: loadingEnterprise.value,
+    loading: loadingEnterprise.value,
+  },
+]);
 
 onMounted(async () => {
   clear();
@@ -152,18 +169,7 @@ onMounted(async () => {
             </div>
           </CardContent>
         </Card>
-        <div class="mt-8 flex items-center justify-end gap-4">
-          <Button type="button" variant="outline" @click="clear"
-            >Limpar formulário</Button
-          >
-          <Button type="submit" class="px-8" :disabled="loadingEnterprise">
-            <LucideLoader2
-              v-if="loadingEnterprise"
-              class="mr-2 h-4 w-4 animate-spin"
-            />
-            {{ loadingEnterprise ? 'Salvando...' : 'Cadastrar Usuário' }}
-          </Button>
-        </div>
+        <MenuActions :actions="actions" />
       </form>
     </div>
     <div v-else class="flex h-[50vh] items-center justify-center">

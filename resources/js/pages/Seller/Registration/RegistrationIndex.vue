@@ -18,24 +18,22 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
-    <div class="p-6">
-      <TitlePage title="Inscrições" />
-      <Separator class="my-4" />
-      <Breadcrumb class="mb-4">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink class="cursor-pointer" as-child>
-              <RouterLink :to="{ name: 'sellers' }"> Vendedores </RouterLink>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink class="font-bold"> Inscrições </BreadcrumbLink>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
-      <RegistrationsTable />
-    </div>
+  <main class="p-6">
+    <TitlePage title="Inscrições" />
+    <Separator class="my-4" />
+    <Breadcrumb class="mb-4">
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink class="cursor-pointer" as-child>
+            <RouterLink :to="{ name: 'sellers' }"> Vendedores </RouterLink>
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink class="font-bold"> Inscrições </BreadcrumbLink>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+    <RegistrationsTable />
   </main>
 </template>

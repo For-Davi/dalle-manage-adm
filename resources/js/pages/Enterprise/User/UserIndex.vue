@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { goUrlName } from '@/composables/useRedirect';
+import { storeToRefs } from 'pinia';
 import UsersDmTable from '@/components/table/UsersDmTable.vue';
 
 defineOptions({
@@ -12,6 +13,18 @@ defineOptions({
 const props = defineProps<{
   id: string;
 }>();
+
+const { loadingEnterprise } = storeToRefs(useEnterpriseStore());
+
+const actions = computed<IMenuAction[]>(() => [
+  {
+    label: 'Criar usuário',
+    class: 'bg-black',
+    icon: 'LucidePlus',
+    disabled: loadingEnterprise.value,
+    onClick: () => goUrlName('enterprise-user.create', { id: props.id }),
+  },
+]);
 
 onMounted(async () => {
   await useEnterpriseStore().getUsersByEnterprise(Number(props.id));
@@ -38,15 +51,7 @@ onMounted(async () => {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div class="m-3 flex justify-end">
-        <Button
-          class="cursor-pointer bg-black"
-          @click="goUrlName('enterprise-user.create', { id: props.id })"
-        >
-          Criar usuário
-          <LucidePlus />
-        </Button>
-      </div>
+      <MenuActions :actions="actions" />
       <UsersDmTable :enterprise-id="props.id" />
     </div>
   </main>

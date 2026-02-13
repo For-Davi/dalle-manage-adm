@@ -1,14 +1,33 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { goUrlName } from '@/composables/useRedirect';
+import { storeToRefs } from 'pinia';
 import { useSellerStore } from '@/stores/seller-store';
 import SellersTable from '@/components/table/SellersTable.vue';
-import { LucideUserPlus } from 'lucide-vue-next';
 
 defineOptions({
   name: 'SellerIndex',
 });
+
+const { loadingSeller } = storeToRefs(useSellerStore());
+
+const actions = computed(() => [
+  {
+    label: 'Inscrições',
+    icon: 'LucideUserPlus',
+    variant: 'outline',
+    onClick: () => goUrlName('registrations'),
+    disabled: loadingSeller.value,
+  },
+  {
+    label: 'Criar vendedor',
+    icon: 'LucidePlus',
+    class: 'bg-black',
+    disabled: loadingSeller.value,
+    onClick: () => goUrlName('seller.create'),
+  },
+]);
 
 onMounted(async () => {
   await useSellerStore().getSellers();
@@ -16,28 +35,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
-    <div class="p-6">
-      <TitlePage title="Vendedores" />
-      <Separator class="my-4" />
-      <div class="m-3 flex justify-end gap-2">
-        <Button
-          class="cursor-pointer bg-gray-500 text-white"
-          @click="goUrlName('registrations')"
-          variant="outline"
-        >
-          Inscrições
-          <LucideUserPlus />
-        </Button>
-        <Button
-          class="cursor-pointer bg-black"
-          @click="goUrlName('seller.create')"
-        >
-          Criar vendedor
-          <LucidePlus />
-        </Button>
-      </div>
-      <SellersTable />
-    </div>
+  <main class="p-6">
+    <TitlePage title="Vendedores" />
+    <Separator class="my-4" />
+    <MenuActions :actions="actions" />
+    <SellersTable />
   </main>
 </template>

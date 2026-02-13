@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, reactive, onMounted } from 'vue';
+import { watch, ref, reactive, onMounted, computed } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { searchCep } from '@/services/cep-service';
@@ -109,6 +109,23 @@ const fetchEnterprise = async () => {
     goUrlName('enterprises');
   }
 };
+
+const actions = computed<IMenuAction[]>(() => [
+  {
+    label: 'Resetar formulário',
+    type: 'button',
+    variant: 'outline',
+    onClick: fetchEnterprise,
+    disabled: loadingEnterprise.value,
+  },
+  {
+    label: loadingEnterprise.value ? 'Carregando...' : 'Atualizar Empresa',
+    type: 'submit',
+    class: 'px-8',
+    disabled: loadingEnterprise.value,
+    loading: loadingEnterprise.value,
+  },
+]);
 
 watch(
   () => type.value,
@@ -343,18 +360,7 @@ onMounted(async () => {
           </CardContent>
         </Card>
 
-        <div class="mt-8 flex items-center justify-end gap-4">
-          <Button type="button" variant="outline" @click="fetchEnterprise"
-            >Resetar formulário</Button
-          >
-          <Button type="submit" class="px-8" :disabled="loadingEnterprise">
-            <LucideLoader2
-              v-if="loadingEnterprise"
-              class="mr-2 h-4 w-4 animate-spin"
-            />
-            {{ loadingEnterprise ? 'Carregando...' : 'Atualizar Empresa' }}
-          </Button>
-        </div>
+        <MenuActions :actions="actions" />
       </form>
     </div>
     <div v-else class="flex h-[50vh] items-center justify-center">

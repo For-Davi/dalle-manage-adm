@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, computed } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { goUrlName } from '@/composables/useRedirect';
@@ -54,6 +54,23 @@ const clear = () => {
     code: '',
   });
 };
+
+const actions = computed<IMenuAction[]>(() => [
+  {
+    label: 'Limpar formulário',
+    type: 'button',
+    variant: 'outline',
+    onClick: clear,
+    disabled: loadingSeller.value,
+  },
+  {
+    label: loadingSeller.value ? 'Atualizando...' : 'Atualizar Vendedor',
+    type: 'submit',
+    class: 'px-8',
+    disabled: loadingSeller.value,
+    loading: loadingSeller.value,
+  },
+]);
 
 onMounted(async () => {
   clear();
@@ -129,18 +146,7 @@ onMounted(async () => {
             </div>
           </CardContent>
         </Card>
-        <div class="mt-8 flex items-center justify-end gap-4">
-          <Button type="button" variant="outline" @click="clear"
-            >Limpar formulário</Button
-          >
-          <Button type="submit" class="px-8" :disabled="loadingSeller">
-            <LucideLoader2
-              v-if="loadingSeller"
-              class="mr-2 h-4 w-4 animate-spin"
-            />
-            {{ loadingSeller ? 'Atualizando...' : 'Atualizar Vendedor' }}
-          </Button>
-        </div>
+        <MenuActions :actions="actions" />
       </form>
     </div>
     <div v-else class="flex h-[50vh] items-center justify-center">

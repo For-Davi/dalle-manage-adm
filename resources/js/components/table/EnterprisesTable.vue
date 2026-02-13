@@ -5,16 +5,17 @@ import { isActive } from '@/composables/useVerify';
 import { getNameSubscription } from '@/composables/useSubscription';
 import { goUrlName } from '@/composables/useRedirect';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
+import { storeToRefs } from 'pinia';
+import { useEnterpriseStore } from '@/stores/enterprise-store';
 
 defineOptions({ name: 'EnterprisesTable' });
-
-const props = defineProps<{
-  enterprises: IEnterprise[];
-}>();
 
 const emit = defineEmits<{
   'open:manage': [enterprise: IEnterprise];
 }>();
+
+const { loadingEnterprise, listEnterprises } =
+  storeToRefs(useEnterpriseStore());
 
 const isConfirmOpen = ref(false);
 const isDeleting = ref(false);
@@ -43,67 +44,72 @@ const handleExclude = () => {
 </script>
 
 <template>
-  <Table>
-    <TableHeader>
-      <TableRow>
-        <TableHead>Status</TableHead>
-        <TableHead>Nome</TableHead>
-        <TableHead>Email</TableHead>
-        <TableHead>Assinatura</TableHead>
-        <TableHead class="text-right">Ações</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      <TableRow v-for="enterprise in props.enterprises" :key="enterprise.id">
-        <TableCell>
-          <LucideCircleCheckBig
-            v-if="isActive(enterprise.active)"
-            class="h-5 w-5 text-green-600"
-          />
-          <LucideCircleX v-else class="h-5 w-5 text-red-600" />
-        </TableCell>
-        <TableCell class="font-medium">{{ enterprise.name }}</TableCell>
-        <TableCell>{{ enterprise.email }}</TableCell>
-        <TableCell>{{
-          getNameSubscription(enterprise.subscription.name)
-        }}</TableCell>
-        <TableCell class="text-right">
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <Button variant="ghost" size="icon">
-                <LucideEllipsis class="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" class="w-48">
-              <DropdownMenuLabel>Opções</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+  <main>
+    <Table v-if="!loadingEnterprise">
+      <TableHeader>
+        <TableRow>
+          <TableHead>Status</TableHead>
+          <TableHead>Nome</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Assinatura</TableHead>
+          <TableHead class="text-right">Ações</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow v-for="enterprise in listEnterprises" :key="enterprise.id">
+          <TableCell>
+            <LucideCircleCheckBig
+              v-if="isActive(enterprise.active)"
+              class="h-5 w-5 text-green-600"
+            />
+            <LucideCircleX v-else class="h-5 w-5 text-red-600" />
+          </TableCell>
+          <TableCell class="font-medium">{{ enterprise.name }}</TableCell>
+          <TableCell>{{ enterprise.email }}</TableCell>
+          <TableCell>{{
+            getNameSubscription(enterprise.subscription.name)
+          }}</TableCell>
+          <TableCell class="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger as-child>
+                <Button variant="ghost" size="icon">
+                  <LucideEllipsis class="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" class="w-48">
+                <DropdownMenuLabel>Opções</DropdownMenuLabel>
+                <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                @click="goUrlName('enterprise-users', { id: enterprise.id })"
-              >
-                <LucideUsers class="mr-2 h-4 w-4" /> Usuários
-              </DropdownMenuItem>
+                <DropdownMenuItem
+                  @click="goUrlName('enterprise-users', { id: enterprise.id })"
+                >
+                  <LucideUsers class="mr-2 h-4 w-4" /> Usuários
+                </DropdownMenuItem>
 
-              <DropdownMenuItem
-                @click="goUrlName('enterprise.edit', { id: enterprise.id })"
-              >
-                <LucidePencil class="mr-2 h-4 w-4" /> Editar
-              </DropdownMenuItem>
+                <DropdownMenuItem
+                  @click="goUrlName('enterprise.edit', { id: enterprise.id })"
+                >
+                  <LucidePencil class="mr-2 h-4 w-4" /> Editar
+                </DropdownMenuItem>
 
-              <DropdownMenuSeparator />
+                <DropdownMenuSeparator />
 
-              <DropdownMenuItem
-                class="text-red-600 focus:text-red-600"
-                @click="openDeleteModal(enterprise.id)"
-              >
-                <LucideTrash class="mr-2 h-4 w-4" /> Excluir
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </TableCell>
-      </TableRow>
-    </TableBody>
-  </Table>
+                <DropdownMenuItem
+                  class="text-red-600 focus:text-red-600"
+                  @click="openDeleteModal(enterprise.id)"
+                >
+                  <LucideTrash class="mr-2 h-4 w-4" /> Excluir
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    <div class="p-6" v-else>
+      <Spinner class="size-8" />
+    </div>
+  </main>
 
   <ConfirmAction
     v-model:open="isConfirmOpen"

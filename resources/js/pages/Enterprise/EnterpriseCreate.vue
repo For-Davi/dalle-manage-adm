@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { watch, ref, reactive, onMounted } from 'vue';
+import { watch, ref, reactive, onMounted, computed } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { searchCep } from '@/services/cep-service';
 import { useSellerStore } from '@/stores/seller-store';
 import { useEnterpriseStore } from '@/stores/enterprise-store';
 import { validateCreateorUpdate } from './validation';
-import router from '@/router';
 import { goUrlName } from '@/composables/useRedirect';
 
 defineOptions({
@@ -45,7 +44,6 @@ const create = async () => {
     }
   }
 };
-
 const clear = () => {
   Object.assign(form, {
     name: '',
@@ -65,17 +63,27 @@ const clear = () => {
     active: 1,
   });
 };
+const fetchSellers = async () => {
+  await useSellerStore().getSellers();
+};
 
-watch(
-  () => type.value,
-  (type) => {
-    if (type === 'cpf') {
-      form.cnpj = '';
-    } else {
-      form.cpf = '';
-    }
-  }
-);
+const actions = computed<IMenuAction[]>(() => [
+  {
+    label: 'Limpar formulário',
+    type: 'button',
+    variant: 'outline',
+    disabled: loadingEnterprise.value,
+    onClick: clear,
+  },
+  {
+    label: loadingEnterprise.value ? 'Salvando...' : 'Cadastrar Empresa',
+    type: 'submit',
+    class: 'px-8',
+    disabled: loadingEnterprise.value,
+    loading: loadingEnterprise.value,
+  },
+]);
+
 watch(
   () => form.cep,
   async (cep: string) => {
@@ -95,10 +103,16 @@ watch(
     }
   }
 );
-
-const fetchSellers = async () => {
-  await useSellerStore().getSellers();
-};
+watch(
+  () => type.value,
+  (type) => {
+    if (type === 'cpf') {
+      form.cnpj = '';
+    } else {
+      form.cpf = '';
+    }
+  }
+);
 
 onMounted(async () => {
   clear();
@@ -293,19 +307,7 @@ onMounted(async () => {
             </div>
           </CardContent>
         </Card>
-
-        <div class="mt-8 flex items-center justify-end gap-4">
-          <Button type="button" variant="outline" @click="clear"
-            >Limpar formulário</Button
-          >
-          <Button type="submit" class="px-8" :disabled="loadingEnterprise">
-            <LucideLoader2
-              v-if="loadingEnterprise"
-              class="mr-2 h-4 w-4 animate-spin"
-            />
-            {{ loadingEnterprise ? 'Salvando...' : 'Cadastrar Empresa' }}
-          </Button>
-        </div>
+        <MenuActions :actions="actions" />
       </form>
     </div>
     <div v-else class="flex h-[50vh] items-center justify-center">
