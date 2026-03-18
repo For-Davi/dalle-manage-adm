@@ -79,7 +79,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Edição',
   },
-])
+]);
 
 onMounted(async () => {
   clear();

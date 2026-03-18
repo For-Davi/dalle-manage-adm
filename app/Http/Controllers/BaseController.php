@@ -20,7 +20,7 @@ class BaseController extends Controller
             ErrorLogger::critical($errorMessage, $e, $request);
 
             return response()->json([
-                'message' => $errorMessage,
+                'message' => $errorMessage.' : '.$e->getMessage(),
             ], 500);
         }
     }
@@ -45,7 +45,7 @@ class BaseController extends Controller
             ErrorLogger::critical($errorMessage, $e, $request);
 
             return response()->json([
-                'message' => $errorMessage,
+                'message' => $errorMessage.' : '.$e->getMessage(),
             ], 500);
         }
     }

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { createError, createSuccess } from '@/composables/useCreateNotify';
 import {
+  approveSellerRegistrationService,
   createSellerService,
   deleteRegistrationService,
   deleteSellerService,
@@ -85,6 +86,21 @@ export const useSellerStore = defineStore('seller', {
         const response = await createSellerService(data);
         if (response.status === 201) {
           this.setListSellers(response.data.sellers);
+          createSuccess(response.data.message);
+        }
+        return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async approveSellerRegistration(id: number, code: string) {
+      try {
+        this.setLoading(true);
+        const response = await approveSellerRegistrationService(id, code);
+        if (response.status === 201) {
           createSuccess(response.data.message);
         }
         return response;

@@ -36,6 +36,18 @@ export const createSellerService = (
   return api.post(`${baseUrl}/`, data);
 };
 
+export const approveSellerRegistrationService = (
+  id: number,
+  code: string
+): Promise<{
+  status: number;
+  data: {
+    message: string;
+  };
+}> => {
+  return api.post(`${baseUrl}/approve/${id}`, { code });
+};
+
 export const updateSellerService = (
   sellerID: number,
   data: IDataSeller

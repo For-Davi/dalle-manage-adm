@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Seller\CreateSellerRequest;
 use App\Http\Requests\Seller\DeleteSellerRequest;
+use App\Http\Requests\Seller\Registration\ApproveSellerRegistrationRequest;
 use App\Http\Requests\Seller\ShowSellerRequest;
 use App\Http\Requests\Seller\UpdateSellerRequest;
 use App\Repositories\DalleAdm\SellerRepository;
@@ -63,6 +64,25 @@ class SellerController extends BaseController
             ], 201);
 
         }, 'Erro ao criar vendedor', $request);
+    }
+
+    public function approve(ApproveSellerRegistrationRequest $request)
+    {
+        return $this->safeTransaction(function () use ($request) {
+
+            $approve = $this->service->approve($request);
+
+            if (! $approve) {
+                return response()->json([
+                    'message' => 'Solicitação não finalizada',
+                ], 400);
+            }
+
+            return response()->json([
+                'message' => 'Solicitação aprovada',
+            ], 201);
+
+        }, 'Erro ao aprovar solicitação', $request);
     }
 
     public function update(UpdateSellerRequest $request)

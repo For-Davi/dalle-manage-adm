@@ -24,7 +24,7 @@ const create = async () => {
   if (status.status) {
     const response = await useSellerStore().createSeller(form);
     if (response?.status === 201) {
-      await goUrlName('sellers');
+      goUrlName('sellers');
     }
   }
 };
@@ -61,7 +61,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Cadastro',
   },
-])
+]);
 
 onMounted(async () => {
   clear();

@@ -4,37 +4,27 @@ defineOptions({
 });
 
 defineProps<{
-  items: IBreadcrumbItem[]
-}>()
+  items: IBreadcrumbItem[];
+}>();
 </script>
-
 
 <template>
   <Breadcrumb class="mb-4">
     <BreadcrumbList>
       <template v-for="(item, index) in items" :key="index">
         <BreadcrumbItem>
-          <BreadcrumbLink
-            v-if="item.to"
-            class="cursor-pointer"
-            as-child
-          >
+          <BreadcrumbLink v-if="item.to" class="cursor-pointer" as-child>
             <RouterLink :to="item.to">
               {{ item.label }}
             </RouterLink>
           </BreadcrumbLink>
 
-          <BreadcrumbLink
-            v-else
-            class="font-bold"
-          >
+          <BreadcrumbLink v-else class="font-bold">
             {{ item.label }}
           </BreadcrumbLink>
         </BreadcrumbItem>
 
-        <BreadcrumbSeparator
-          v-if="index < items.length - 1"
-        />
+        <BreadcrumbSeparator v-if="index < items.length - 1" />
       </template>
     </BreadcrumbList>
   </Breadcrumb>

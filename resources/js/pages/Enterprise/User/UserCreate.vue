@@ -87,7 +87,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Cadastro',
   },
-])
+]);
 
 onMounted(async () => {
   clear();

@@ -1,4 +1,4 @@
-import { RouteLocationRaw } from "vue-router";
+import { RouteLocationRaw } from 'vue-router';
 
 export type MenuAction = {
   label?: string;
@@ -12,6 +12,6 @@ export type MenuAction = {
 };
 
 export interface BreadcrumbItem {
-  label: string
-  to?: RouteLocationRaw
+  label: string;
+  to?: RouteLocationRaw;
 }

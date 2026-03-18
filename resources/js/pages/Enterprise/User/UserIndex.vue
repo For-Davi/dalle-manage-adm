@@ -33,7 +33,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Usuários',
   },
-])
+]);
 
 onMounted(async () => {
   await useEnterpriseStore().getUsersByEnterprise(Number(props.id));

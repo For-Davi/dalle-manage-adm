@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { goUrlName } from '@/composables/useRedirect';
+import { ref, watch } from 'vue';
 import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { storeToRefs } from 'pinia';
-import { createError } from '@/composables/useCreateNotify';
 import { useSellerStore } from '@/stores/seller-store';
+import { formatDateBrazil } from '@/composables/useFormat';
+import { LucideUserCheck } from 'lucide-vue-next';
+import FormApproveRegistration from '../form/seller/FormApproveRegistration.vue';
 
 defineOptions({
   name: 'RegistrationsTable',
@@ -12,27 +13,42 @@ defineOptions({
 
 const { loadingSeller, listRegistrations } = storeToRefs(useSellerStore());
 
-const isConfirmOpen = ref(false);
+const isConfirmOpen = ref<boolean>(false);
+const showFormApproveRegistration = ref<boolean>(false);
 const selectedId = ref<number | null>(null);
+const selectedRegistration = ref<ISellerRegistration | null>(null);
 
 const openDeleteModal = (id: number) => {
   selectedId.value = id;
   isConfirmOpen.value = true;
 };
 const handleExclude = async () => {
-  try {
-    const response = await useSellerStore().deleteSeller(
-      Number(selectedId.value)
-    );
+  const response = await useSellerStore().deleteRegistration(
+    Number(selectedId.value)
+  );
 
-    if (response?.status === 200) {
-      selectedId.value = null;
-      isConfirmOpen.value = false;
-    }
-  } catch (error) {
-    createError(error || 'Ocorreu um erro ao excluir a inscrição.');
+  if (response?.status === 200) {
+    clear();
   }
 };
+const approveSellerRegistration = async (registration: ISellerRegistration) => {
+  selectedRegistration.value = registration;
+  showFormApproveRegistration.value = true;
+};
+const clear = () => {
+  selectedId.value = null;
+  isConfirmOpen.value = false;
+  selectedRegistration.value = null;
+};
+
+watch(
+  () => showFormApproveRegistration,
+  (show) => {
+    if (!show) {
+      clear();
+    }
+  }
+);
 </script>
 
 <template>
@@ -55,7 +71,7 @@ const handleExclude = async () => {
           <TableCell>{{ registration.name }}</TableCell>
           <TableCell>{{ registration.email }}</TableCell>
           <TableCell>{{ registration.phone }}</TableCell>
-          <TableCell>{{ registration.created_at }}</TableCell>
+          <TableCell>{{ formatDateBrazil(registration.created_at) }}</TableCell>
           <TableCell>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>
@@ -69,16 +85,13 @@ const handleExclude = async () => {
                 >
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <!-- <DropdownMenuItem
-                    class="cursor-pointer text-xs sm:text-sm"
-                    @click="
-                      goUrlName('seller.edit', {
-                        id: seller.id,
-                      })
-                    "
+                  <DropdownMenuItem
+                    class="cursor-pointer text-xs text-green-600 sm:text-sm"
+                    @click="approveSellerRegistration(registration)"
                   >
-                    <LucidePencil /> <span>Editar</span>
-                  </DropdownMenuItem> -->
+                    <LucideUserCheck class="text-green-600" />
+                    <span>Aprovar</span>
+                  </DropdownMenuItem>
                   <DropdownMenuItem
                     class="cursor-pointer text-xs text-red-600 sm:text-sm"
                     @click="openDeleteModal(registration.id)"
@@ -105,5 +118,9 @@ const handleExclude = async () => {
     :loading="loadingSeller"
     variant="destructive"
     @confirm="handleExclude"
+  />
+  <FormApproveRegistration
+    v-model:open="showFormApproveRegistration"
+    :registration="selectedRegistration"
   />
 </template>

@@ -22,6 +22,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardAction,
+  CardDescription,
 } from './components/ui/card/index';
 import { Input } from './components/ui/input/index';
 import { Label } from './components/ui/label/index';
@@ -100,19 +102,19 @@ import {
   DropdownMenuTrigger,
 } from './components/ui/dropdown-menu/index';
 import {
-    Calendar,
-    CalendarCell,
-    CalendarCellTrigger,
-    CalendarGrid,
-    CalendarHeader,
-    CalendarGridBody,
-    CalendarGridHead,
-    CalendarGridRow,
-    CalendarHeadCell,
-    CalendarHeading,
-    CalendarNextButton,
-    CalendarPrevButton,
-} from './components/ui/calendar/index'
+  Calendar,
+  CalendarCell,
+  CalendarCellTrigger,
+  CalendarGrid,
+  CalendarHeader,
+  CalendarGridBody,
+  CalendarGridHead,
+  CalendarGridRow,
+  CalendarHeadCell,
+  CalendarHeading,
+  CalendarNextButton,
+  CalendarPrevButton,
+} from './components/ui/calendar/index';
 import {
   Tabs,
   TabsContent,
@@ -123,7 +125,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover'
+} from '@/components/ui/popover';
 import { Spinner } from './components/ui/spinner/index';
 import MenuActions from './components/shared/menu/MenuActions.vue';
 import AppBreadcrumb from './components/shared/route/AppBreadcrumb.vue';
@@ -167,6 +169,8 @@ app.component('SheetTrigger', SheetTrigger);
 app.component('CardContent', CardContent);
 app.component('CardHeader', CardHeader);
 app.component('CardTitle', CardTitle);
+app.component('CardAction', CardAction);
+app.component('CardDescription', CardDescription);
 app.component('CardFooter', CardFooter);
 app.component('Dialog', Dialog);
 app.component('DialogContent', DialogContent);

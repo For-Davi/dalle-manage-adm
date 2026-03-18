@@ -13,17 +13,11 @@ class SellerHelper
             ->where('code', $code)
             ->first();
 
-        if (! $existCode) {
-            throw ValidationException::withMessages([
-                'sellerCode' => ['O código do vendedor informado não existe.'],
-            ]);
-        }
-
         if ($mode === 'create') {
             if ($existCode) {
                 if ($code === $existCode->code) {
                     throw ValidationException::withMessages([
-                        'code' => ['Este código ja está sendo usado por outro vendedor.'],
+                        'code' => ['Este código ja está sendo utilizado.'],
                     ]);
                 }
             }
@@ -31,7 +25,7 @@ class SellerHelper
             $sellerID = (int) $sellerID;
             if ($existCode && $existCode->id !== $sellerID) {
                 throw ValidationException::withMessages([
-                    'code' => ['Este código ja está sendo usado por outro vendedor.'],
+                    'code' => ['Este código ja está sendo utilizado.'],
                 ]);
             }
         }
@@ -48,7 +42,7 @@ class SellerHelper
             if ($existEmail) {
                 if ($email === $existEmail->email) {
                     throw ValidationException::withMessages([
-                        'email' => ['Este e-mail ja está sendo usado por outro vendedor.'],
+                        'email' => ['Este e-mail ja está sendo utilizado.'],
                     ]);
                 }
             }
@@ -56,7 +50,32 @@ class SellerHelper
             $sellerID = (int) $sellerID;
             if ($existEmail && $existEmail->id !== $sellerID) {
                 throw ValidationException::withMessages([
-                    'email' => ['Este e-mail ja está sendo usado por outro vendedor.'],
+                    'email' => ['Este e-mail ja está sendo utilizado.'],
+                ]);
+            }
+        }
+    }
+
+    public static function existsPhone($phone, $mode, $sellerID = null)
+    {
+
+        $existPhone = DB::table('sellers')
+            ->where('phone', $phone)
+            ->first();
+
+        if ($mode === 'create') {
+            if ($existPhone) {
+                if ($phone === $existPhone->phone) {
+                    throw ValidationException::withMessages([
+                        'phone' => ['Este telefone ja está sendo utilizado.'],
+                    ]);
+                }
+            }
+        } else {
+            $sellerID = (int) $sellerID;
+            if ($existPhone && $existPhone->id !== $sellerID) {
+                throw ValidationException::withMessages([
+                    'phone' => ['Este telefone ja está sendo utilizado.'],
                 ]);
             }
         }

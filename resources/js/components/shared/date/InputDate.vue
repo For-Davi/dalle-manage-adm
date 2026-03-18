@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { DateFormatter, getLocalTimeZone, today } from '@internationalized/date'
-import { ref } from 'vue'
+import {
+  DateFormatter,
+  getLocalTimeZone,
+  today,
+} from '@internationalized/date';
+import { ref } from 'vue';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
-const date = ref<Date>()
-const defaultPlaceholder = today(getLocalTimeZone())
+const date = ref<Date>();
+const defaultPlaceholder = today(getLocalTimeZone());
 </script>
 
 <template>
@@ -13,13 +17,15 @@ const defaultPlaceholder = today(getLocalTimeZone())
     <PopoverTrigger as-child>
       <Button
         variant="outline"
-        :class="cn(
-          'w-[280px] justify-start text-left font-normal',
-          !date && 'text-muted-foreground',
-        )"
+        :class="
+          cn(
+            'w-[280px] justify-start text-left font-normal',
+            !date && 'text-muted-foreground'
+          )
+        "
       >
         <LucideCalendarIcon class="mr-2 h-4 w-4" />
-        {{ date ? date.toDateString() : "Pick a date" }}
+        {{ date ? date.toDateString() : 'Pick a date' }}
       </Button>
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0">

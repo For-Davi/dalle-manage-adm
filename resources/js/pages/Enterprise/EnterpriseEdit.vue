@@ -134,7 +134,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Edição',
   },
-])
+]);
 
 watch(
   () => type.value,

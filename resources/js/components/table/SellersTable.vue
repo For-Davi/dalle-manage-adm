@@ -5,6 +5,7 @@ import ConfirmAction from '../confirm/ConfirmAction.vue';
 import { storeToRefs } from 'pinia';
 import { createError } from '@/composables/useCreateNotify';
 import { useSellerStore } from '@/stores/seller-store';
+import { formatDateBrazil } from '@/composables/useFormat';
 
 defineOptions({
   name: 'SellersTable',
@@ -44,7 +45,6 @@ const handleExclude = async () => {
           <TableHead>Email</TableHead>
           <TableHead>Telefone</TableHead>
           <TableHead>Código</TableHead>
-          <TableHead>Entrada</TableHead>
           <TableHead> Ação </TableHead>
         </TableRow>
       </TableHeader>
@@ -54,7 +54,6 @@ const handleExclude = async () => {
           <TableCell>{{ seller.email }}</TableCell>
           <TableCell>{{ seller.phone }}</TableCell>
           <TableCell>{{ seller.code }}</TableCell>
-          <TableCell>{{ seller.created_at }}</TableCell>
           <TableCell>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>

@@ -20,7 +20,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Inscrições',
   },
-])
+]);
 
 onMounted(async () => {
   await fetchRegistrations();

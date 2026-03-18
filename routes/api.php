@@ -54,6 +54,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [SellerController::class, 'index']);
         Route::get('/{seller}', [SellerController::class, 'show']);
         Route::post('/', [SellerController::class, 'create']);
+        Route::post('/approve/{registration}', [SellerController::class, 'approve']);
         Route::put('/{seller}', [SellerController::class, 'update']);
         Route::delete('/{seller}', [SellerController::class, 'delete']);
     });

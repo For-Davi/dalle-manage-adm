@@ -16,7 +16,9 @@ defineOptions({
 
 const { loadingSeller, listSellers } = storeToRefs(useSellerStore());
 const { loadingEnterprise } = storeToRefs(useEnterpriseStore());
-const { loadingSubscription, listSubscriptions } = storeToRefs(useSubscriptionStore());
+const { loadingSubscription, listSubscriptions } = storeToRefs(
+  useSubscriptionStore()
+);
 
 const loading = ref<boolean>(false);
 const type = ref<'cnpj' | 'cpf'>('cnpj');
@@ -97,7 +99,7 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Cadastro',
   },
-])
+]);
 
 watch(
   () => form.cep,
@@ -284,7 +286,12 @@ onMounted(async () => {
                   <SelectValue placeholder="Selecione um plano" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem v-for="(item, i) in listSubscriptions" :key="item.id" :value="item.id">{{ getNameSubscription(item.name) }}</SelectItem>
+                  <SelectItem
+                    v-for="(item, i) in listSubscriptions"
+                    :key="item.id"
+                    :value="item.id"
+                    >{{ getNameSubscription(item.name) }}</SelectItem
+                  >
                 </SelectContent>
               </Select>
             </div>
