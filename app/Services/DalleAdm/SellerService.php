@@ -23,6 +23,7 @@ class SellerService
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'commission' => $request->commission,
             'code' => str_replace(' ', '', $request->code),
         ]);
 
@@ -43,6 +44,7 @@ class SellerService
             'name' => $registration->name,
             'email' => $registration->email,
             'phone' => $registration->phone,
+            'commission' => $request->commission,
             'code' => str_replace(' ', '', $request->code),
         ]);
 

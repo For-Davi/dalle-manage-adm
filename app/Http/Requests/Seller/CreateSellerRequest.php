@@ -15,9 +15,10 @@ class CreateSellerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:30',
-            'email' => 'required|string|email|max:50',
+            'email' => 'required|string|email|max:50|unique:sellers,email',
             'phone' => 'required|string|max:20',
-            'code' => 'required|string|min:8|max:20',
+            'commission' => 'required|numeric|min:0|max:100',
+            'code' => 'required|string|min:8|max:20|unique:sellers,code',
         ];
     }
 
@@ -29,17 +30,19 @@ class CreateSellerRequest extends FormRequest
             'name.min' => 'O nome deve ter pelo menos 3 caracteres',
             'name.max' => 'O nome não pode ultrapassar 30 caracteres',
             'email.required' => 'O e-mail é obrigatório',
-            'email.string' => 'O e-mail deve ser um texto válido',
             'email.email' => 'O e-mail deve ser um endereço válido',
             'email.max' => 'O e-mail não pode ultrapassar 50 caracteres',
-            'email.unique' => 'Este e-mail ja está sendo utilizado',
+            'email.unique' => 'Este e-mail já está sendo utilizado',
             'phone.required' => 'O telefone é obrigatório',
-            'phone.string' => 'O telefone deve ser um texto válido',
             'phone.max' => 'O telefone não pode ultrapassar 20 caracteres',
+            'commission.required' => 'A comissão é obrigatória',
+            'commission.numeric' => 'A comissão deve ser um número',
+            'commission.min' => 'A comissão mínima é de 0%',
+            'commission.max' => 'A comissão máxima é de 100%',
             'code.required' => 'O código é obrigatório',
-            'code.string' => 'O código deve ser um texto válido',
             'code.min' => 'O código deve ter pelo menos 8 caracteres',
             'code.max' => 'O código não pode ultrapassar 20 caracteres',
+            'code.unique' => 'Este código já está em uso',
         ];
     }
 }

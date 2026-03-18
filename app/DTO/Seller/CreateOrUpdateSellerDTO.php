@@ -11,6 +11,7 @@ class CreateOrUpdateSellerDTO extends BaseDTO
         public string $email,
         public string $phone,
         public string $code,
+        public int $commission,
     ) {}
 
     public static function fromRequest($data): self
@@ -19,7 +20,8 @@ class CreateOrUpdateSellerDTO extends BaseDTO
             name: $data['name'],
             email: $data['email'],
             phone: $data['phone'],
-            code: $data['code']
+            commission: $data['commission'],
+            code: $data['code'],
         );
     }
 }

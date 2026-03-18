@@ -18,6 +18,7 @@ class UpdateSellerRequest extends FormRequest
             'name' => 'required|string|min:3|max:30',
             'email' => 'required|string|email|max:50',
             'phone' => 'required|string|max:20',
+            'commission' => 'required|numeric|min:0|max:100',
             'code' => 'required|string|min:8|max:20',
         ];
     }
@@ -42,6 +43,10 @@ class UpdateSellerRequest extends FormRequest
             'code.string' => 'O código deve ser um texto válido',
             'code.min' => 'O código deve ter pelo menos 8 caracteres',
             'code.max' => 'O código não pode ultrapassar 20 caracteres',
+            'commission.required' => 'A comissão é obrigatória',
+            'commission.numeric' => 'A comissão deve ser um número',
+            'commission.min' => 'A comissão mínima é de 0%',
+            'commission.max' => 'A comissão máxima é de 100%',
         ];
     }
 

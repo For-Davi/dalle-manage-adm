@@ -13,16 +13,20 @@ defineOptions({
 const { loadingSeller } = storeToRefs(useSellerStore());
 
 const form = reactive({
-  name: '',
-  email: '',
-  phone: '',
-  code: '',
+  name: '' as string,
+  email: '' as string,
+  phone: '' as string,
+  code: '' as string,
+  commission: '0' as string,
 });
 
 const create = async () => {
   const status = validateCreateOrUpdate(form);
   if (status.status) {
-    const response = await useSellerStore().createSeller(form);
+    const response = await useSellerStore().createSeller({
+      ...form,
+      commission: Number(form.commission),
+    });
     if (response?.status === 201) {
       goUrlName('sellers');
     }
@@ -34,6 +38,7 @@ const clear = () => {
     email: '',
     phone: '',
     code: '',
+    commission: '0',
   });
 };
 
@@ -110,6 +115,16 @@ onMounted(async () => {
                 id="phone"
                 placeholder="(99) 99999-9999"
                 autocomplete="new-name"
+              />
+            </div>
+            <div class="mb-2 space-y-2">
+              <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
+              <Input
+                v-model="form.commission"
+                type="text"
+                id="commission"
+                placeholder="Insira a comissão do(a) vendedor(a)"
+                autocomplete="new-commission"
               />
             </div>
             <div class="mb-2 space-y-2">

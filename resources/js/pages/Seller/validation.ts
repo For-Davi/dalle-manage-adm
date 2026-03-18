@@ -6,6 +6,7 @@ interface DataCreate {
   email: string;
   phone: string;
   code: string;
+  commission: number | string;
 }
 
 export const validateCreateOrUpdate = (data: DataCreate) => {
@@ -30,6 +31,20 @@ export const validateCreateOrUpdate = (data: DataCreate) => {
 
   if (data.phone.length > 0 && !isValidPhone(data.phone)) {
     errors.push('Informe um telefone válido');
+  }
+
+  const commissionVal = Number(data.commission);
+
+  if (
+    data.commission === '' ||
+    data.commission === null ||
+    data.commission === undefined
+  ) {
+    errors.push('A comissão é obrigatória');
+  } else if (isNaN(commissionVal)) {
+    errors.push('A comissão deve ser um valor numérico');
+  } else if (commissionVal < 0 || commissionVal > 100) {
+    errors.push('Informe uma comissão entre 0 e 100');
   }
 
   if (errors.length) {

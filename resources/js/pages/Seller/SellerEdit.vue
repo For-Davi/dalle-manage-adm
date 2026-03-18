@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, computed } from 'vue';
+import { reactive, onMounted, computed, watch } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { goUrlName } from '@/composables/useRedirect';
@@ -21,17 +21,18 @@ const form = reactive({
   email: '' as string,
   phone: '' as string,
   code: '' as string,
+  commission: '0' as string,
 });
 
 const update = async () => {
   const status = validateCreateOrUpdate(form);
   if (status.status) {
-    const response = await useSellerStore().updateSeller(
-      Number(props.id),
-      form
-    );
+    const response = await useSellerStore().updateSeller(Number(props.id), {
+      ...form,
+      commission: Number(form.commission),
+    });
     if (response?.status === 200) {
-      await goUrlName('sellers');
+      goUrlName('sellers');
     }
   }
 };
@@ -43,6 +44,7 @@ const fetchSeller = async () => {
       email: response.data.seller.email,
       phone: response.data.seller.phone ?? '',
       code: response.data.seller.code ?? '',
+      comission: String(response.data.seller.commission) ?? '',
     });
   }
 };
@@ -52,6 +54,7 @@ const clear = () => {
     email: '',
     phone: '',
     code: '',
+    comission: '0',
   });
 };
 
@@ -132,13 +135,23 @@ onMounted(async () => {
               />
             </div>
             <div class="mb-2 space-y-2">
+              <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
+              <Input
+                v-model="form.commission"
+                type="number"
+                id="commission"
+                placeholder="Insira a comissão do(a) vendedor(a)"
+                autocomplete="off"
+              />
+            </div>
+            <div class="mb-2 space-y-2">
               <Label for="code" class="ml-1 font-bold">Código</Label>
               <Input
                 v-model="form.code"
-                type="name"
+                type="text"
                 id="code"
                 placeholder="Insira o código do(a) vendedor(a)"
-                autocomplete="new-name"
+                autocomplete="off"
               />
             </div>
           </CardContent>

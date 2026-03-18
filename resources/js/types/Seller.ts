@@ -4,6 +4,7 @@ export interface Seller {
   email: string;
   phone: string;
   code: string;
+  commission: number;
   created_at: string;
 }
 
@@ -22,4 +23,5 @@ export interface DataSeller {
   email: string;
   phone: string;
   code: string;
+  commission: number;
 }

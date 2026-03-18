@@ -13,6 +13,7 @@ class Seller extends Model
         'email',
         'phone',
         'code',
+        'commission',
     ];
 
     public function setCodeAttribute($value)
