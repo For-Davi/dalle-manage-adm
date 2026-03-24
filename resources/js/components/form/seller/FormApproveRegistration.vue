@@ -26,6 +26,7 @@ const form = reactive({
   dateCreated: '',
   description: '',
   code: '',
+  commission: '0'
 });
 const clear = () => {
   Object.assign(form, {
@@ -35,6 +36,7 @@ const clear = () => {
     dateCreated: '',
     description: '',
     code: '',
+    commission: '0'
   });
 };
 const approve = async () => {
@@ -42,7 +44,8 @@ const approve = async () => {
   if (status.status) {
     const response = await useSellerStore().approveSellerRegistration(
       props.registration?.id ?? 0,
-      form.code
+      form.code,
+      Number(form.commission)
     );
     if (response?.status === 201) {
       await useSellerStore().getSellersRegistration();
@@ -102,6 +105,16 @@ watch(isOpen, () => {
         <div class="mt-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Data de inscrição</Label>
           <Input v-model="form.dateCreated" disabled />
+        </div>
+        <div class="mb-2 space-y-2">
+            <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
+            <Input
+            v-model="form.commission"
+            type="text"
+            id="commission"
+            placeholder="Insira a comissão do(a) vendedor(a)"
+            autocomplete="new-commission"
+            />
         </div>
         <div class="mt-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Código</Label>

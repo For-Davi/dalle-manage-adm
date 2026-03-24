@@ -38,14 +38,15 @@ export const createSellerService = (
 
 export const approveSellerRegistrationService = (
   id: number,
-  code: string
+  code: string,
+  commission: number
 ): Promise<{
   status: number;
   data: {
     message: string;
   };
 }> => {
-  return api.post(`${baseUrl}/approve/${id}`, { code });
+  return api.post(`${baseUrl}/approve/${id}`, { code, commission });
 };
 
 export const updateSellerService = (

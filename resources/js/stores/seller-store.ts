@@ -96,10 +96,10 @@ export const useSellerStore = defineStore('seller', {
         this.setLoading(false);
       }
     },
-    async approveSellerRegistration(id: number, code: string) {
+    async approveSellerRegistration(id: number, code: string, commission: number) {
       try {
         this.setLoading(true);
-        const response = await approveSellerRegistrationService(id, code);
+        const response = await approveSellerRegistrationService(id, code, commission);
         if (response.status === 201) {
           createSuccess(response.data.message);
         }
