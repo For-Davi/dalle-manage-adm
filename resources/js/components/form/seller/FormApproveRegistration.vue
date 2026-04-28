@@ -26,7 +26,7 @@ const form = reactive({
   dateCreated: '',
   description: '',
   code: '',
-  commission: '0'
+  commission: '0',
 });
 const clear = () => {
   Object.assign(form, {
@@ -36,7 +36,7 @@ const clear = () => {
     dateCreated: '',
     description: '',
     code: '',
-    commission: '0'
+    commission: '0',
   });
 };
 const approve = async () => {
@@ -107,14 +107,14 @@ watch(isOpen, () => {
           <Input v-model="form.dateCreated" disabled />
         </div>
         <div class="mb-2 space-y-2">
-            <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
-            <Input
+          <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
+          <Input
             v-model="form.commission"
             type="text"
             id="commission"
             placeholder="Insira a comissão do(a) vendedor(a)"
             autocomplete="new-commission"
-            />
+          />
         </div>
         <div class="mt-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Código</Label>

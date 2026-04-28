@@ -14,8 +14,9 @@ const props = defineProps<{
 const iconComponent = computed(() => {
   if (!props.icon) return null;
 
-  const pascalName = props.icon
-    .replace(/(^\w|-\w)/g, (c) => c.replace('-', '').toUpperCase());
+  const pascalName = props.icon.replace(/(^\w|-\w)/g, (c) =>
+    c.replace('-', '').toUpperCase()
+  );
 
   return (LucideIcons as Record<string, unknown>)[pascalName] ?? null;
 });
@@ -23,11 +24,7 @@ const iconComponent = computed(() => {
 
 <template>
   <section class="flex items-center gap-2">
-    <component
-      :is="iconComponent"
-      v-if="iconComponent"
-      class="size-5"
-    />
+    <component :is="iconComponent" v-if="iconComponent" class="size-5" />
     <h1 class="text-xl font-bold">{{ props.title }}</h1>
   </section>
 </template>

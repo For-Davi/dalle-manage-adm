@@ -15,7 +15,6 @@ use App\Repositories\DalleManage\EnterpriseDMRepository;
 use App\Repositories\DalleManage\UserDMRepository;
 use App\Repositories\DallePayments\PaymentsDMRepository;
 use App\Services\DalleAdm\EnterpriseService;
-use Illuminate\Support\Facades\Log;
 
 class EnterpriseController extends BaseController
 {

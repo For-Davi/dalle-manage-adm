@@ -71,7 +71,9 @@ watch(
           <TableCell>{{ registration.name }}</TableCell>
           <TableCell>{{ registration.email }}</TableCell>
           <TableCell>{{ registration.phone }}</TableCell>
-          <TableCell>{{ formatDateBrazil(registration.created_at, 0) }}</TableCell>
+          <TableCell>{{
+            formatDateBrazil(registration.created_at, 0)
+          }}</TableCell>
           <TableCell>
             <DropdownMenu>
               <DropdownMenuTrigger as-child>

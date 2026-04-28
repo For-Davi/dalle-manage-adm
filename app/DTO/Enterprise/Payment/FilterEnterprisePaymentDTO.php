@@ -16,10 +16,10 @@ class FilterEnterprisePaymentDTO extends BaseDTO
     public static function fromRequest($data): self
     {
         return new self(
-        start_date: $data['startDate'] ? $data['startDate'] : null,
-        end_date: $data['endDate'] !== '' ? $data['endDate'] : null,
-        enterprise: $data['enterprise'] !== '' ? $data['enterprise'] : null,
-        status: $data['status'] !== '' ? $data['status'] : null,
-    );
+            start_date: $data['startDate'] ? $data['startDate'] : null,
+            end_date: $data['endDate'] !== '' ? $data['endDate'] : null,
+            enterprise: $data['enterprise'] !== '' ? $data['enterprise'] : null,
+            status: $data['status'] !== '' ? $data['status'] : null,
+        );
     }
 }

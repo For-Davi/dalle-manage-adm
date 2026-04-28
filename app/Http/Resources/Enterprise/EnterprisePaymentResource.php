@@ -21,7 +21,7 @@ class EnterprisePaymentResource extends JsonResource
             'payment_type' => $this->billing_type,
             'subscription' => $subscriptionName,
             'month_qnty' => (int) $ref->afterLast('_')->toString(),
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
         ];
     }
 }

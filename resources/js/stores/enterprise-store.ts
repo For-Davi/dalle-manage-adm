@@ -20,7 +20,7 @@ export const useEnterpriseStore = defineStore('enterprise', {
     loadingEnterprise: false as boolean,
     listEnterprises: [] as IEnterprise[],
     listUserDm: [] as IUserDm[],
-    listEnterprisesPayments: [] as IEnterprisePayment[]
+    listEnterprisesPayments: [] as IEnterprisePayment[],
   }),
   actions: {
     setLoading(loading: boolean) {
@@ -195,17 +195,19 @@ export const useEnterpriseStore = defineStore('enterprise', {
         this.setLoading(false);
       }
     },
-    async getEnterprisesPayments(filter: IFilterEnterprisePayment | null = null) {
+    async getEnterprisesPayments(
+      filter: IFilterEnterprisePayment | null = null
+    ) {
       try {
         this.setLoading(true);
         let response = null;
 
-        if(filter){
+        if (filter) {
           response = await getEnterprisesPaymentsFilterService(filter);
         } else {
           response = await getEnterprisesPaymentsService();
         }
-      
+
         if (response.status === 200) {
           this.setListPayments(response.data.payments);
         }

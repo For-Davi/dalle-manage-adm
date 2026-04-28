@@ -8,7 +8,7 @@ import { getPaymentType } from '@/composables/usePayment';
 import { computed } from 'vue';
 
 defineOptions({
-    name:'EnterprisesPaymentsTable'
+  name: 'EnterprisesPaymentsTable',
 });
 
 const { loadingEnterprise, listEnterprisesPayments } =
@@ -16,7 +16,8 @@ const { loadingEnterprise, listEnterprisesPayments } =
 
 const sortedPayments = computed(() =>
   [...listEnterprisesPayments.value].sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   )
 );
 </script>
@@ -38,12 +39,12 @@ const sortedPayments = computed(() =>
       <TableBody>
         <TableRow v-for="payment in sortedPayments" :key="payment.id">
           <TableCell>{{ getPaymentStatus(payment.status) }}</TableCell>
-          <TableCell class="font-medium">{{ payment.enterprise_name }}</TableCell>
+          <TableCell class="font-medium">{{
+            payment.enterprise_name
+          }}</TableCell>
           <TableCell>{{ payment.enterprise_email }}</TableCell>
           <TableCell>{{ getPaymentType(payment.payment_type) }}</TableCell>
-          <TableCell>{{
-            getNameSubscription(payment.subscription)
-          }}</TableCell>
+          <TableCell>{{ getNameSubscription(payment.subscription) }}</TableCell>
           <TableCell>{{ payment.month_qnty }}</TableCell>
           <TableCell>{{ formatToBrazilianDate(payment.created_at) }}</TableCell>
         </TableRow>

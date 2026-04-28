@@ -24,11 +24,11 @@ class FilterEnterprisePayments extends FormRequest
     public function messages(): array
     {
         return [
-        'startDate.string' => 'A data inicial deve ser um texto.',
-        'endDate.string' => 'A data final deve ser um texto.',
-        'enterprise.string' => 'O nome da empresa deve ser um texto.',
-        'status.string' => 'O status deve ser um texto.',
-        'status.required_in' => 'O status informado é inválido. Os valores aceitos são: PENDING ou CONFIRMED.',
-    ];
+            'startDate.string' => 'A data inicial deve ser um texto.',
+            'endDate.string' => 'A data final deve ser um texto.',
+            'enterprise.string' => 'O nome da empresa deve ser um texto.',
+            'status.string' => 'O status deve ser um texto.',
+            'status.required_in' => 'O status informado é inválido. Os valores aceitos são: PENDING ou CONFIRMED.',
+        ];
     }
 }
