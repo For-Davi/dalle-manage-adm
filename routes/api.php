@@ -18,8 +18,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('enterprises')->group(function () {
 
         Route::get('/', [EnterpriseController::class, 'index']);
+        Route::get('payments/', [EnterpriseController::class, 'indexPayments']);
         Route::get('/{enterprise}', [EnterpriseController::class, 'show']);
         Route::post('/', [EnterpriseController::class, 'create']);
+        Route::post('/filter', [EnterpriseController::class, 'filterPayments']);
         Route::put('/{enterprise}', [EnterpriseController::class, 'update']);
         Route::delete('/{enterprise}', [EnterpriseController::class, 'delete']);
 

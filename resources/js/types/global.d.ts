@@ -19,6 +19,7 @@ import { DataSeller, Seller, SellerRegistration } from './Seller.ts';
 import { Department } from './Department.js';
 import { Image } from './Media.js';
 import { BreadcrumbItem, MenuAction } from './General.js';
+import { EnterprisePayment, FilterEnterprisePayment } from './Payment.js';
 
 export {};
 
@@ -64,4 +65,8 @@ declare global {
   type IMenuAction = MenuAction;
 
   type IBreadcrumbItem = BreadcrumbItem;
+
+  type IEnterprisePayment = EnterprisePayment;
+
+  type IFilterEnterprisePayment = FilterEnterprisePayment;
 }

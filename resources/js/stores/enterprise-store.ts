@@ -5,12 +5,14 @@ import {
   createUserByEnterpriseService,
   deleteEnterpriseService,
   deleteUserByEnterpriseService,
+  getEnterprisesPaymentsService,
   getEnterprisesService,
   getUsersByEnterpriseService,
   showEnterpriseService,
   showUserByEnterpriseService,
   updateEnterpriseService,
   updateUserByEnterpriseService,
+  getEnterprisesPaymentsFilterService,
 } from '@/services/enterprise-service';
 
 export const useEnterpriseStore = defineStore('enterprise', {
@@ -18,6 +20,7 @@ export const useEnterpriseStore = defineStore('enterprise', {
     loadingEnterprise: false as boolean,
     listEnterprises: [] as IEnterprise[],
     listUserDm: [] as IUserDm[],
+    listEnterprisesPayments: [] as IEnterprisePayment[]
   }),
   actions: {
     setLoading(loading: boolean) {
@@ -28,6 +31,9 @@ export const useEnterpriseStore = defineStore('enterprise', {
     },
     setListUserDm(data: IUserDm[] = []) {
       this.listUserDm = data;
+    },
+    setListPayments(data: IEnterprisePayment[] = []) {
+      this.listEnterprisesPayments = data;
     },
     async getEnterprises() {
       try {
@@ -180,6 +186,28 @@ export const useEnterpriseStore = defineStore('enterprise', {
         if (response.status === 200) {
           this.setListUserDm(response.data.users);
           createSuccess(response.data.message);
+        }
+        return response;
+      } catch (error) {
+        createError(error);
+        return null;
+      } finally {
+        this.setLoading(false);
+      }
+    },
+    async getEnterprisesPayments(filter: IFilterEnterprisePayment | null = null) {
+      try {
+        this.setLoading(true);
+        let response = null;
+
+        if(filter){
+          response = await getEnterprisesPaymentsFilterService(filter);
+        } else {
+          response = await getEnterprisesPaymentsService();
+        }
+      
+        if (response.status === 200) {
+          this.setListPayments(response.data.payments);
         }
         return response;
       } catch (error) {

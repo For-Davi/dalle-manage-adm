@@ -8,6 +8,7 @@ export type MenuAction = {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset';
   loading?: boolean;
+  badge: boolean;
   onClick?: () => void;
 };
 

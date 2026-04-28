@@ -20,9 +20,16 @@ const actions = computed(() => [
   {
     label: 'Criar empresa',
     icon: 'LucidePlus',
-    class: 'bg-black',
+    class: 'bg-black cursor-pointer',
     disabled: loadingEnterprise.value,
     onClick: () => goUrlName('enterprise.create'),
+  },
+  {
+    label: 'Histórico de pagamentos',
+    icon: 'LucideCircleDollarSign',
+    class: 'bg-black cursor-pointer',
+    disabled: loadingEnterprise.value,
+    onClick: () => goUrlName('enterprise.payments'),
   },
 ]);
 

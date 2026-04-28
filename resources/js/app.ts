@@ -129,6 +129,8 @@ import {
 import { Spinner } from './components/ui/spinner/index';
 import MenuActions from './components/shared/menu/MenuActions.vue';
 import AppBreadcrumb from './components/shared/route/AppBreadcrumb.vue';
+import { vMaska } from 'maska/vue';
+import Badge from './components/ui/badge/Badge.vue';
 
 const app = createApp(App);
 
@@ -235,6 +237,9 @@ app.component('TabsList', TabsList);
 app.component('TabsTrigger', TabsTrigger);
 app.component('Spinner', Spinner);
 app.component('Switch', Switch);
+app.component('Badge', Badge);
+
+app.directive('maska', vMaska);
 
 registerLucideIcons(app);
 

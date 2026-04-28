@@ -18,5 +18,11 @@ export const enterpriseRoutes: RouteRecordRaw[] = [
     component: () => import('@/pages/Enterprise/EnterpriseEdit.vue'),
     props: true,
   },
+  {
+    path: 'enterprises/payments',
+    name: 'enterprise.payments',
+    component: () => import('@/pages/Enterprise/EnterprisePayments.vue'),
+    props: true,
+  },
   ...userRoutes,
 ];

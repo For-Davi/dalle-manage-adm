@@ -124,3 +124,23 @@ export const deleteUserByEnterpriseService = (
 }> => {
   return api.delete(`${baseUrl}/${enterpriseID}/users/${userID}/`);
 };
+
+export const getEnterprisesPaymentsService = (): Promise<{
+  status: number;
+  data: {
+    payments: IEnterprisePayment[];
+  };
+}> => {
+  return api.get(`${baseUrl}/payments/`);
+};
+
+export const getEnterprisesPaymentsFilterService = (
+  filter: IFilterEnterprisePayment
+): Promise<{
+  status: number;
+  data: {
+    payments: IEnterprisePayment[];
+  };
+}> => {
+  return api.post(`${baseUrl}/filter/`, filter);
+};
