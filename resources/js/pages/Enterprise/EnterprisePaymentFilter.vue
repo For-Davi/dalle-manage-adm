@@ -134,6 +134,14 @@ watch(
           >
             Fechar
           </Button>
+          <Button
+            type="button"
+            @click="clear"
+            class="mr-2 cursor-pointer bg-gray-500 hover:bg-gray-600"
+            :disabled="false"
+          >
+            Limpar
+          </Button>
           <Button type="submit" class="cursor-pointer px-8" :disabled="false">
             <LucideLoader2 v-if="false" class="mr-2 h-4 w-4 animate-spin" />
             {{ false ? 'Carregando...' : 'Filtrar' }}

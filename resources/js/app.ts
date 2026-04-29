@@ -131,6 +131,14 @@ import MenuActions from './components/shared/menu/MenuActions.vue';
 import AppBreadcrumb from './components/shared/route/AppBreadcrumb.vue';
 import { vMaska } from 'maska/vue';
 import Badge from './components/ui/badge/Badge.vue';
+import Pagination from './components/ui/pagination/Pagination.vue';
+import PaginationContent from './components/ui/pagination/PaginationContent.vue';
+import PaginationEllipsis from './components/ui/pagination/PaginationEllipsis.vue';
+import PaginationFirst from './components/ui/pagination/PaginationFirst.vue';
+import PaginationItem from './components/ui/pagination/PaginationItem.vue';
+import PaginationLast from './components/ui/pagination/PaginationLast.vue';
+import PaginationNext from './components/ui/pagination/PaginationNext.vue';
+import PaginationPrevious from './components/ui/pagination/PaginationPrevious.vue';
 
 const app = createApp(App);
 
@@ -238,6 +246,14 @@ app.component('TabsTrigger', TabsTrigger);
 app.component('Spinner', Spinner);
 app.component('Switch', Switch);
 app.component('Badge', Badge);
+app.component('Pagination', Pagination);
+app.component('PaginationContent', PaginationContent);
+app.component('PaginationEllipsis', PaginationEllipsis);
+app.component('PaginationFirst', PaginationFirst);
+app.component('PaginationItem', PaginationItem);
+app.component('PaginationLast', PaginationLast);
+app.component('PaginationNext', PaginationNext);
+app.component('PaginationPrevious', PaginationPrevious);
 
 app.directive('maska', vMaska);
 
