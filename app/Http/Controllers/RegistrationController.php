@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Seller\Registration\DeleteRegistrationRequest;
 use App\Http\Requests\Seller\Registration\ShowRegistrationRequest;
+use App\Http\Resources\Registration\RegistrationResource;
 use App\Repositories\DalleAdm\RegistrationRepository;
 
 class RegistrationController extends BaseController
@@ -19,7 +20,7 @@ class RegistrationController extends BaseController
             $registrations = $this->repository->getAll();
 
             return response()->json([
-                'registrations' => $registrations,
+                'registrations' => RegistrationResource::collection($registrations),
             ]);
 
         }, 'Erro ao listar inscrições');

@@ -104,6 +104,16 @@ const copyToClipboard = async (text: string) => {
 
           <div class="flex items-center justify-between">
             <span class="text-muted-foreground flex items-center gap-2">
+              <LucideMail class="size-4 shrink-0" />
+              <span class="font-medium">CPF</span>
+            </span>
+            <span class="max-w-[60%] truncate">{{ seller.cpf }}</span>
+          </div>
+
+          <Separator />
+
+          <div class="flex items-center justify-between">
+            <span class="text-muted-foreground flex items-center gap-2">
               <LucidePhone class="size-4 shrink-0" />
               <span class="font-medium">Telefone</span>
             </span>

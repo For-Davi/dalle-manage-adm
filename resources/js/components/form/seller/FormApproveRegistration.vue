@@ -23,6 +23,7 @@ const form = reactive({
   name: '',
   email: '',
   phone: '',
+  cpf: '',
   dateCreated: '',
   description: '',
   code: '',
@@ -33,6 +34,7 @@ const clear = () => {
     name: '',
     email: '',
     phone: '',
+    cpf: '',
     dateCreated: '',
     description: '',
     code: '',
@@ -59,6 +61,7 @@ const mountData = () => {
     name: props.registration?.name ?? '',
     email: props.registration?.email ?? '',
     phone: props.registration?.phone ?? '',
+    cpf: props.registration?.cpf,
     description: props.registration?.description ?? '',
     dateCreated: formatDateBrazil(props.registration?.created_at ?? ''),
   });
@@ -101,6 +104,10 @@ watch(isOpen, () => {
         <div class="mt-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Telefone</Label>
           <Input v-model="form.phone" disabled />
+        </div>
+        <div class="mt-2 space-y-2">
+          <Label for="code" class="ml-1 font-bold">CPF</Label>
+          <Input v-model="form.cpf" disabled />
         </div>
         <div class="mt-2 space-y-2">
           <Label for="code" class="ml-1 font-bold">Data de inscrição</Label>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, computed, watch } from 'vue';
+import { reactive, onMounted, computed } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { storeToRefs } from 'pinia';
 import { goUrlName } from '@/composables/useRedirect';
@@ -20,6 +20,7 @@ const form = reactive({
   name: '' as string,
   email: '' as string,
   phone: '' as string,
+  cpf: '' as string,
   code: '' as string,
   commission: '0' as string,
 });
@@ -30,6 +31,7 @@ const update = async () => {
     const response = await useSellerStore().updateSeller(Number(props.id), {
       ...form,
       commission: Number(form.commission),
+      password: '',
     });
     if (response?.status === 200) {
       goUrlName('sellers');
@@ -43,6 +45,7 @@ const fetchSeller = async () => {
       name: response.data.seller.name,
       email: response.data.seller.email,
       phone: response.data.seller.phone ?? '',
+      cpf: response.data.seller.cpf,
       code: response.data.seller.code ?? '',
       comission: String(response.data.seller.commission) ?? '',
     });
@@ -53,27 +56,32 @@ const clear = () => {
     name: '',
     email: '',
     phone: '',
+    cpf: '',
     code: '',
     comission: '0',
   });
 };
 
-const actions = computed<IMenuAction[]>(() => [
-  {
-    label: 'Limpar formulário',
-    type: 'button',
-    variant: 'outline',
-    onClick: clear,
-    disabled: loadingSeller.value,
-  },
-  {
-    label: loadingSeller.value ? 'Atualizando...' : 'Atualizar Vendedor',
-    type: 'submit',
-    class: 'px-8',
-    disabled: loadingSeller.value,
-    loading: loadingSeller.value,
-  },
-]);
+const actions = computed<IMenuAction[]>(
+  () =>
+    [
+      {
+        label: 'Limpar formulário',
+        type: 'button',
+        variant: 'outline',
+        class: 'cursor-pointer',
+        onClick: clear,
+        disabled: loadingSeller.value,
+      },
+      {
+        label: loadingSeller.value ? 'Atualizando...' : 'Atualizar Vendedor',
+        type: 'submit',
+        class: 'px-8 cursor-pointer',
+        disabled: loadingSeller.value,
+        loading: loadingSeller.value,
+      },
+    ] as IMenuAction[]
+);
 const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Vendedores',
@@ -132,6 +140,17 @@ onMounted(async () => {
                 id="phone"
                 placeholder="(99) 99999-9999"
                 autocomplete="new-name"
+              />
+            </div>
+            <div class="mb-2 space-y-2">
+              <Label for="cpf" class="ml-1 font-bold">CPF</Label>
+              <Input
+                v-model="form.cpf"
+                type="name"
+                id="cpf"
+                placeholder="99999999999"
+                autocomplete="new-name"
+                maxlength="11"
               />
             </div>
             <div class="mb-2 space-y-2">

@@ -2,10 +2,13 @@
 
 namespace App\Models\DalleAdm;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Seller extends Model
+class Seller extends Authenticatable
 {
+    use HasApiTokens;
+
     protected $table = 'sellers';
 
     protected $fillable = [
@@ -13,7 +16,14 @@ class Seller extends Model
         'email',
         'phone',
         'code',
+        'cpf',
+        'password',
         'commission',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     public function setCodeAttribute($value)

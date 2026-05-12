@@ -7,6 +7,7 @@ use App\Http\Requests\Seller\DeleteSellerRequest;
 use App\Http\Requests\Seller\Registration\ApproveSellerRegistrationRequest;
 use App\Http\Requests\Seller\ShowSellerRequest;
 use App\Http\Requests\Seller\UpdateSellerRequest;
+use App\Http\Resources\Registration\RegistrationResource;
 use App\Repositories\DalleAdm\SellerRepository;
 use App\Services\DalleAdm\SellerService;
 
@@ -24,7 +25,7 @@ class SellerController extends BaseController
             $sellers = $this->repository->getAll();
 
             return response()->json([
-                'sellers' => $sellers,
+                'sellers' => RegistrationResource::collection($sellers),
             ]);
 
         }, 'Erro ao listar vendedores');

@@ -2,6 +2,7 @@
 
 namespace App\Services\DalleAdm;
 
+use App\DTO\Seller\ApproveSellerRegistrationDTO;
 use App\DTO\Seller\CreateOrUpdateSellerDTO;
 use App\Helpers\SellerHelper;
 use App\Repositories\DalleAdm\RegistrationRepository;
@@ -23,6 +24,8 @@ class SellerService
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
+            'cpf' => $request->cpf,
+            'password' => $request->password,
             'commission' => $request->commission,
             'code' => str_replace(' ', '', $request->code),
         ]);
@@ -40,10 +43,12 @@ class SellerService
         SellerHelper::existsPhone($registration->phone, 'create');
         SellerHelper::existsCode($request->code, 'create');
 
-        $sellerDTO = CreateOrUpdateSellerDTO::fromRequest([
+        $sellerDTO = ApproveSellerRegistrationDTO::fromRequest([
             'name' => $registration->name,
             'email' => $registration->email,
             'phone' => $registration->phone,
+            'cpf' => $registration->cpf,
+            'password' => $registration->password,
             'commission' => $request->commission,
             'code' => str_replace(' ', '', $request->code),
         ]);

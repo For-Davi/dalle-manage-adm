@@ -53,47 +53,51 @@ const paginatedPayments = computed(() => {
             }}</TableCell>
             <TableCell>{{ payment.enterprise_email }}</TableCell>
             <TableCell>{{ getPaymentType(payment.payment_type) }}</TableCell>
-            <TableCell>{{ getNameSubscription(payment.subscription) }}</TableCell>
+            <TableCell>{{
+              getNameSubscription(payment.subscription)
+            }}</TableCell>
             <TableCell>{{ payment.month_qnty }}</TableCell>
-            <TableCell>{{ formatToBrazilianDate(payment.created_at) }}</TableCell>
+            <TableCell>{{
+              formatToBrazilianDate(payment.created_at)
+            }}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
 
       <Pagination
-  v-model:page="currentPage"
-  :total="sortedPayments.length"
-  :items-per-page="itemsPerPage"
-  :sibling-count="1"
-  show-edges
-  class="mt-4"
->
-  <PaginationContent v-slot="{ items }">
-    <div class="flex items-center gap-1">
-      <PaginationFirst />
-      <PaginationPrevious />
+        v-model:page="currentPage"
+        :total="sortedPayments.length"
+        :items-per-page="itemsPerPage"
+        :sibling-count="1"
+        show-edges
+        class="mt-4"
+      >
+        <PaginationContent v-slot="{ items }">
+          <div class="flex items-center gap-1">
+            <PaginationFirst />
+            <PaginationPrevious />
 
-      <template v-for="(item, index) in items" :key="index">
-        <PaginationItem
-          v-if="item.type === 'page'"
-          :value="item.value"
-          as-child
-        >
-          <Button
-            :variant="item.value === currentPage ? 'default' : 'outline'"
-            class="size-9 p-0"
-          >
-            {{ item.value }}
-          </Button>
-        </PaginationItem>
-        <PaginationEllipsis v-else :index="index" />
-      </template>
+            <template v-for="(item, index) in items" :key="index">
+              <PaginationItem
+                v-if="item.type === 'page'"
+                :value="item.value"
+                as-child
+              >
+                <Button
+                  :variant="item.value === currentPage ? 'default' : 'outline'"
+                  class="size-9 p-0"
+                >
+                  {{ item.value }}
+                </Button>
+              </PaginationItem>
+              <PaginationEllipsis v-else :index="index" />
+            </template>
 
-      <PaginationNext />
-      <PaginationLast />
-    </div>
-  </PaginationContent>
-</Pagination>
+            <PaginationNext />
+            <PaginationLast />
+          </div>
+        </PaginationContent>
+      </Pagination>
     </template>
 
     <div class="p-6" v-else>

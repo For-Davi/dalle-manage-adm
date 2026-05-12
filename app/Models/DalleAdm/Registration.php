@@ -14,6 +14,7 @@ class Registration extends Model
         'phone',
         'cpf',
         'cnpj',
+        'password',
         'description',
     ];
 }

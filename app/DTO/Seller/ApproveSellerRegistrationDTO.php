@@ -3,9 +3,8 @@
 namespace App\DTO\Seller;
 
 use App\DTO\BaseDTO;
-use Illuminate\Support\Facades\Hash;
 
-class CreateOrUpdateSellerDTO extends BaseDTO
+class ApproveSellerRegistrationDTO extends BaseDTO
 {
     public function __construct(
         public string $name,
@@ -13,8 +12,8 @@ class CreateOrUpdateSellerDTO extends BaseDTO
         public string $phone,
         public string $cpf,
         public string $password,
+        public string $commission,
         public string $code,
-        public int $commission,
     ) {}
 
     public static function fromRequest($data): self
@@ -23,9 +22,9 @@ class CreateOrUpdateSellerDTO extends BaseDTO
             name: $data['name'],
             email: $data['email'],
             phone: $data['phone'],
-            commission: $data['commission'],
             cpf: $data['cpf'],
-            password: Hash::make($data['password']),
+            password: $data['password'],
+            commission: $data['commission'],
             code: $data['code'],
         );
     }

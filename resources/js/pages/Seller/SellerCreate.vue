@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { reactive, onMounted, computed } from 'vue';
+import { reactive, onMounted, computed, ref } from 'vue';
 import TitlePage from '@/components/general/TitlePage.vue';
 import { validateCreateOrUpdate } from './validation';
 import { storeToRefs } from 'pinia';
 import { goUrlName } from '@/composables/useRedirect';
 import { useSellerStore } from '@/stores/seller-store';
+import { EyeOff } from 'lucide-vue-next';
+import { Eye } from 'lucide-vue-next';
+import { createErrorData } from '@/composables/useCreateNotify';
 
 defineOptions({
   name: 'SellerCreate',
@@ -12,10 +15,13 @@ defineOptions({
 
 const { loadingSeller } = storeToRefs(useSellerStore());
 
+const isPwd = ref<boolean>(false);
 const form = reactive({
   name: '' as string,
   email: '' as string,
   phone: '' as string,
+  cpf: '' as string,
+  password: '' as string,
   code: '' as string,
   commission: '0' as string,
 });
@@ -37,27 +43,33 @@ const clear = () => {
     name: '',
     email: '',
     phone: '',
+    cpf: '',
+    password: '',
     code: '',
     commission: '0',
   });
 };
 
-const actions = computed<IMenuAction[]>(() => [
-  {
-    label: 'Limpar formulário',
-    variant: 'outline',
-    type: 'button',
-    onClick: clear,
-  },
-  {
-    label: loadingSeller.value ? 'Salvando...' : 'Cadastrar Vendedor',
-    type: 'submit',
-    class: 'px-8',
-    disabled: loadingSeller.value,
-    loading: loadingSeller.value,
-    icon: 'LucidePlus',
-  },
-]);
+const actions = computed<IMenuAction[]>(
+  () =>
+    [
+      {
+        label: 'Limpar formulário',
+        variant: 'outline' as const,
+        type: 'button' as const,
+        class: 'cursor-pointer',
+        onClick: clear,
+      },
+      {
+        label: loadingSeller.value ? 'Salvando...' : 'Cadastrar Vendedor',
+        type: 'submit' as const,
+        class: 'px-8 cursor-pointer',
+        disabled: loadingSeller.value,
+        loading: loadingSeller.value,
+        icon: 'LucidePlus',
+      },
+    ] as IMenuAction[]
+);
 const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
   {
     label: 'Vendedores',
@@ -67,6 +79,28 @@ const breadcrumbItems = computed<IBreadcrumbItem[]>(() => [
     label: 'Cadastro',
   },
 ]);
+const formattedPhone = computed({
+  get() {
+    const phone = (form.phone || '').replace(/\D/g, '');
+
+    if (phone.length === 10) {
+      return `(${phone.substring(0, 2)}) ${phone.substring(2, 6)}-${phone.substring(6)}`;
+    }
+    if (phone.length === 11) {
+      return `(${phone.substring(0, 2)}) ${phone.substring(2, 7)}-${phone.substring(7)}`;
+    }
+    return phone;
+  },
+  set(value) {
+    const digits = (value || '').replace(/\D/g, '');
+
+    if (digits.length > 11) {
+      return;
+    }
+
+    form.phone = digits;
+  },
+});
 
 onMounted(async () => {
   clear();
@@ -110,12 +144,44 @@ onMounted(async () => {
             <div class="mb-2 space-y-2">
               <Label for="phone" class="ml-1 font-bold">Telefone</Label>
               <Input
-                v-model="form.phone"
+                v-model="formattedPhone"
                 type="name"
                 id="phone"
                 placeholder="(99) 99999-9999"
                 autocomplete="new-name"
               />
+            </div>
+            <div class="mb-2 space-y-2">
+              <Label for="cpf" class="ml-1 font-bold">CPF</Label>
+              <Input
+                v-model="form.cpf"
+                type="name"
+                id="cpf"
+                placeholder="99999999999"
+                autocomplete="new-name"
+                maxlength="11"
+              />
+            </div>
+            <div class="mb-2 space-y-2">
+              <Label for="password" class="ml-1 font-bold">Senha</Label>
+              <div class="relative">
+                <Input
+                  v-model="form.password"
+                  :type="isPwd ? 'text' : 'password'"
+                  id="password"
+                  placeholder="Insira a senha do(a) vendedor(a)"
+                  autocomplete="new-name"
+                  class="pr-10"
+                />
+                <button
+                  type="button"
+                  @click="isPwd = !isPwd"
+                  class="text-muted-foreground hover:text-foreground absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer"
+                >
+                  <EyeOff v-if="!isPwd" class="h-4 w-4" />
+                  <Eye v-else class="h-4 w-4" />
+                </button>
+              </div>
             </div>
             <div class="mb-2 space-y-2">
               <Label for="commission" class="ml-1 font-bold">Comissão %</Label>
