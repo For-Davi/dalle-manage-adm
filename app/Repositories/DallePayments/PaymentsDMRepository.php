@@ -26,28 +26,24 @@ class PaymentsDMRepository
 
         if ($hasStart && ! $hasEnd) {
             $start = Carbon::createFromFormat('d/m/Y', $filter->start_date)
-                ->startOfDay()
-                ->addHours(3);
+                ->startOfDay();
 
             $query->where('created_at', '>=', $start);
         }
 
         if ($hasEnd && ! $hasStart) {
             $end = Carbon::createFromFormat('d/m/Y', $filter->end_date)
-                ->endOfDay()
-                ->addHours(3);
+                ->endOfDay();
 
             $query->where('created_at', '<=', $end);
         }
 
         if ($hasStart && $hasEnd) {
             $start = Carbon::createFromFormat('d/m/Y', $filter->start_date)
-                ->startOfDay()
-                ->addHours(3);
+                ->startOfDay();
 
             $end = Carbon::createFromFormat('d/m/Y', $filter->end_date)
-                ->endOfDay()
-                ->addHours(3);
+                ->endOfDay();
 
             $query->whereBetween('created_at', [$start, $end]);
         }
